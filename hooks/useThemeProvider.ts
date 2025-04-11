@@ -9,11 +9,6 @@ const useThemeProvider = () => {
   const [preferredTheme, setPreferredTheme] = useState<Theme>("system");
   const actualTheme = preferredTheme === "system" ? deviceTheme : preferredTheme;
 
-  console.log('all states: ', JSON.stringify({
-    deviceTheme,
-    preferredTheme,
-  }, null, 2));
-
   useEffect(() => {
     if (deviceTheme) {
       setPreferredTheme(deviceTheme ?? 'dark');

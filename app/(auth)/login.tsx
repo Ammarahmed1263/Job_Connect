@@ -1,6 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
-import { ThemedText } from '@/components/ThemedText';
 
 const Login = () => {
   // const user = true;
@@ -8,8 +7,8 @@ const Login = () => {
   // if (user) return <Redirect href="/(main)/(tabs)/index" />;
 
   return (
-    <View>
-      <ThemedText>Login</ThemedText>
+    <View style={{ flex: 1 }}>
+      <Text style={{color: 'white'}}>hello, world</Text>
     </View>
   )
 }

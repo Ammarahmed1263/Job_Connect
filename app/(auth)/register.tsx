@@ -1,15 +1,14 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
-import { ThemedText } from '@/components/ThemedText'
+import { StyleSheet, Text, View } from "react-native";
+import React from "react";
 
 const Register = () => {
   return (
-    <View>
-      <ThemedText>Register</ThemedText>
+    <View style={{ flex: 1 }}>
+      <Text style={{ color: "white" }}>hello, world</Text>
     </View>
-  )
-}
+  );
+};
 
-export default Register
+export default Register;
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({});
