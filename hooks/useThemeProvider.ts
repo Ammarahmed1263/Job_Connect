@@ -10,7 +10,7 @@ const useThemeProvider = () => {
   const actualTheme = preferredTheme === "system" ? deviceTheme : preferredTheme;
 
   useEffect(() => {
-    if (deviceTheme) {
+    if (deviceTheme && preferredTheme) {
       setPreferredTheme(deviceTheme ?? 'dark');
     }
   }, [deviceTheme]);

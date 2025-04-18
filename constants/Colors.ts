@@ -10,8 +10,8 @@ export const colors: {light: ThemeData, dark: ThemeData} = {
   light: {
     "--bg-color": '#FFFFFF',
     "--primary-50": '#EEF2FF',
-    "--primary-100": '#E0E7FF',
-    "--primary-200": '#C7D2FE',
+    "--primary-100": '#D2DCFF',
+    "--primary-200": '#B7C6FF',
     "--primary-300": '#A5B4FC',
     "--primary-400": '#818CF8',
     "--primary-500": '#6366F1',
@@ -27,7 +27,7 @@ export const colors: {light: ThemeData, dark: ThemeData} = {
     "--primary-300": '#3730A3',
     "--primary-400": '#312E81',
     "--primary-500": '#1E1B4B',
-    "--text-primary": '#E0E7FF',
+    "--text-primary": '#D2DCFF',
     "--text-secondary": '#A5B4FC',
     "--accent-color": '#818CF8',
   }

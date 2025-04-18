@@ -6,12 +6,9 @@ import {
   ThemeProvider as RNThemeProvider,
 } from "@react-navigation/native";
 import { Theme, ThemeData } from "@type/theme";
-import { useColorScheme as useNWColorScheme} from "nativewind";
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext } from "react";
 import {
-  Appearance,
-  useColorScheme,
-  View,
+  View
 } from "react-native";
 
 interface ThemeContextType {
