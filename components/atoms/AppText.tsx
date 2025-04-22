@@ -11,7 +11,7 @@ interface AppTextProps extends TextProps {
 
 const AppText: FC<AppTextProps> = ({
   children,
-  variant = "medium",
+  variant = "regular",
   className,
   style,
   ...props

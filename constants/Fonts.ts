@@ -1,29 +1,34 @@
 import { ms } from "./metrics";
 
 const fontFamily = {
-  "regular": "Montserrat-Regular",
-  "medium": "Montserrat-Medium",
-  "semiBold": "Montserrat-SemiBold",
-  "bold": "Montserrat-Bold",
+  light: "Montserrat-Light",
+  regular: "Montserrat-Regular",
+  medium: "Montserrat-Medium",
+  semiBold: "Montserrat-SemiBold",
+  bold: "Montserrat-Bold",
 }
 
 export type FontVariants = keyof typeof fontVariants;
 
 export const fontVariants = {
+  light: {
+    fontFamily: fontFamily.regular,
+    fontSize: ms(16),
+  },
   regular: {
     fontFamily: fontFamily.regular,
-    fontSize: ms(24),
+    fontSize: ms(20),
   },
   medium: {
     fontFamily: fontFamily.medium,
-    fontSize: ms(28),
+    fontSize: ms(24),
   },
   semiBold: {
     fontFamily: fontFamily.semiBold,
-    fontSize: ms(30),
+    fontSize: ms(28),
   },
   bold: {
     fontFamily: fontFamily.bold,
-    fontSize: ms(34),
+    fontSize: ms(32),
   },
 }

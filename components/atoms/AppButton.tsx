@@ -1,9 +1,12 @@
 import {
   Pressable,
   PressableProps,
+  StyleProp,
   StyleSheet,
   Text,
+  TextProps,
   View,
+  ViewStyle,
 } from "react-native";
 import React, { FC, useState } from "react";
 import { FontVariants } from "@constants/Fonts";
@@ -12,12 +15,14 @@ import { hs } from "@constants/metrics";
 import clsx from "clsx";
 import { useTheme } from "@contexts/ThemeContext";
 import { isIos } from "@constants/index";
-
 interface Props extends PressableProps {
   title: string;
   flat?: boolean;
   variant?: "primary" | "secondary";
   textvariant?: FontVariants;
+  textClassName?: string;
+  wrapperStyle?: StyleProp<ViewStyle>;
+  wrapperClassName?: string;
   onPress: () => void;
 }
 const AppButton: FC<Props> = ({
@@ -25,7 +30,10 @@ const AppButton: FC<Props> = ({
   flat = false,
   style,
   variant = "secondary",
-  textvariant = "medium",
+  textvariant = "regular",
+  textClassName,
+  wrapperStyle,
+  wrapperClassName,
   ...props
 }) => {
   const [pressed, setPressed] = useState(false);
@@ -35,13 +43,13 @@ const AppButton: FC<Props> = ({
     <View
       className={clsx(
         "rounded-lg overflow-hidden ",
-        variant === "primary" ? "bg-[--primary-300]" : "bg-[--primary-100]"
+        variant === "primary" ? "bg-[--primary-300]" : "bg-[--primary-100]",
+        wrapperClassName
       )}
-      style={
-        flat
-          ? { backgroundColor: "transparent" }
-          : [styles.shadow, { shadowColor: colors["--accent-color"] }]
-      }
+      style={[
+        !flat && {...styles.shadow, shadowColor: colors["--accent-color"] },
+        wrapperStyle,
+      ]}
     >
       <Pressable
         onPressIn={() => setPressed(true)}
@@ -58,7 +66,7 @@ const AppButton: FC<Props> = ({
       >
         <AppText
           variant={textvariant}
-          className={clsx("color-[--text-primary] px-4 py-2")}
+          className={clsx("color-[--text-primary] px-4 py-2", textClassName)}
         >
           {title}
         </AppText>
