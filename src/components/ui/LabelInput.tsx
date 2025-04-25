@@ -5,17 +5,19 @@ import { clsx } from "clsx";
 import { forwardRef, ReactNode, useRef, useState } from "react";
 import {
   Pressable,
+  StyleProp,
   TextInput,
   TextInputProps,
   TouchableOpacity,
   View,
+  ViewProps,
   ViewStyle
 } from "react-native";
 import AppText from "./AppText";
 
 interface LabelInputProps extends TextInputProps {
-  containerStyle?: ViewStyle;
-  containerClassName?: string;
+  containerStyle?: StyleProp<ViewStyle>;
+  containerClassName?: ViewProps["className"];
   title: string;
   error?: string;
   touched?: boolean;
@@ -52,7 +54,7 @@ const LabelInput = forwardRef<TextInput, LabelInputProps>(
         <Pressable
           onPress={() => inputRef?.current?.focus()}
           className={clsx(
-            "rounded-2xl flex-row items-center justify-between bg-[--primary-300] border-2",
+            "rounded-xl flex-row items-center justify-between bg-[--primary-300] border-2",
             isFocused && !error
               ? "border-[--accent-color]"
               : error && touched

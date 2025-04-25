@@ -1,4 +1,4 @@
-import AppText from '@components/atoms/AppText';
+import {AppText} from '@components/ui';
 import { StyleSheet, Text, View } from 'react-native';
 
 

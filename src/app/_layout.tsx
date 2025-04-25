@@ -1,13 +1,11 @@
 import { useFonts } from "expo-font";
-import { Stack } from "expo-router";
+import { Slot, Stack, useRouter, useSegments } from "expo-router";
 import { preventAutoHideAsync, hideAsync } from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
-import { useEffect } from "react";
-import "react-native-reanimated";
-import "../global.css";
+import { useEffect, useState } from "react";
+import "../../global.css";
 
 import ThemeProvider from "@contexts/ThemeContext";
-import { SafeAreaView } from "react-native";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 preventAutoHideAsync();
@@ -20,14 +18,32 @@ export default function RootLayout() {
     "Montserrat-SemiBold": require("../assets/fonts/Montserrat-SemiBold.ttf"),
     "Montserrat-Bold": require("../assets/fonts/Montserrat-Bold.ttf"),
   });
+  const [user, setUser] = useState('');
+  const [appReady, setAppReady] = useState(false)
+  const segments = useSegments()[0];
+  const router = useRouter();
   const authorized = false;
 
   // Hide splash screen once fonts are loaded
   useEffect(() => {
     if (loaded) {
       hideAsync();
+      setAppReady(true)
     }
   }, [loaded]);
+
+  // useEffect(() => {
+  //   if (!appReady) return;
+  
+  //   const isLoggedIn = !!user;
+  
+  //   if (isLoggedIn && segments === "(auth)") {
+  //     router.replace("/");
+  //   } else if (!isLoggedIn && segments !== "(auth)") {
+  //     router.replace("/(auth)/login");
+  //   }
+  // }, [appReady, user]);
+  
 
   if (!loaded) {
     return null;
@@ -45,6 +61,7 @@ export default function RootLayout() {
         <Stack.Screen name="+not-found" />
       </Stack>
       <StatusBar style="auto" />
+      {/* <Slot /> */}
     </ThemeProvider>
   );
 }

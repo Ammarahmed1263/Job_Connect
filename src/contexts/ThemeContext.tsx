@@ -49,7 +49,7 @@ const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
 
 
   return (
-    <View style={themes[actualTheme]} className="flex-1">
+    <View style={themes[actualTheme]} className="flex-1" >
       <ThemeContext.Provider value={contextValue}>
         <RNThemeProvider value={reactNativeTheme}>{children}</RNThemeProvider>
       </ThemeContext.Provider>

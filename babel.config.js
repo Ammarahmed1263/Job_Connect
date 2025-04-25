@@ -11,15 +11,16 @@ module.exports = function (api) {
         {
           root: ["./"],
           alias: {
-            "@components": "./components",
-            "@screens": "./screens",
-            "@assets": "./assets",
-            "@hooks": "./hooks",
-            "@utils": "./utils",
-            "@constants": "./constants",
-            "@type": "./types",
-            "@contexts": "./contexts",
-            "@services": "./services"
+            "@components": "./src/components",
+            "@components/*": "./src/components/*",
+            "@screens": "./src/screens",
+            "@assets": "./src/assets",
+            "@hooks": "./src/hooks",
+            "@utils": "./src/utils/index",
+            "@constants": "./src/constants",
+            "@type": "./src/types",
+            "@contexts": "./src/contexts",
+            "@services": "./src/services"
           },
         },
       ],

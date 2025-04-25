@@ -1,13 +1,15 @@
-import AppText from "@components/atoms/Text";
+import { AppText } from "@components/ui";
 import { useTheme } from "@contexts/ThemeContext";
-import { StyleSheet, Switch, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 
 export default function TabTwoScreen() {
-  const { theme, colors, setTheme } = useTheme();
+  const { setTheme } = useTheme();
 
   return (
     <View className="flex-1 mx-2 mt-4">
-      <AppText className="text-[--text-secondary] text-2xl font-montserrat-bold">Preffered Theme: </AppText>
+      <AppText className="text-[--text-secondary] text-2xl font-montserrat-bold">
+        Preffered Theme:
+      </AppText>
       <TouchableOpacity
         className="mx-3 my-2 p-4 border-[--accent-color] border-2 rounded-xl"
         onPress={() => setTheme("system")}

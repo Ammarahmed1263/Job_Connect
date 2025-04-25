@@ -1,0 +1,108 @@
+import { FontVariants } from "@constants/Fonts";
+import { isIos } from "@constants/index";
+import { useTheme } from "@contexts/ThemeContext";
+import clsx from "clsx";
+import React, { ElementRef, forwardRef, useState } from "react";
+import {
+  Pressable,
+  PressableProps,
+  StyleProp,
+  StyleSheet,
+  TextProps,
+  View,
+  ViewProps,
+  ViewStyle,
+} from "react-native";
+import AppText from "./AppText";
+
+interface Props extends PressableProps {
+  title: string;
+  flat?: boolean;
+  variant?: "primary" | "secondary";
+  textVariant?: FontVariants;
+  textClassName?: TextProps["className"];
+  wrapperStyle?: StyleProp<ViewStyle>;
+  wrapperClassName?: ViewProps["className"];
+  onPress: () => void;
+}
+
+const AppButton = forwardRef<ElementRef<typeof Pressable>, Props>(
+  (
+    {
+      title,
+      flat = false,
+      onPress,
+      style,
+      variant = "primary",
+      textVariant = "regular",
+      textClassName,
+      wrapperStyle,
+      wrapperClassName,
+      ...props
+    },
+    ref
+  ) => {
+    const [pressed, setPressed] = useState(false);
+    const { colors } = useTheme();
+
+    const handlePress = () => {
+      onPress();
+    };
+
+    return (
+      <View
+        ref={ref}
+        className={clsx(
+          "rounded-xl overflow-hidden self-start",
+          variant === "primary" ? "bg-[--primary-300]" : "bg-[--primary-100]",
+          wrapperClassName
+        )}
+        style={[
+          !flat && { ...styles.shadow, shadowColor: colors["--accent-color"] },
+          flat && { backgroundColor: "transparent" },
+          wrapperStyle,
+        ]}
+      >
+        <Pressable
+          onPressIn={() => setPressed(true)}
+          onPressOut={() => setPressed(false)}
+          onPress={handlePress}
+          className={clsx(
+            "items-center justify-center",
+            pressed && isIos && "bg-[--accent-color]",
+            flat && pressed && "opacity-50"
+          )}
+          android_ripple={!flat ? { color: colors["--accent-color"] } : null}
+          style={!flat && styles.shadow}
+          hitSlop={20}
+          {...props}
+        >
+          <AppText
+            variant={textVariant}
+            className={clsx(
+              flat &&
+                (variant === "primary"
+                  ? "color-[--text-primary]"
+                  : "color-[--text-secondary]"),
+              !flat && "px-4 py-2 color-[--text-primary]",
+              textClassName
+            )}
+          >
+            {title}
+          </AppText>
+        </Pressable>
+      </View>
+    );
+  }
+);
+
+export default AppButton;
+
+const styles = StyleSheet.create({
+  shadow: {
+    elevation: 25,
+    shadowOffset: { width: 2, height: 8 },
+    shadowOpacity: 0.9,
+    shadowRadius: 8,
+  },
+});
