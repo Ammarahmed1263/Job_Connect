@@ -82,9 +82,9 @@ const AppButton = forwardRef<ElementRef<typeof Pressable>, Props>(
             className={clsx(
               flat &&
                 (variant === "primary"
-                  ? "color-[--text-primary]"
-                  : "color-[--text-secondary]"),
-              !flat && "px-4 py-2 color-[--text-primary]",
+                  ? "text-[--text-primary]"
+                  : "text-[--text-secondary]"),
+              !flat && "px-4 py-2 text-[--text-primary]",
               textClassName
             )}
           >
@@ -100,8 +100,8 @@ export default AppButton;
 
 const styles = StyleSheet.create({
   shadow: {
-    elevation: 25,
-    shadowOffset: { width: 2, height: 8 },
+    elevation: 16,
+    shadowOffset: { width: 2, height: 6 },
     shadowOpacity: 0.9,
     shadowRadius: 8,
   },

@@ -4,23 +4,24 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { clsx } from "clsx";
 import { forwardRef, ReactNode, useRef, useState } from "react";
 import {
+  NativeSyntheticEvent,
   Pressable,
   StyleProp,
   TextInput,
+  TextInputFocusEventData,
   TextInputProps,
   TouchableOpacity,
   View,
   ViewProps,
-  ViewStyle
+  ViewStyle,
 } from "react-native";
 import AppText from "./AppText";
 
-interface LabelInputProps extends TextInputProps {
+export interface LabelInputProps extends TextInputProps {
   containerStyle?: StyleProp<ViewStyle>;
   containerClassName?: ViewProps["className"];
   title: string;
   error?: string;
-  touched?: boolean;
   children?: ReactNode;
 }
 
@@ -32,7 +33,8 @@ const LabelInput = forwardRef<TextInput, LabelInputProps>(
       title,
       children,
       error,
-      touched,
+      onFocus,
+      onBlur,
       secureTextEntry = false,
       ...props
     },
@@ -44,10 +46,19 @@ const LabelInput = forwardRef<TextInput, LabelInputProps>(
     const localRef = useRef<TextInput>(null);
     const inputRef = (ref as React.RefObject<TextInput>) ?? localRef;
 
+    const handleFocus = (e: NativeSyntheticEvent<TextInputFocusEventData>) => {
+      setIsFocused(true);
+      onFocus?.(e);
+    };
+
+    const handleBlur = (e: NativeSyntheticEvent<TextInputFocusEventData>) => {
+      setIsFocused(false);
+      onBlur?.(e);
+    };
+
     const togglePasswordVisibility = () => {
       setIsPasswordVisible((prev) => !prev);
     };
-
     return (
       <View style={containerStyle} className={clsx("mx-2", containerClassName)}>
         <AppText className="ms-2">{title}</AppText>
@@ -55,10 +66,10 @@ const LabelInput = forwardRef<TextInput, LabelInputProps>(
           onPress={() => inputRef?.current?.focus()}
           className={clsx(
             "rounded-xl flex-row items-center justify-between bg-[--primary-300] border-2",
-            isFocused && !error
-              ? "border-[--accent-color]"
-              : error && touched
+            error
               ? "border-red-500"
+              : isFocused
+              ? "border-[--accent-color]"
               : "border-transparent"
           )}
         >
@@ -71,8 +82,8 @@ const LabelInput = forwardRef<TextInput, LabelInputProps>(
             cursorColor={colors["--accent-color"]}
             secureTextEntry={secureTextEntry && !isPasswordVisible}
             className="flex-1 text-[--text-primary] min-h-22 font-montserrat-light"
-            onFocus={() => setIsFocused(true)}
-            onBlur={() => setIsFocused(false)}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
             {...props}
           />
           {secureTextEntry && (
@@ -89,7 +100,7 @@ const LabelInput = forwardRef<TextInput, LabelInputProps>(
             </TouchableOpacity>
           )}
         </Pressable>
-        {error && touched && (
+        {error && (
           <AppText
             variant="light"
             numberOfLines={1}

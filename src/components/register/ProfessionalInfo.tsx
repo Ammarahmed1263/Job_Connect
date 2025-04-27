@@ -1,22 +1,76 @@
-import { View, Text } from "react-native";
-import React, { Dispatch, FC, SetStateAction } from "react";
-import { AppButton, AppText, LabelInput } from "@components/ui";
+import { AppButton, AppText } from "@components/ui";
+import ControlledLabelInput from "@components/ui/ControlledLabelInput";
+import { useTheme } from "@contexts/ThemeContext";
+import Icon from "@expo/vector-icons/Ionicons";
+import { RegisterFormData } from "@type/auth";
+import { focusRef } from "@utils";
+import React, { Dispatch, FC, SetStateAction, useRef } from "react";
+import { useFormContext } from "react-hook-form";
+import { TextInput, View } from "react-native";
+import authRules from "schemas/auth";
 
 interface Props {
   setStep: Dispatch<SetStateAction<number>>;
 }
 
 const ProfessionalInfo: FC<Props> = ({ setStep }) => {
+  const { colors } = useTheme();
+  const { control, trigger } = useFormContext<RegisterFormData>();
+  const experienceRef = useRef<TextInput>(null);
+  const degreeRef = useRef<TextInput>(null);
+  console.log('professional info rendered');
+
+  const handlePrev = () => {
+    setStep(2);
+  };
+
+  const handleNext = async () => {
+    const isValid = await trigger('professional');
+    console.log('is valid: ', isValid);
+    if (isValid) setStep(4);
+  };
+  
   return (
     <View className="px-4 gap-4">
       <AppText>Professional Information</AppText>
-      <LabelInput title="Job Title" placeholder="Software Engineer" />
-      <LabelInput title="Years of Experience" placeholder="0+" />
-      <LabelInput title="Degree" placeholder="Computer Science" />
+      
+      <ControlledLabelInput
+        control={control}
+        rules={authRules.jobTitle}
+        name="professional.jobTitle"
+        title="Job Title"
+        placeholder="Software Engineer"
+        submitBehavior="submit"
+        onSubmitEditing={() => focusRef(experienceRef)}
+      >
+        <Icon name="briefcase-outline" size={20} color={colors["--text-primary"]} />
+      </ControlledLabelInput>
+      
+      <ControlledLabelInput
+        control={control}
+        rules={authRules.experience}
+        name="professional.experience"
+        title="Years of Experience"
+        placeholder="0+"
+        submitBehavior="submit"
+        onSubmitEditing={() => focusRef(degreeRef)}
+      >
+        <Icon name="briefcase-outline" size={20} color={colors["--text-primary"]} />
+      </ControlledLabelInput>
+      
+      <ControlledLabelInput
+        control={control}
+        rules={authRules.degree}
+        name="professional.degree"
+        title="Degree"
+        placeholder="Computer Science"
+      >
+        <Icon name="briefcase-outline" size={20} color={colors["--text-primary"]} />
+      </ControlledLabelInput>
 
       <View className="flex-row justify-between">
-        <AppButton title="back" onPress={() => setStep(2)} />
-        <AppButton title="next" onPress={() => setStep(4)} />
+        <AppButton title="back" onPress={handlePrev} />
+        <AppButton title="next" onPress={handleNext} />
       </View>
     </View>
   );

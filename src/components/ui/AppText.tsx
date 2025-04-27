@@ -1,10 +1,10 @@
 import { FontVariants, fontVariants } from "@constants/Fonts";
 import clsx from "clsx";
-import React, { FC, ReactNode } from "react";
+import React, { FC } from "react";
 import { StyleProp, Text, TextProps, TextStyle } from "react-native";
 
 interface AppTextProps extends TextProps {
-  className?: string;
+  className?: TextProps['className'];
   style?: StyleProp<TextStyle>;
   variant?: FontVariants;
 }

@@ -1,9 +1,13 @@
-import { AppButton, AppText, LabelInput } from "@components/ui";
+import { AppButton, AppText } from "@components/ui";
+import ControlledLabelInput from "@components/ui/ControlledLabelInput";
 import { useTheme } from "@contexts/ThemeContext";
 import Icon from '@expo/vector-icons/Ionicons';
+import { RegisterFormData } from "@type/auth";
 import { focusRef } from "@utils";
 import React, { Dispatch, FC, SetStateAction, useRef } from "react";
+import { useFormContext } from "react-hook-form";
 import { TextInput, View } from "react-native";
+import authRules from "schemas/auth";
 
 interface Props {
   setStep: Dispatch<SetStateAction<number>>
@@ -12,12 +16,22 @@ interface Props {
 const PersonalInfo: FC<Props> = ({setStep}) => {
   const { colors } = useTheme();
   const lastNameRef = useRef<TextInput>(null);
+  const { control, trigger } = useFormContext<RegisterFormData>();
+
+  const handleNext = async () => {
+    const isValid = await trigger('personal');
+    console.log('is valid: ', isValid);
+    if (isValid) setStep(2);
+  };
 
   return (
     <View className="px-4 gap-4">
       <AppText>Personal Information</AppText>
 
-      <LabelInput
+      <ControlledLabelInput
+        control={control}
+        rules={authRules.firstName}
+        name="personal.firstName"
         title="First Name"
         placeholder="John"
         autoComplete="given-name"
@@ -28,13 +42,15 @@ const PersonalInfo: FC<Props> = ({setStep}) => {
           size={20}
           color={colors["--text-primary"]}
         />
-      </LabelInput>
+      </ControlledLabelInput>
 
-      <LabelInput
+      <ControlledLabelInput
         ref={lastNameRef}
+        control={control}
+        rules={authRules.lastName}
+        name="personal.lastName"
         title="Last Name"
         placeholder="Doe"
-        touched={true}
         autoComplete="family-name"
       >
         <Icon
@@ -42,11 +58,11 @@ const PersonalInfo: FC<Props> = ({setStep}) => {
           size={20}
           color={colors["--text-primary"]}
         />
-      </LabelInput>
+      </ControlledLabelInput>
 
       <AppButton
         title="next"
-        onPress={() => setStep(2)}
+        onPress={handleNext}
         wrapperClassName="self-end"
       />
     </View>
