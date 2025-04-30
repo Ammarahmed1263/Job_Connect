@@ -17,8 +17,8 @@ const authRules = {
     validate: {
       length: (value: unknown) =>
         typeof value === "string"
-          ? (value.length >= 6 && value.length <= 10) ||
-            "Password must be 6-10 characters"
+          ? (value.length >= 6) ||
+            "Password must be at least 6 characters long"
           : "Invalid value",
       complexity: (value: unknown) =>
         typeof value === "string"

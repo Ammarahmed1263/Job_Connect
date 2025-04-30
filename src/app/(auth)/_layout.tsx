@@ -1,11 +1,18 @@
-import { View, Text } from 'react-native'
-import React from 'react'
-import { Stack } from 'expo-router'
+import { Redirect, Stack } from 'expo-router';
+import React from 'react';
+import useAuthStore from '@store/authStore';
 
 const AuthLayout = () => {
+  const { isAuthenticated } = useAuthStore();
+
+  if (isAuthenticated) {
+    return <Redirect href="/" />;
+  }
+
   return (
     <Stack screenOptions={{
-      headerShown: false
+      headerShown: false,
+      // animation: 'none'
     }}>
       <Stack.Screen name='login' />
       <Stack.Screen name='register' />

@@ -1,68 +1,58 @@
 import { useFonts } from "expo-font";
-import { Slot, Stack, useRouter, useSegments } from "expo-router";
-import { preventAutoHideAsync, hideAsync } from "expo-splash-screen";
+import { Slot, SplashScreen, useRouter, useSegments } from "expo-router";
+import { preventAutoHideAsync } from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "../../global.css";
 
+import { AppText } from "@components/ui";
 import ThemeProvider from "@contexts/ThemeContext";
+import useAuthStore from "@store/authStore";
+import { View } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
-preventAutoHideAsync();
+SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  const [loaded] = useFonts({
+  const [fontsLoaded] = useFonts({
     "Montserrat-Light": require("../assets/fonts/Montserrat-Light.ttf"),
     "Montserrat-Regular": require("../assets/fonts/Montserrat-Regular.ttf"),
     "Montserrat-Medium": require("../assets/fonts/Montserrat-Medium.ttf"),
     "Montserrat-SemiBold": require("../assets/fonts/Montserrat-SemiBold.ttf"),
     "Montserrat-Bold": require("../assets/fonts/Montserrat-Bold.ttf"),
   });
-  const [user, setUser] = useState("");
-  const [appReady, setAppReady] = useState(false);
-  const segments = useSegments()[0];
-  const router = useRouter();
-  const authorized = false;
+  const { isAuthenticated, isLoading, initializeAuth } = useAuthStore();
+  const appReady = useRef(false);
+  console.log('app ready changed: ', appReady.current, fontsLoaded)
 
-  // Hide splash screen once fonts are loaded
+  // Hide splash screen once fonts are fontsLoaded
   useEffect(() => {
-    if (loaded) {
-      hideAsync();
-      setAppReady(true);
-    }
-  }, [loaded]);
+    (async () => {
+      if (fontsLoaded) {
+        await initializeAuth();
+        appReady.current = true;
+        setTimeout(() => {
+          SplashScreen.hideAsync();
+        });
+      }
+    })();
+  }, [fontsLoaded]);
 
-  // useEffect(() => {
-  //   if (!appReady) return;
-
-  //   const isLoggedIn = !!user;
-
-  //   if (isLoggedIn && segments === "(auth)") {
-  //     router.replace("/");
-  //   } else if (!isLoggedIn && segments !== "(auth)") {
-  //     router.replace("/(auth)/login");
-  //   }
-  // }, [appReady, user]);
-
-  if (!loaded) {
-    return null;
+  if (!fontsLoaded || !appReady) {
+    console.log('i was accessed')
+    return (
+      <View className="flex-1 items-center justify-center bg-red-500">
+        <AppText>Loading from app layout...</AppText>
+      </View>
+    );
   }
 
   return (
     <SafeAreaProvider>
       <ThemeProvider>
-        <Stack
-          screenOptions={{
-            headerShown: false,
-          }}
-        >
-          <Stack.Screen name="(main)" redirect={!authorized} />
-          <Stack.Screen name="(auth)" redirect={authorized} />
-          <Stack.Screen name="+not-found" />
-        </Stack>
         <StatusBar style="auto" />
-        {/* <Slot /> */}
+        <Slot />
       </ThemeProvider>
     </SafeAreaProvider>
   );

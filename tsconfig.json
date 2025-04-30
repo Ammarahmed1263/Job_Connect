@@ -13,7 +13,8 @@
       "@constants/*": ["./constants/*"],
       "@type/*": ["./types/*"],
       "@contexts/*": ["./contexts/*"],
-      "@services/*": ["./services/*"]
+      "@services/*": ["./api/services/*"],
+      "@store/*": ["./store/*"]
     },
     "types": ["nativewind/types"]
   },

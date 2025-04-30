@@ -6,7 +6,7 @@ import {
   ThemeProvider as RNThemeProvider,
 } from "@react-navigation/native";
 import { Theme, ThemeData } from "@type/theme";
-import React, { createContext, useContext } from "react";
+import React, { createContext, useContext, useMemo } from "react";
 import {
   View
 } from "react-native";
@@ -30,13 +30,13 @@ const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
    return null;
   }
 
-  const contextValue = {
+  const contextValue = useMemo(() => ({
     theme: actualTheme,
     setTheme,
     colors: colors[actualTheme],
-  };
+  }), [actualTheme]);
 
-  const reactNativeTheme = {
+  const reactNativeTheme = useMemo(() => ({
     ...(actualTheme === "dark" ? DarkTheme : DefaultTheme),
     colors: {
       ...(actualTheme === "dark" ? DarkTheme : DefaultTheme).colors,
@@ -45,11 +45,11 @@ const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
       text: colors[actualTheme]["--text-primary"],
       card: colors[actualTheme]["--primary-400"],
     },
-  };
+  }), [actualTheme]);
 
 
   return (
-    <View style={themes[actualTheme]} className="flex-1" >
+    <View style={[themes[actualTheme]]} className="flex-1 bg-[--bg-color]" >
       <ThemeContext.Provider value={contextValue}>
         <RNThemeProvider value={reactNativeTheme}>{children}</RNThemeProvider>
       </ThemeContext.Provider>

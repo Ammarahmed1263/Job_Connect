@@ -1,16 +1,23 @@
-import { Stack } from "expo-router";
+import { Stack, Redirect } from "expo-router";
 import React from "react";
-import { StyleSheet } from "react-native";
+import useAuthStore from "@store/authStore";
+import { View } from "react-native";
+import { AppText } from "@components/ui";
 
+const MainLayout = () => {
+  const { isAuthenticated, isLoading } = useAuthStore();
 
-type Props = {};
+  if (isLoading) {
+    return (
+      <View className="flex-1 items-center justify-center bg-green-500">
+        <AppText>Loading...</AppText>
+      </View>
+    );
+  }
 
-const MainLayout = (props: Props) => {
-  // const user = true;
-
-  // if (!user) {
-  //   return <Redirect href="/(auth)/login" />;
-  // }
+  if (!isAuthenticated) {
+    return <Redirect href="/login" />;
+  }
 
   return (
     <Stack
@@ -24,5 +31,3 @@ const MainLayout = (props: Props) => {
 };
 
 export default MainLayout;
-
-const styles = StyleSheet.create({});

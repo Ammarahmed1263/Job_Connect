@@ -20,7 +20,8 @@ module.exports = function (api) {
             "@constants": "./src/constants",
             "@type": "./src/types",
             "@contexts": "./src/contexts",
-            "@services": "./src/services"
+            "@services": "./src/api/services",
+            "@store": "./src/store",
           },
         },
       ],
