@@ -1,14 +1,11 @@
 import { useFonts } from "expo-font";
-import { Slot, SplashScreen, useRouter, useSegments } from "expo-router";
-import { preventAutoHideAsync } from "expo-splash-screen";
+import { Slot, SplashScreen } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import "../../global.css";
 
-import { AppText } from "@components/ui";
 import ThemeProvider from "@contexts/ThemeContext";
 import useAuthStore from "@store/authStore";
-import { View } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -39,14 +36,14 @@ export default function RootLayout() {
     })();
   }, [fontsLoaded]);
 
-  if (!fontsLoaded || !appReady) {
-    console.log('i was accessed')
-    return (
-      <View className="flex-1 items-center justify-center bg-red-500">
-        <AppText>Loading from app layout...</AppText>
-      </View>
-    );
-  }
+  // if (!fontsLoaded || !appReady) {
+  //   console.log('i was accessed')
+  //   return (
+  //     <View className="flex-1 items-center justify-center bg-red-500">
+  //       <AppText>Loading from app layout...</AppText>
+  //     </View> 
+  //   );
+  // }
 
   return (
     <SafeAreaProvider>

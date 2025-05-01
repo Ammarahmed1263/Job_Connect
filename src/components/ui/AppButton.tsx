@@ -55,7 +55,7 @@ const AppButton = forwardRef<ElementRef<typeof Pressable>, Props>(
       <View
         ref={ref}
         className={clsx(
-          "rounded-xl overflow-hidden self-start",
+          "rounded-xl overflow-hidden",
           variant === "primary" ? "bg-[--primary-300]" : "bg-[--primary-100]",
           wrapperClassName
         )}
@@ -70,7 +70,7 @@ const AppButton = forwardRef<ElementRef<typeof Pressable>, Props>(
           onPressOut={() => setPressed(false)}
           onPress={handlePress}
           className={clsx(
-            "items-center justify-center w-full",
+            "items-center justify-center",
             pressed && isIos && "bg-[--accent-color]",
             flat && pressed && "opacity-50"
           )}
