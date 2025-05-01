@@ -16,14 +16,9 @@ const useAuthStore = create<authStore>()(
         set({ isLoading: true, error: null });
         try {
           const data = await authService.login(credentials);
-          await secureStorage.setToken(data.token);
+          await secureStorage.setToken(data.user.token);
           set({
-            user: {
-              firstName: data.name.split(" ")[0],
-              lastName: data.name.split(" ").pop(),
-              email: data.email,
-              id: data.id,
-            },
+            user: {...data.user, refreshToken: data.refreshToken},
             isAuthenticated: true,
             isLoading: false,
           });
@@ -39,7 +34,30 @@ const useAuthStore = create<authStore>()(
           throw error;
         }
       },
-      register: async () => {},
+
+      register: async (userData) => {
+        set({ isLoading: true, error: null });
+        try {
+          const data = await authService.register(userData);
+          await secureStorage.setToken(data.token);
+          set({
+            user: data,
+            isAuthenticated: true,
+            isLoading: false,
+          })
+          return data;
+        } catch (error) {
+          set({
+            error:
+              error instanceof Error
+                ? error.message
+                : "Register failed - please try later",
+            isLoading: false,
+          });
+          throw error;
+        }
+      },
+
       initializeAuth: async () => {
         const token = await secureStorage.getToken();
         if (token) {
@@ -49,6 +67,7 @@ const useAuthStore = create<authStore>()(
           });
         }
       },
+
       logout: async () => {
         await secureStorage.removeToken();
         set({

@@ -24,7 +24,7 @@ export default function RootLayout() {
   });
   const { isAuthenticated, isLoading, initializeAuth } = useAuthStore();
   const appReady = useRef(false);
-  console.log('app ready changed: ', appReady.current, fontsLoaded)
+  // console.log('app ready changed: ', appReady.current, fontsLoaded)
 
   // Hide splash screen once fonts are fontsLoaded
   useEffect(() => {

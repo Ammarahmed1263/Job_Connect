@@ -1,4 +1,4 @@
-import { User } from "./userTypes";
+import { AuthUser } from "./userTypes";
 
 export type LoginFormData = {
   email: string;
@@ -27,12 +27,12 @@ export type RegisterFormData = {
 };
 
 export interface authStore {
-  user: Partial<User> | null;
+  user: Partial<AuthUser> | null;
   isAuthenticated: boolean;
   isLoading: boolean;
   error: string | null;
-  login: (credentials: LoginFormData) => Promise<User>;
-  register: (formData: RegisterFormData) => Promise<void>;
+  login: (credentials: LoginFormData) => Promise<AuthUser>;
+  register: (formData: RegisterFormData) => Promise<AuthUser>;
   initializeAuth: () => Promise<void>;
   logout: () => Promise<void>;
   clearError: () => void;

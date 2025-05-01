@@ -35,6 +35,10 @@ const authRules = {
   },
   jobTitle: {
     required: "Job title is required",
+    minLength: {
+      value: 4,
+      message: "Job title must be at least 4 characters long",
+    },
   },
   experience: {
     required: "Experience is required",

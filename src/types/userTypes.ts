@@ -1,11 +1,7 @@
-export interface User {
-  id: string;
-  firstName: string;
-  lastName: string;
+export interface AuthUser {
+  token: string;
+  refreshToken: string;
   email: string;
-  phoneNumber: string;
-  address: string;
-  yearsOfExperience: string;
-  degree: string;
-  currentOrDesiredJob: string;
+  name: string;
+  role: string;
 }
