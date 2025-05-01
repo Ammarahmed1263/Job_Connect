@@ -1,14 +1,15 @@
 import { AppButton, AppText, LabelInput } from "@components/ui";
 import { focusRef } from "@utils";
 import React, { Dispatch, FC, SetStateAction, useRef } from "react";
-import { TextInput, View } from "react-native";
+import { ActivityIndicator, TextInput, View } from "react-native";
 import Icon from "@expo/vector-icons/Ionicons";
 import { useTheme } from "@contexts/ThemeContext";
-import { RegisterFormData } from "@type/auth";
+import { RegisterFormData } from "@type/authTypes";
 import { useFormContext } from "react-hook-form";
 import authRules from "schemas/auth";
 import ControlledLabelInput from "@components/ui/ControlledLabelInput";
 import { BaseSyntheticEvent } from "react";
+import useAuthStore from "@store/authStore";
 
 interface Props {
   setStep: Dispatch<SetStateAction<number>>;
@@ -18,6 +19,7 @@ interface Props {
 const AccountSecurity: FC<Props> = ({ setStep, onSubmit }) => {
   const { colors } = useTheme();
   const { control, getValues } = useFormContext<RegisterFormData>();
+  const { isLoading, error } = useAuthStore();
   const confirmPasswordRef = useRef<TextInput>(null);
   console.log("account info rendered");
 
@@ -36,6 +38,7 @@ const AccountSecurity: FC<Props> = ({ setStep, onSubmit }) => {
         title="Password"
         placeholder="password"
         autoComplete="password"
+        autoFocus={true}
         submitBehavior="submit"
         onSubmitEditing={() => focusRef(confirmPasswordRef)}
         secureTextEntry
@@ -64,9 +67,17 @@ const AccountSecurity: FC<Props> = ({ setStep, onSubmit }) => {
           color={colors["--text-primary"]}
         />
       </ControlledLabelInput>
-      <View className="flex-row justify-between">
-        <AppButton title="back" onPress={handlePrev} />
-        <AppButton title="Register" onPress={onSubmit} />
+      {error && <AppText variant='light' className="pt-4 text-center color-red-500">{error}</AppText>}
+      <View className="flex-row justify-between pt-4">
+        <AppButton title="back" onPress={handlePrev} disabled={isLoading} />
+        <AppButton title="Register" onPress={onSubmit} disabled={isLoading}>
+          {isLoading && (
+            <View className="items-center justify-center">
+              <AppText className="opacity-0 px-4 py-2">Register</AppText>
+              <ActivityIndicator size="small" color={colors['--accent-color']} className="absolute"/>
+            </View>
+          )}
+        </AppButton>
       </View>
     </View>
   );

@@ -2,7 +2,7 @@ import { AppButton, AppText } from "@components/ui";
 import ControlledLabelInput from "@components/ui/ControlledLabelInput";
 import { useTheme } from "@contexts/ThemeContext";
 import Icon from '@expo/vector-icons/Ionicons';
-import { RegisterFormData } from "@type/auth";
+import { RegisterFormData } from "@type/authTypes";
 import { focusRef } from "@utils";
 import React, { Dispatch, FC, SetStateAction, useRef } from "react";
 import { useFormContext } from "react-hook-form";
@@ -19,7 +19,7 @@ const PersonalInfo: FC<Props> = ({setStep}) => {
   const { control, trigger } = useFormContext<RegisterFormData>();
 
   const handleNext = async () => {
-    const isValid = await trigger('personal');
+    const isValid = await trigger(["personal.firstName", "personal.lastName"]);
     console.log('is valid: ', isValid);
     if (isValid) setStep(2);
   };
@@ -35,6 +35,7 @@ const PersonalInfo: FC<Props> = ({setStep}) => {
         title="First Name"
         placeholder="John"
         autoComplete="given-name"
+        autoFocus={true}
         onSubmitEditing={() => focusRef(lastNameRef)}
       >
         <Icon

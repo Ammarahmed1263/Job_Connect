@@ -9,11 +9,7 @@ import { focusRef } from "@utils";
 import { useRouter } from "expo-router";
 import { useRef } from "react";
 import { useForm } from "react-hook-form";
-import {
-  ScrollView,
-  TextInput,
-  View
-} from "react-native";
+import { ActivityIndicator, ScrollView, TextInput, View } from "react-native";
 import authRules from "schemas/auth";
 
 const Login = () => {
@@ -29,15 +25,14 @@ const Login = () => {
     },
   });
   const { top, bottom } = useSafeArea();
-  const { login } = useAuthStore();
+  const { login, isLoading, error } = useAuthStore();
 
   const onSubmit = async (data: LoginFormData) => {
     try {
       await login(data);
-      router.replace('/');
-    } catch(error) {
-      console.log('final error passed: ', (error as Error).message);
-      // Error already handled in store, but could add local handling here
+      router.replace("/");
+    } catch (error) {
+      console.log("final login error: ", (error as Error).message);
     }
   };
 
@@ -65,6 +60,9 @@ const Login = () => {
             inputMode="email"
             rules={authRules.email}
             autoComplete="email"
+            autoCapitalize="none"
+            autoCorrect={false}
+            autoFocus={true}
             submitBehavior="submit"
             onSubmitEditing={() => focusRef(passwordRef)}
           >
@@ -81,7 +79,7 @@ const Login = () => {
             name="password"
             title="Password"
             placeholder="password"
-            rules={{ required: authRules.password.required }}
+            rules={authRules.password}
             autoComplete="password"
             returnKeyType="done"
             secureTextEntry
@@ -100,13 +98,26 @@ const Login = () => {
             onPress={() => console.log("i was clicked!")}
             flat
           />
+          {error && <AppText variant='light' className="py-4 text-center color-red-500">{error}</AppText>}
           <AppButton
             title="Login"
             wrapperClassName="self-end"
             onPress={handleSubmit(onSubmit, (e) => {
               console.log("Form has errors - aborting submission", e);
             })}
-          />
+            disabled={isLoading}
+          >
+            {isLoading && (
+              <View className="items-center justify-center">
+                <AppText className="opacity-0 px-4 py-2">Login</AppText>
+                <ActivityIndicator
+                  size="small"
+                  color={colors["--accent-color"]}
+                  className="absolute"
+                />
+              </View>
+            )}
+          </AppButton>
         </View>
         <View className="flex-row items-center justify-center mb-8">
           <AppText>Don't have an account?</AppText>

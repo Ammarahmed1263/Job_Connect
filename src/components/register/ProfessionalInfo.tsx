@@ -2,7 +2,7 @@ import { AppButton, AppText } from "@components/ui";
 import ControlledLabelInput from "@components/ui/ControlledLabelInput";
 import { useTheme } from "@contexts/ThemeContext";
 import Icon from "@expo/vector-icons/Ionicons";
-import { RegisterFormData } from "@type/auth";
+import { RegisterFormData } from "@type/authTypes";
 import { focusRef } from "@utils";
 import React, { Dispatch, FC, SetStateAction, useRef } from "react";
 import { useFormContext } from "react-hook-form";
@@ -25,7 +25,7 @@ const ProfessionalInfo: FC<Props> = ({ setStep }) => {
   };
 
   const handleNext = async () => {
-    const isValid = await trigger('professional');
+    const isValid = await trigger(['professional.jobTitle', 'professional.experience', 'professional.degree']);
     console.log('is valid: ', isValid);
     if (isValid) setStep(4);
   };
@@ -40,6 +40,7 @@ const ProfessionalInfo: FC<Props> = ({ setStep }) => {
         name="professional.jobTitle"
         title="Job Title"
         placeholder="Software Engineer"
+        autoFocus={true}
         submitBehavior="submit"
         onSubmitEditing={() => focusRef(experienceRef)}
       >
@@ -47,6 +48,7 @@ const ProfessionalInfo: FC<Props> = ({ setStep }) => {
       </ControlledLabelInput>
       
       <ControlledLabelInput
+        ref={experienceRef}
         control={control}
         rules={authRules.experience}
         name="professional.experience"
@@ -59,6 +61,7 @@ const ProfessionalInfo: FC<Props> = ({ setStep }) => {
       </ControlledLabelInput>
       
       <ControlledLabelInput
+        ref={degreeRef}
         control={control}
         rules={authRules.degree}
         name="professional.degree"

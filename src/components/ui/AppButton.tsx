@@ -24,6 +24,7 @@ interface Props extends PressableProps {
   wrapperStyle?: StyleProp<ViewStyle>;
   wrapperClassName?: ViewProps["className"];
   onPress: () => void;
+  children?: React.ReactNode;
 }
 
 const AppButton = forwardRef<ElementRef<typeof Pressable>, Props>(
@@ -38,6 +39,7 @@ const AppButton = forwardRef<ElementRef<typeof Pressable>, Props>(
       textClassName,
       wrapperStyle,
       wrapperClassName,
+      children,
       ...props
     },
     ref
@@ -68,7 +70,7 @@ const AppButton = forwardRef<ElementRef<typeof Pressable>, Props>(
           onPressOut={() => setPressed(false)}
           onPress={handlePress}
           className={clsx(
-            "items-center justify-center",
+            "items-center justify-center w-full",
             pressed && isIos && "bg-[--accent-color]",
             flat && pressed && "opacity-50"
           )}
@@ -77,11 +79,12 @@ const AppButton = forwardRef<ElementRef<typeof Pressable>, Props>(
           hitSlop={20}
           {...props}
         >
-          <AppText
-            variant={textVariant}
-            className={clsx(
-              flat &&
-                (variant === "primary"
+          {children ? children : (
+            <AppText
+              variant={textVariant}
+              className={clsx(
+                flat &&
+                  (variant === "primary"
                   ? "text-[--text-primary]"
                   : "text-[--text-secondary]"),
               !flat && "px-4 py-2 text-[--text-primary]",
@@ -90,6 +93,7 @@ const AppButton = forwardRef<ElementRef<typeof Pressable>, Props>(
           >
             {title}
           </AppText>
+          )}
         </Pressable>
       </View>
     );

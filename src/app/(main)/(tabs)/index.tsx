@@ -1,11 +1,25 @@
-import {AppText} from '@components/ui';
-import { StyleSheet, Text, View } from 'react-native';
+import { AppButton, AppText } from '@components/ui';
+import useAuthStore from '@store/authStore';
+import { StyleSheet, View } from 'react-native';
 
 
 export default function HomeScreen() {
+  const { user, isAuthenticated, logout } = useAuthStore();
+  console.log('user after login: ', JSON.stringify(user, null, 2));
+
+  const handleLogout = async () => {
+    await logout();
+  }
+
+  if (!isAuthenticated) {
+    return null;
+  }
+
   return (
     <View style={{ flex: 1 }}>
-      <AppText className='text-[--text-secondary] text-2xl font-montserrat-bold'>Hello World</AppText>
+      <AppText >First Name: {user?.name}</AppText>
+      <AppText >Email: {user?.email}</AppText>
+      <AppButton title='Logout' onPress={handleLogout}/>
     </View>
   );
 }

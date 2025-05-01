@@ -2,7 +2,7 @@ import { AppButton, AppText } from "@components/ui";
 import ControlledLabelInput from "@components/ui/ControlledLabelInput";
 import { useTheme } from "@contexts/ThemeContext";
 import Icon from "@expo/vector-icons/Ionicons";
-import { RegisterFormData } from "@type/auth";
+import { RegisterFormData } from "@type/authTypes";
 import { focusRef } from "@utils";
 import React, { Dispatch, FC, SetStateAction, useRef } from "react";
 import { useFormContext } from "react-hook-form";
@@ -25,7 +25,7 @@ const ContactInfo: FC<Props> = ({ setStep }) => {
   };
 
   const handleNext = async () => {
-    const isValid = await trigger('contact');
+    const isValid = await trigger(['contact.email', 'contact.phone', 'contact.address']);
     console.log('is valid: ', isValid);
     if (isValid) setStep(3);
   };
@@ -41,6 +41,9 @@ const ContactInfo: FC<Props> = ({ setStep }) => {
         placeholder="example@domain.com"
         inputMode="email"
         autoComplete="email"
+        autoCapitalize="none"
+        autoCorrect={false}
+        autoFocus={true}
         onSubmitEditing={() => focusRef(phoneRef)}
         submitBehavior="submit"
       >
