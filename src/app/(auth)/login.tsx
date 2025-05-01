@@ -7,6 +7,7 @@ import useAuthStore from "@store/authStore";
 import { LoginFormData } from "@type/authTypes";
 import { focusRef } from "@utils";
 import { useRouter } from "expo-router";
+import { useSearchParams } from "expo-router/build/hooks";
 import { useRef } from "react";
 import { useForm } from "react-hook-form";
 import { ActivityIndicator, ScrollView, TextInput, View } from "react-native";
@@ -26,11 +27,15 @@ const Login = () => {
   });
   const { top, bottom } = useSafeArea();
   const { login, isLoading, error } = useAuthStore();
+  const params = useSearchParams();
 
   const onSubmit = async (data: LoginFormData) => {
     try {
       await login(data);
-      router.replace("/");
+      const redirectTo = params.get('redirectTo') || "/home";
+      router.replace({
+        pathname: redirectTo as any
+      });
     } catch (error) {
       console.log("final login error: ", (error as Error).message);
     }
@@ -94,11 +99,15 @@ const Login = () => {
           <AppButton
             textVariant="light"
             title="forget password?"
-            wrapperClassName="ms-4 mt-2"
+            wrapperClassName="ms-4 mt-2 self-start"
             onPress={() => console.log("i was clicked!")}
             flat
           />
-          {error && <AppText variant='light' className="py-4 text-center color-red-500">{error}</AppText>}
+          {error && (
+            <AppText variant="light" className="py-4 text-center color-red-500">
+              {error}
+            </AppText>
+          )}
           <AppButton
             title="Login"
             wrapperClassName="self-end"
@@ -124,7 +133,7 @@ const Login = () => {
           <AppButton
             title="Register"
             onPress={() => router.replace("/register")}
-            wrapperClassName="border-b-[1px] border-[--accent-color] rounded-b-none mx-1"
+            wrapperClassName="border-b-[1px] border-[--accent-color] rounded-b-none mx-1 self-start"
             textClassName="!text-[--accent-color] -mb-1 mt-1"
             textVariant="light"
             flat

@@ -8,11 +8,11 @@ import { AppButton, AppText } from "@components/ui";
 import { useSafeArea } from "@hooks/useSafeArea";
 import useAuthStore from "@store/authStore";
 import { RegisterFormData } from "@type/authTypes";
-import axios, { AxiosError, AxiosResponse } from "axios";
 import { useRouter } from "expo-router";
+import { useSearchParams } from "expo-router/build/hooks";
 import React, { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { ActivityIndicator, ScrollView, StatusBar, View } from "react-native";
+import { ScrollView, StatusBar, View } from "react-native";
 
 const Register = () => {
   const [step, setStep] = useState(1);
@@ -29,13 +29,16 @@ const Register = () => {
   });
   const { top, bottom } = useSafeArea();
   const { register } = useAuthStore();
-
+  const params = useSearchParams();
   const { handleSubmit } = methods;
 
   const onSubmit = async (data: RegisterFormData) => {
     try {
       await register(data);
-      router.replace("/");
+      const redirectTo = params.get("redirectTo") || "/home";
+      router.replace({
+        pathname: redirectTo as any,
+      });
     } catch (error) {
       console.log("final register error: ", (error as Error).message);
     }
@@ -86,7 +89,7 @@ const Register = () => {
             <AppButton
               title="Login"
               onPress={() => router.replace("/login")}
-              wrapperClassName="border-b-[1px] border-[--accent-color] rounded-b-none mx-1"
+              wrapperClassName="border-b-[1px] border-[--accent-color] rounded-b-none mx-1 self-start"
               textClassName="!text-[--accent-color] -mb-1 mt-1"
               textVariant="light"
               flat
