@@ -6,35 +6,21 @@ import { HapticTab } from "@components/HapticTab";
 import { IconSymbol } from "@components/ui/IconSymbol";
 import TabBarBackground from "@components/ui/TabBarBackground";
 import { useTheme } from "@contexts/ThemeContext";
+import CustomTabBar from "@components/CustomTabBar";
 
 export default function TabLayout() {
   const { colors, theme } = useTheme();
 
   return (
     <Tabs
-      screenOptions={{
-        headerShown: true,
-        tabBarActiveTintColor:
-          colors[theme === 'light'? "--text-primary" : "--primary-50"],
-        tabBarInactiveTintColor:
-          colors[theme === 'light'? "--primary-50" : "--text-primary"],
-        headerTintColor: colors["--text-primary"],
-        tabBarButton: HapticTab,
-        tabBarBackground: TabBarBackground,
-        tabBarStyle: Platform.select({
-          ios: {
-            position: "absolute",
-          },
-          default: {},
-        }),
-      }}
+      tabBar={(props) => <CustomTabBar {...props} />}
     >
       <Tabs.Screen
         name="index"
         options={{
           title: "Home",
-          tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="house.fill" color={color} />
+          tabBarIcon: ({ color, focused }) => (
+            <IconSymbol size={24} name={focused ? "home" : "home-outline"} color={color} />
           ),
         }}
       />
@@ -42,8 +28,8 @@ export default function TabLayout() {
         name="explore"
         options={{
           title: "Explore",
-          tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="map" color={color} />
+          tabBarIcon: ({ color, focused }) => (
+            <IconSymbol size={24} name={focused ? "map" : "map-outline"} color={color} />
           ),
         }}
       />
@@ -51,8 +37,8 @@ export default function TabLayout() {
         name="saved"
         options={{
           title: "Saved",
-          tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="bookmark.fill" color={color} />
+          tabBarIcon: ({ color, focused }) => (
+            <IconSymbol size={24} name={focused ? "bookmark" : "bookmark-outline"} color={color} />
           ),
         }}
       />
@@ -60,8 +46,8 @@ export default function TabLayout() {
         name="profile"
         options={{
           title: "Profile",
-          tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="person.fill" color={color} />
+          tabBarIcon: ({ color, focused }) => (
+            <IconSymbol size={24} name={focused ? "person" : "person-outline"} color={color} />
           ),
         }}
       />
