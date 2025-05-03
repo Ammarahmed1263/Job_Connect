@@ -10,7 +10,7 @@ import { useRouter } from "expo-router";
 import { useSearchParams } from "expo-router/build/hooks";
 import { useRef } from "react";
 import { useForm } from "react-hook-form";
-import { ActivityIndicator, ScrollView, TextInput, View } from "react-native";
+import { ActivityIndicator, Keyboard, ScrollView, TextInput, View } from "react-native";
 import authRules from "schemas/auth";
 
 const Login = () => {
@@ -31,6 +31,7 @@ const Login = () => {
 
   const onSubmit = async (data: LoginFormData) => {
     try {
+      Keyboard.dismiss();
       await login(data);
       const redirectTo = params.get('redirectTo') || "/home";
       router.replace({
@@ -104,7 +105,7 @@ const Login = () => {
             flat
           />
           {error && (
-            <AppText variant="light" className="py-4 text-center color-red-500">
+            <AppText variant="light" className="py-4 text-center color-[--error-color]">
               {error}
             </AppText>
           )}

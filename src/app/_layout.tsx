@@ -39,7 +39,7 @@ export default function RootLayout() {
   // if (!fontsLoaded || !appReady) {
   //   console.log('i was accessed')
   //   return (
-  //     <View className="flex-1 items-center justify-center bg-red-500">
+  //     <View className="flex-1 items-center justify-center bg-[--error-color]>
   //       <AppText>Loading from app layout...</AppText>
   //     </View> 
   //   );

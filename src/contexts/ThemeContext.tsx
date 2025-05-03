@@ -1,4 +1,5 @@
 import { colors, themes } from "@constants/Colors";
+import { fontFamily } from "@constants/Fonts";
 import useThemeProvider from "@hooks/useThemeProvider";
 import {
   DarkTheme,
@@ -7,9 +8,7 @@ import {
 } from "@react-navigation/native";
 import { Theme, ThemeData } from "@type/theme";
 import React, { createContext, useContext, useMemo } from "react";
-import {
-  View
-} from "react-native";
+import { Platform, View } from "react-native";
 
 interface ThemeContextType {
   theme: Theme;
@@ -27,29 +26,72 @@ const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   const { deviceTheme, setTheme, actualTheme } = useThemeProvider();
 
   if (!deviceTheme || !actualTheme) {
-   return null;
+    return null;
   }
 
-  const contextValue = useMemo(() => ({
-    theme: actualTheme,
-    setTheme,
-    colors: colors[actualTheme],
-  }), [actualTheme]);
+  const contextValue = useMemo(
+    () => ({
+      theme: actualTheme,
+      setTheme,
+      colors: colors[actualTheme],
+    }),
+    [actualTheme]
+  );
 
-  const reactNativeTheme = useMemo(() => ({
-    ...(actualTheme === "dark" ? DarkTheme : DefaultTheme),
-    colors: {
-      ...(actualTheme === "dark" ? DarkTheme : DefaultTheme).colors,
-      primary: colors[actualTheme]["--primary-50"],
-      background: colors[actualTheme]["--bg-color"],
-      text: colors[actualTheme]["--text-primary"],
-      card: colors[actualTheme]["--primary-400"],
-    },
-  }), [actualTheme]);
-
+  const reactNativeTheme: ReactNavigation.Theme = useMemo(
+    () => ({
+      ...(actualTheme === "dark" ? DarkTheme : DefaultTheme),
+      colors: {
+        ...(actualTheme === "dark" ? DarkTheme : DefaultTheme).colors,
+        primary: colors[actualTheme]["--primary-50"],
+        background: colors[actualTheme]["--bg-color"],
+        text: colors[actualTheme]["--text-primary"],
+        card: colors[actualTheme]["--card-color"],
+      },
+      fonts: Platform.select({
+        ios: {
+          regular: {
+            fontFamily: fontFamily.regular,
+            fontWeight: '400',
+          },
+          medium: {
+            fontFamily: fontFamily.medium,
+            fontWeight: '500',
+          },
+          bold: {
+            fontFamily: fontFamily.semiBold,
+            fontWeight: '600',
+          },
+          heavy: {
+            fontFamily: fontFamily.bold,
+            fontWeight: '700',
+          },
+        },
+        default: {
+          regular: {
+            fontFamily: fontFamily.regular,
+            fontWeight: 'normal',
+          },
+          medium: {
+            fontFamily: fontFamily.medium,
+            fontWeight: 'normal',
+          },
+          bold: {
+            fontFamily: fontFamily.semiBold,
+            fontWeight: '600',
+          },
+          heavy: {
+            fontFamily: fontFamily.bold,
+            fontWeight: '700',
+          },
+        }
+      }),
+    }),
+    [actualTheme]
+  );
 
   return (
-    <View style={[themes[actualTheme]]} className="flex-1 bg-[--bg-color]" >
+    <View style={[themes[actualTheme]]} className="flex-1">
       <ThemeContext.Provider value={contextValue}>
         <RNThemeProvider value={reactNativeTheme}>{children}</RNThemeProvider>
       </ThemeContext.Provider>

@@ -67,7 +67,7 @@ const LabelInput = forwardRef<TextInput, LabelInputProps>(
           className={clsx(
             "rounded-xl flex-row items-center justify-between bg-[--primary-300] border-2",
             error
-              ? "border-red-500"
+              ? "border-[--error-color]"
               : isFocused
               ? "border-[--accent-color]"
               : "border-transparent"
@@ -104,7 +104,7 @@ const LabelInput = forwardRef<TextInput, LabelInputProps>(
           <AppText
             variant="light"
             numberOfLines={1}
-            className="pt-2 ps-2 color-red-500"
+            className="pt-2 ps-2 color-[--error-color]"
           >
             {error}
           </AppText>

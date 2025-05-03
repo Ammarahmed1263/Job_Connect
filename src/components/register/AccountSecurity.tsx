@@ -67,7 +67,7 @@ const AccountSecurity: FC<Props> = ({ setStep, onSubmit }) => {
           color={colors["--text-primary"]}
         />
       </ControlledLabelInput>
-      {error && <AppText variant='light' className="pt-4 text-center color-red-500">{error}</AppText>}
+      {error && <AppText variant='light' className="pt-4 text-center color-[--error-color]">{error}</AppText>}
       <View className="flex-row justify-between pt-4">
         <AppButton title="back" onPress={handlePrev} disabled={isLoading} />
         <AppButton title="Register" onPress={onSubmit} disabled={isLoading}>

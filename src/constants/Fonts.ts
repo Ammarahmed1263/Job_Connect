@@ -1,6 +1,6 @@
 import { ms } from "./metrics";
 
-const fontFamily = {
+export const fontFamily = {
   light: "Montserrat-Light",
   regular: "Montserrat-Regular",
   medium: "Montserrat-Medium",

@@ -12,7 +12,7 @@ import { useRouter } from "expo-router";
 import { useSearchParams } from "expo-router/build/hooks";
 import React, { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { ScrollView, StatusBar, View } from "react-native";
+import { Keyboard, ScrollView, StatusBar, View } from "react-native";
 
 const Register = () => {
   const [step, setStep] = useState(1);
@@ -34,6 +34,7 @@ const Register = () => {
 
   const onSubmit = async (data: RegisterFormData) => {
     try {
+      Keyboard.dismiss();
       await register(data);
       const redirectTo = params.get("redirectTo") || "/home";
       router.replace({
