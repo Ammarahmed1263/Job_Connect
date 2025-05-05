@@ -6,7 +6,6 @@ import { View } from "react-native";
 export default function HomeScreen() {
   const { user, isAuthenticated, logout } = useAuthStore();
   const router = useRouter();
-  console.log("user after login: ", JSON.stringify(user, null, 2));
 
   const handleLogout = async () => {
     await logout();

@@ -112,7 +112,6 @@ const CustomTabBar: React.FC<BottomTabBarProps> = ({
 
       {state.routes.map((route, index) => {
         const { options } = descriptors[route.key];
-        console.log('options here: ', options)
         const isFocused = state.index === index;
 
         const icon = options.tabBarIcon
@@ -121,7 +120,7 @@ const CustomTabBar: React.FC<BottomTabBarProps> = ({
               color: isFocused
                 ? colors["--accent-color"]
                 : colors["--text-muted"],
-              size: 28, // or whatever size you want
+              size: 28,
             })
           : null;
 
