@@ -4,7 +4,7 @@ import { useRouter } from "expo-router";
 import { View } from "react-native";
 
 export default function HomeScreen() {
-  const { user, isAuthenticated, logout } = useAuthStore();
+  const { user, isAuthenticated, logout, setOnboarding } = useAuthStore();
   const router = useRouter();
 
   const handleLogout = async () => {
@@ -13,6 +13,11 @@ export default function HomeScreen() {
 
   const handleLogin = () => {
     router.push("/login");
+  };
+
+  const handleOnboarding = () => {
+    router.replace("/onboarding");
+    setOnboarding(false);
   };
 
   // if (!isAuthenticated) {
@@ -34,6 +39,12 @@ export default function HomeScreen() {
           wrapperClassName="self-center"
         />
       )}
+      <AppButton
+        title="onboarding"
+        variant="secondary"
+        onPress={handleOnboarding}
+        wrapperClassName="self-center my-4"
+      />
     </View>
   );
 }

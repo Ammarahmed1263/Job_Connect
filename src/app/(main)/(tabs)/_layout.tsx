@@ -1,7 +1,7 @@
 import { Tabs } from "expo-router";
 import React from "react";
 
-import CustomTabBar from "@components/CustomTabBar";
+import CustomTabBar from "@components/customTabBar";
 import AppIcon from "@components/ui/AppIcon";
 
 export default function TabLayout() {
@@ -10,7 +10,7 @@ export default function TabLayout() {
   return (
     <Tabs tabBar={(props) => <CustomTabBar {...props} />}>
       <Tabs.Screen
-        name="index"
+        name="home"
         options={{
           title: "Home",
           tabBarIcon: ({ color, focused }) => (
