@@ -10,6 +10,7 @@ const useAuthStore = create<authStore>()(
     (set) => ({
       user: null,
       isAuthenticated: false,
+      hasCompletedOnboarding: false,
       isLoading: false,
       error: null,
       login: async (credentials) => {
@@ -34,7 +35,9 @@ const useAuthStore = create<authStore>()(
           throw error;
         }
       },
-
+      setOnboarding: (status: boolean) => {
+        set({ hasCompletedOnboarding: status });
+      },
       register: async (userData) => {
         set({ isLoading: true, error: null });
         try {
@@ -84,6 +87,8 @@ const useAuthStore = create<authStore>()(
       storage: createJSONStorage(() => AsyncStorage),
       partialize: (state) => ({
         user: state.user,
+        isAuthenticated: state.isAuthenticated,
+        hasCompletedOnboarding: state.hasCompletedOnboarding,
       }),
     }
   )

@@ -1,4 +1,4 @@
-import { AppButton, AppText, LabelInput } from "@components/ui";
+import { AppButton, AppText, ControlledLabelInput } from "@components/ui";
 import { focusRef } from "@utils";
 import React, { Dispatch, FC, SetStateAction, useRef } from "react";
 import { ActivityIndicator, TextInput, View } from "react-native";
@@ -7,7 +7,6 @@ import { useTheme } from "@contexts/ThemeContext";
 import { RegisterFormData } from "@type/authTypes";
 import { useFormContext } from "react-hook-form";
 import authRules from "schemas/auth";
-import ControlledLabelInput from "@components/ui/ControlledLabelInput";
 import { BaseSyntheticEvent } from "react";
 import useAuthStore from "@store/authStore";
 

@@ -1,5 +1,8 @@
-import { AppButton, AppText } from "@components/ui";
-import ControlledLabelInput from "@components/ui/ControlledLabelInput";
+import {
+  AppButton,
+  AppText,
+  ControlledLabelInput
+} from "@components/ui";
 import { useTheme } from "@contexts/ThemeContext";
 import Icon from "@expo/vector-icons/Ionicons";
 import { RegisterFormData } from "@type/authTypes";
@@ -14,26 +17,30 @@ interface Props {
 }
 
 const ProfessionalInfo: FC<Props> = ({ setStep }) => {
-  const { colors } = useTheme();
+  const { colors, theme, setTheme } = useTheme();
   const { control, trigger } = useFormContext<RegisterFormData>();
   const experienceRef = useRef<TextInput>(null);
   const degreeRef = useRef<TextInput>(null);
-  console.log('professional info rendered');
+  console.log("professional info rendered");
 
   const handlePrev = () => {
     setStep(2);
   };
 
   const handleNext = async () => {
-    const isValid = await trigger(['professional.jobTitle', 'professional.experience', 'professional.degree']);
-    console.log('is valid: ', isValid);
+    const isValid = await trigger([
+      "professional.jobTitle",
+      "professional.experience",
+      "professional.degree",
+    ]);
+    console.log("is valid: ", isValid);
     if (isValid) setStep(4);
   };
-  
+
   return (
     <View className="px-4 gap-4">
       <AppText>Professional Information</AppText>
-      
+
       <ControlledLabelInput
         control={control}
         rules={authRules.jobTitle}
@@ -44,9 +51,13 @@ const ProfessionalInfo: FC<Props> = ({ setStep }) => {
         submitBehavior="submit"
         onSubmitEditing={() => focusRef(experienceRef)}
       >
-        <Icon name="briefcase-outline" size={20} color={colors["--text-primary"]} />
+        <Icon
+          name="briefcase-outline"
+          size={20}
+          color={colors["--text-primary"]}
+        />
       </ControlledLabelInput>
-      
+
       <ControlledLabelInput
         ref={experienceRef}
         control={control}
@@ -57,9 +68,13 @@ const ProfessionalInfo: FC<Props> = ({ setStep }) => {
         submitBehavior="submit"
         onSubmitEditing={() => focusRef(degreeRef)}
       >
-        <Icon name="briefcase-outline" size={20} color={colors["--text-primary"]} />
+        <Icon
+          name="briefcase-outline"
+          size={20}
+          color={colors["--text-primary"]}
+        />
       </ControlledLabelInput>
-      
+
       <ControlledLabelInput
         ref={degreeRef}
         control={control}
@@ -68,7 +83,11 @@ const ProfessionalInfo: FC<Props> = ({ setStep }) => {
         title="Degree"
         placeholder="Computer Science"
       >
-        <Icon name="briefcase-outline" size={20} color={colors["--text-primary"]} />
+        <Icon
+          name="briefcase-outline"
+          size={20}
+          color={colors["--text-primary"]}
+        />
       </ControlledLabelInput>
 
       <View className="flex-row justify-between">

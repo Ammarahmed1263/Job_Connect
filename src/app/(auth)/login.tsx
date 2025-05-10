@@ -1,5 +1,4 @@
-import { AppButton, AppText } from "@components/ui";
-import ControlledLabelInput from "@components/ui/ControlledLabelInput";
+import { AppButton, AppText, ControlledLabelInput } from "@components/ui";
 import { useTheme } from "@contexts/ThemeContext";
 import Icon from "@expo/vector-icons/Ionicons";
 import { useSafeArea } from "@hooks/useSafeArea";
@@ -10,7 +9,14 @@ import { useRouter } from "expo-router";
 import { useSearchParams } from "expo-router/build/hooks";
 import { useRef } from "react";
 import { useForm } from "react-hook-form";
-import { ActivityIndicator, Keyboard, ScrollView, TextInput, View } from "react-native";
+import {
+  ActivityIndicator,
+  Keyboard,
+  ScrollView,
+  TextInput,
+  View,
+  Image,
+} from "react-native";
 import authRules from "schemas/auth";
 
 const Login = () => {
@@ -33,9 +39,9 @@ const Login = () => {
     try {
       Keyboard.dismiss();
       await login(data);
-      const redirectTo = params.get('redirectTo') || "/home";
+      const redirectTo = params.get("redirectTo") || "/home";
       router.replace({
-        pathname: redirectTo as any
+        pathname: redirectTo as any,
       });
     } catch (error) {
       console.log("final login error: ", (error as Error).message);
@@ -52,8 +58,12 @@ const Login = () => {
       keyboardShouldPersistTaps="handled"
       showsVerticalScrollIndicator={false}
     >
-      <View className="flex-1 mx-2">
-        <View className="flex-1 justify-center">
+      <View className="flex-1 mx-2 justify-center">
+        <View className="flex-1 flex-grow-0 justify-center">
+          <Image
+            source={require("@assets/images/react-logo.png")}
+            className="w-48 h-48 self-center mb-4"
+          />
           <AppText className="text-center">
             Welcome back! We have missed you!
           </AppText>
@@ -97,21 +107,17 @@ const Login = () => {
             />
           </ControlledLabelInput>
 
-          <AppButton
-            textVariant="light"
-            title="forget password?"
-            wrapperClassName="ms-4 mt-2 self-start"
-            onPress={() => console.log("i was clicked!")}
-            flat
-          />
           {error && (
-            <AppText variant="light" className="py-4 text-center color-[--error-color]">
+            <AppText
+              variant="light"
+              className="py-4 text-center color-[--error-color]"
+            >
               {error}
             </AppText>
           )}
           <AppButton
             title="Login"
-            wrapperClassName="self-end"
+            wrapperClassName="my-4"
             onPress={handleSubmit(onSubmit, (e) => {
               console.log("Form has errors - aborting submission", e);
             })}
@@ -128,13 +134,21 @@ const Login = () => {
               </View>
             )}
           </AppButton>
+          <AppButton
+            textVariant="light"
+            title="forget password?"
+            wrapperClassName="ms-4 mt-2 self-center"
+            onPress={() => console.log("i was clicked!")}
+            flat
+          />
         </View>
+        <View className="h-[1px] bg-[--text-muted] my-6 mx-4"/>
         <View className="flex-row items-center justify-center mb-8">
           <AppText>Don't have an account?</AppText>
           <AppButton
             title="Register"
             onPress={() => router.replace("/register")}
-            wrapperClassName="border-b-[1px] border-[--accent-color] rounded-b-none mx-1 self-start"
+            wrapperClassName="border-b-[1px] !border-[--accent-color] rounded-b-none mx-1 self-start"
             textClassName="!text-[--accent-color] -mb-1 mt-1"
             textVariant="light"
             flat

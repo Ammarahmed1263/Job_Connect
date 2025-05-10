@@ -1,5 +1,4 @@
-import { AppButton, AppText } from "@components/ui";
-import ControlledLabelInput from "@components/ui/ControlledLabelInput";
+import { AppButton, AppText, ControlledLabelInput } from "@components/ui";
 import { useTheme } from "@contexts/ThemeContext";
 import Icon from "@expo/vector-icons/Ionicons";
 import { RegisterFormData } from "@type/authTypes";
