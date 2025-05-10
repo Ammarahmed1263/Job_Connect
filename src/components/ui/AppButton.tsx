@@ -56,7 +56,7 @@ const AppButton = forwardRef<ElementRef<typeof Pressable>, Props>(
         ref={ref}
         className={clsx(
           "rounded-xl overflow-hidden",
-          variant === "primary" ? "bg-[--primary-300]" : "bg-[--primary-100]",
+          variant === "primary" ? "bg-[--primary-100]" : "bg-[--primary-300]",
           wrapperClassName
         )}
         style={[
@@ -69,15 +69,16 @@ const AppButton = forwardRef<ElementRef<typeof Pressable>, Props>(
           onPressIn={() => setPressed(true)}
           onPressOut={() => setPressed(false)}
           onPress={handlePress}
-          className={clsx(
-            "items-center justify-center",
-            pressed && isIos && "bg-[--accent-color]",
-            flat && pressed && "opacity-50"
-          )}
           android_ripple={!flat ? { color: colors["--accent-color"] } : null}
           style={!flat && styles.shadow}
           hitSlop={20}
           {...props}
+          className={clsx(
+            "items-center justify-center",
+            pressed && isIos && "bg-[--accent-color]",
+            flat && pressed && "opacity-50",
+            props?.className
+          )}
         >
           {children ? children : (
             <AppText
@@ -87,7 +88,7 @@ const AppButton = forwardRef<ElementRef<typeof Pressable>, Props>(
                   (variant === "primary"
                   ? "text-[--text-primary]"
                   : "text-[--text-secondary]"),
-              !flat && "px-4 py-2 text-[--text-primary]",
+              !flat && "px-4 py-2 !text-[--bg-color]",
               textClassName
             )}
           >

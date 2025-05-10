@@ -10,12 +10,12 @@ export const colors: { light: ThemeData; dark: ThemeData } = {
     "--text-secondary": "#4338CA",
     "--text-muted": "#6B7280",
 
-    "--primary-50": "#EEF2FF",
-    "--primary-100": "#D2DCFF",
-    "--primary-200": "#B7C6FF",
-    "--primary-300": "#A5B4FC",
-    "--primary-400": "#818CF8",
-    "--primary-500": "#6366F1",
+    "--primary-50": "#6366F1",
+    "--primary-100": "#818CF8",
+    "--primary-200": "#A5B4FC",
+    "--primary-300": "#B7C6FF",
+    "--primary-400": "#D2DCFF",
+    "--primary-500": "#EEF2FF",
 
     "--accent-color": "#4F46E5",
 
