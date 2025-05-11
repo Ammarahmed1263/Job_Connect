@@ -1,4 +1,5 @@
-import { AppButton, AppText, ControlledLabelInput } from "@components/ui";
+import { AppButton, AppLogo, AppText, ControlledLabelInput } from "@components/ui";
+import { hs, vs } from "@constants/metrics";
 import { useTheme } from "@contexts/ThemeContext";
 import Icon from "@expo/vector-icons/Ionicons";
 import { useSafeArea } from "@hooks/useSafeArea";
@@ -21,7 +22,7 @@ import authRules from "schemas/auth";
 
 const Login = () => {
   const router = useRouter();
-  const { colors } = useTheme();
+  const { colors, theme } = useTheme();
   const passwordRef = useRef<TextInput>(null);
   const { control, handleSubmit, setError } = useForm<LoginFormData>({
     mode: "onBlur",
@@ -58,13 +59,10 @@ const Login = () => {
       keyboardShouldPersistTaps="handled"
       showsVerticalScrollIndicator={false}
     >
-      <View className="flex-1 mx-2 justify-center">
+      <View className="flex-1 mx-4 justify-center">
         <View className="flex-1 flex-grow-0 justify-center">
-          <Image
-            source={require("@assets/images/react-logo.png")}
-            className="w-48 h-48 self-center mb-4"
-          />
-          <AppText className="text-center">
+          <AppLogo width={hs(130)} height={hs(130)} style={{alignSelf: 'center', marginBottom: vs(15)}}/>
+          <AppText className="text-center mx-8">
             Welcome back! We have missed you!
           </AppText>
 
@@ -117,7 +115,7 @@ const Login = () => {
           )}
           <AppButton
             title="Login"
-            wrapperClassName="my-4"
+            wrapperClassName="m-4"
             onPress={handleSubmit(onSubmit, (e) => {
               console.log("Form has errors - aborting submission", e);
             })}
@@ -142,7 +140,7 @@ const Login = () => {
             flat
           />
         </View>
-        <View className="h-[1px] bg-[--text-muted] my-6 mx-4"/>
+        <View className="h-[1px] bg-[--text-muted] my-6 mx-4" />
         <View className="flex-row items-center justify-center mb-8">
           <AppText>Don't have an account?</AppText>
           <AppButton

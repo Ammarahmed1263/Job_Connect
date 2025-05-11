@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "job_connect_app",
+    "name": "Job Connect",
     "slug": "job_connect_app",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -17,7 +17,8 @@
         "foregroundImage": "./src/assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "userInterfaceStyle": "automatic"
+      "userInterfaceStyle": "automatic",
+      "package": "com.ammar_001.job_connect_app"
     },
     "web": {
       "bundler": "metro",
@@ -29,11 +30,12 @@
       [
         "expo-splash-screen",
         {
-          "image": "./src/assets/images/splash-icon.png",
+          "image": "./src/assets/images/splash-light.png",
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#ffffff",
           "dark": {
+            "image": "./src/assets/images/splash-dark.png",
             "backgroundColor": "#000000"
           }
         }
@@ -42,6 +44,14 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "731d7717-48c4-463a-885c-a0935f568d60"
+      }
     }
   }
 }

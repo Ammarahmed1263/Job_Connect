@@ -4,7 +4,8 @@ import {
   PersonalInfo,
   ProfessionalInfo,
 } from "@components/register";
-import { AppButton, AppText } from "@components/ui";
+import { AppButton, AppLogo, AppText } from "@components/ui";
+import { hs, vs, width } from "@constants/metrics";
 import { useSafeArea } from "@hooks/useSafeArea";
 import useAuthStore from "@store/authStore";
 import { RegisterFormData } from "@type/authTypes";
@@ -12,7 +13,7 @@ import { useRouter } from "expo-router";
 import { useSearchParams } from "expo-router/build/hooks";
 import React, { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { Keyboard, ScrollView, StatusBar, View } from "react-native";
+import { Keyboard, ScrollView, StatusBar, View, Image } from "react-native";
 
 const Register = () => {
   const [step, setStep] = useState(1);
@@ -60,14 +61,18 @@ const Register = () => {
           className="flex-1"
           style={{ paddingTop: StatusBar.currentHeight }}
         >
-          <View className="flex-1  justify-center align-center mx-2 mb-4">
+          <View className="flex-1 flex-grow-0 mx-4">
+            <AppLogo
+              width={hs(130)}
+              height={hs(130)}
+              style={{ alignSelf: "center", marginBottom: vs(15) }}
+            />
+
             <AppText className="text-center" variant="medium">
               Explore a new world of job hunting!
             </AppText>
             <View className="border-2 border-[--primary-300] mx-4 mt-2 mb-4 py-4">
-              <AppText className="text-center">
-                I will be a progress indicator: {step}
-              </AppText>
+              <AppText className="text-center">progress: {step} / 4</AppText>
             </View>
 
             {step === 1 && <PersonalInfo setStep={setStep} />}
@@ -85,6 +90,7 @@ const Register = () => {
               />
             )}
           </View>
+          <View className="h-[1px] bg-[--text-muted] my-6 mx-6" />
           <View className="flex-row items-center justify-center mb-8">
             <AppText>Already Have an account?</AppText>
             <AppButton
