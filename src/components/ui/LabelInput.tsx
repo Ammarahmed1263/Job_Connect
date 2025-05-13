@@ -65,7 +65,7 @@ const LabelInput = forwardRef<TextInput, LabelInputProps>(
         <Pressable
           onPress={() => inputRef?.current?.focus()}
           className={clsx(
-            "rounded-xl flex-row items-center justify-between bg-[--primary-300] border-2",
+            "rounded-xl flex-row items-center justify-between bg-[--primary-300] border-2 min-h-12",
             error
               ? "border-[--error-color]"
               : isFocused
