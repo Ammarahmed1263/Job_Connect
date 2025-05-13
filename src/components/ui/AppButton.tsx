@@ -4,6 +4,7 @@ import { useTheme } from "@contexts/ThemeContext";
 import clsx from "clsx";
 import React, { ElementRef, forwardRef, useState } from "react";
 import {
+  GestureResponderEvent,
   Pressable,
   PressableProps,
   StyleProp,
@@ -23,7 +24,6 @@ interface Props extends PressableProps {
   textClassName?: TextProps["className"];
   wrapperStyle?: StyleProp<ViewStyle>;
   wrapperClassName?: ViewProps["className"];
-  onPress: () => void;
   children?: React.ReactNode;
 }
 
@@ -47,8 +47,8 @@ const AppButton = forwardRef<ElementRef<typeof Pressable>, Props>(
     const [pressed, setPressed] = useState(false);
     const { colors } = useTheme();
 
-    const handlePress = () => {
-      onPress();
+    const handlePress = (event: GestureResponderEvent) => {
+      onPress?.(event);
     };
 
     return (
