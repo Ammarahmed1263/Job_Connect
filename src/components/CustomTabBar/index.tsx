@@ -94,7 +94,7 @@ const CustomTabBar: React.FC<BottomTabBarProps> = ({
 
   return (
     <View
-      className="w-full bg-[--card-color] flex-row absolute rounded-tl-3xl rounded-tr-3xl py-4"
+      className="w-full bg-[--card-color] flex-row rounded-tl-3xl rounded-tr-3xl py-4"
       style={{ bottom }}
     >
       <AnimatedTabBackground

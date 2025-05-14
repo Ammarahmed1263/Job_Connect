@@ -1,10 +1,11 @@
-import { LoginFormData, RegisterFormData } from "@type/authTypes";
+import { LoginFormData, RefreshTokenResponse, RegisterFormData } from "@type/authTypes";
+import { AuthUser } from "@type/userTypes";
 import { handleApiError } from "@utils";
 import apiClient from "api/apiClient";
 import { endpoints } from "api/endpoints";
 
 const authService = {
-  async login(credentials: LoginFormData) {
+  async login(credentials: LoginFormData): Promise<AuthUser> {
     const payload = {
       email: credentials.email.trim().toLowerCase(),
       password: credentials.password,
@@ -18,7 +19,7 @@ const authService = {
     }
   },
 
-  async register(userInfo: RegisterFormData) {
+  async register(userInfo: RegisterFormData): Promise<AuthUser> {
     const payload = {
       firstName: userInfo.personal.firstName.trim(),
       lastName: userInfo.personal.lastName.trim(),
@@ -41,6 +42,20 @@ const authService = {
       throw handleApiError(error);
     }
   },
+
+  async refreshToken(token: string, refreshToken: string): Promise<RefreshTokenResponse> {
+    try {
+      const { data } = await apiClient.post(
+        endpoints.accounts.refreshToken,
+        { accessToken: token, refreshToken }
+      );
+      console.log('token refreshed here: ', data)
+      return data;
+    } catch (error) {
+      console.log('error refreshing token here: ', error);
+      throw handleApiError(error);
+    }
+  }
 };
 
 export default authService;

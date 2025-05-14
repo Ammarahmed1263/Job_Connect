@@ -19,7 +19,6 @@ export default function RootLayout() {
 
   const { initializeAuth } = useAuthStore();
   const [appReady, setAppReady] = useState(false);
-  console.log('root layout accessed')
 
   useEffect(() => {
     const prepareApp = async () => {

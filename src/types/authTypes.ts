@@ -26,6 +26,11 @@ export type RegisterFormData = {
   };
 };
 
+export type RefreshTokenResponse = {
+  accessToken: string;
+  refreshToken: string;
+};
+
 export interface authStore {
   user: Partial<AuthUser> | null;
   isAuthenticated: boolean;
@@ -35,7 +40,7 @@ export interface authStore {
   login: (credentials: LoginFormData) => Promise<AuthUser>;
   setOnboarding: (status: boolean) => void;
   register: (formData: RegisterFormData) => Promise<AuthUser>;
-  initializeAuth: () => Promise<void>;
+  initializeAuth: () => Promise<boolean>;
   logout: () => Promise<void>;
   clearError: () => void;
 }
