@@ -44,10 +44,11 @@ const ContactInfo: FC<Props> = ({ setStep }) => {
         autoCorrect={false}
         autoFocus={true}
         onSubmitEditing={() => focusRef(phoneRef)}
+        leftComponent={() => (
+          <Icon name="mail-outline" size={22} color={colors["--text-primary"]} />
+        )}
         submitBehavior="submit"
-      >
-        <Icon name="mail-outline" size={20} color={colors["--text-primary"]} />
-      </ControlledLabelInput>
+      />
 
       <ControlledLabelInput
         ref={phoneRef}
@@ -59,10 +60,11 @@ const ContactInfo: FC<Props> = ({ setStep }) => {
         keyboardType="phone-pad"
         autoComplete="tel"
         onSubmitEditing={() => focusRef(addressRef)}
+        leftComponent={() => (
+          <Icon name="call-outline" size={22} color={colors["--text-primary"]} />
+        )}
         submitBehavior="submit"
-      >
-        <Icon name="call-outline" size={20} color={colors["--text-primary"]} />
-      </ControlledLabelInput>
+      />
 
       <ControlledLabelInput
         ref={addressRef}
@@ -72,15 +74,12 @@ const ContactInfo: FC<Props> = ({ setStep }) => {
         title="Address"
         placeholder="Cairo, Egypt"
         autoComplete="street-address"
-      >
-        <Icon
-          name="location-outline"
-          size={20}
-          color={colors["--text-primary"]}
-        />
-      </ControlledLabelInput>
+        leftComponent={() => (
+          <Icon name="home-outline" size={22} color={colors["--text-primary"]} />
+        )}
+      />
 
-      <View className="flex-row justify-between">
+      <View className="flex-row justify-between m-4">
         <AppButton title="back" onPress={handlePrev} />
         <AppButton title="next" onPress={handleNext} />
       </View>

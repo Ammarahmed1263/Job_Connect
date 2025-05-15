@@ -4,3 +4,5 @@ export {default as LabelInput} from './LabelInput';
 export {default as ControlledLabelInput} from './ControlledLabelInput';
 export {default as AppDropdown} from './AppDropdown';
 export {default as AppLogo} from './AppLogo';
+export {default as AppIcon} from './AppIcon';
+export {default as Pagination} from './Pagination';

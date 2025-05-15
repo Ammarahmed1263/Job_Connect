@@ -10,7 +10,6 @@ import {
   TextInput,
   TextInputFocusEventData,
   TextInputProps,
-  TouchableOpacity,
   View,
   ViewProps,
   ViewStyle,
@@ -20,9 +19,10 @@ import AppText from "./AppText";
 export interface LabelInputProps extends TextInputProps {
   containerStyle?: StyleProp<ViewStyle>;
   containerClassName?: ViewProps["className"];
+  rightComponent?: (passwordVisible: boolean) => ReactNode;
+  leftComponent?: () => ReactNode;
   title: string;
   error?: string;
-  children?: ReactNode;
 }
 
 const LabelInput = forwardRef<TextInput, LabelInputProps>(
@@ -30,8 +30,9 @@ const LabelInput = forwardRef<TextInput, LabelInputProps>(
     {
       containerStyle,
       containerClassName,
+      rightComponent,
+      leftComponent,
       title,
-      children,
       error,
       onFocus,
       onBlur,
@@ -59,6 +60,7 @@ const LabelInput = forwardRef<TextInput, LabelInputProps>(
     const togglePasswordVisibility = () => {
       setIsPasswordVisible((prev) => !prev);
     };
+
     return (
       <View style={containerStyle} className={clsx("mx-2", containerClassName)}>
         <AppText className="ms-2">{title}</AppText>
@@ -73,7 +75,8 @@ const LabelInput = forwardRef<TextInput, LabelInputProps>(
               : "border-transparent"
           )}
         >
-          <View className="mx-3">{children}</View>
+          {leftComponent && <View className="mx-3">{leftComponent()}</View>}
+
           <TextInput
             ref={inputRef}
             placeholderTextColor={colors["--text-secondary"]}
@@ -86,19 +89,26 @@ const LabelInput = forwardRef<TextInput, LabelInputProps>(
             onBlur={handleBlur}
             {...props}
           />
-          {secureTextEntry && (
-            <TouchableOpacity
-              className="mx-3"
+
+          {secureTextEntry ? (
+            <Pressable
               onPress={togglePasswordVisibility}
               hitSlop={20}
+              className="mx-3"
             >
-              <Ionicons
-                name={!isPasswordVisible ? "eye-off-outline" : "eye-outline"}
-                size={ms(20)}
-                color={colors["--text-primary"]}
-              />
-            </TouchableOpacity>
-          )}
+              {rightComponent ? (
+                <>
+                  {rightComponent(isPasswordVisible)}
+                </>
+              ) : (
+                <Ionicons
+                  name={!isPasswordVisible ? "eye-off-outline" : "eye-outline"}
+                  size={ms(20)}
+                  color={colors["--text-primary"]}
+                />
+              )}
+            </Pressable>
+          ) : null}
         </Pressable>
         {error && (
           <AppText

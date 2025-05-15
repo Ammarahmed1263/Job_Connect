@@ -1,8 +1,4 @@
-import {
-  AppButton,
-  AppText,
-  ControlledLabelInput
-} from "@components/ui";
+import { AppButton, AppText, ControlledLabelInput } from "@components/ui";
 import { useTheme } from "@contexts/ThemeContext";
 import Icon from "@expo/vector-icons/Ionicons";
 import { RegisterFormData } from "@type/authTypes";
@@ -17,7 +13,7 @@ interface Props {
 }
 
 const ProfessionalInfo: FC<Props> = ({ setStep }) => {
-  const { colors, theme, setTheme } = useTheme();
+  const { colors } = useTheme();
   const { control, trigger } = useFormContext<RegisterFormData>();
   const experienceRef = useRef<TextInput>(null);
   const degreeRef = useRef<TextInput>(null);
@@ -50,13 +46,14 @@ const ProfessionalInfo: FC<Props> = ({ setStep }) => {
         autoFocus={true}
         submitBehavior="submit"
         onSubmitEditing={() => focusRef(experienceRef)}
-      >
-        <Icon
-          name="briefcase-outline"
-          size={20}
-          color={colors["--text-primary"]}
-        />
-      </ControlledLabelInput>
+        leftComponent={() => (
+          <Icon
+            name="briefcase-outline"
+            size={22}
+            color={colors["--text-primary"]}
+          />
+        )}
+      />
 
       <ControlledLabelInput
         ref={experienceRef}
@@ -67,13 +64,14 @@ const ProfessionalInfo: FC<Props> = ({ setStep }) => {
         placeholder="0+"
         submitBehavior="submit"
         onSubmitEditing={() => focusRef(degreeRef)}
-      >
-        <Icon
-          name="briefcase-outline"
-          size={20}
-          color={colors["--text-primary"]}
-        />
-      </ControlledLabelInput>
+        leftComponent={() => (
+          <Icon
+            name="calendar-number-outline"
+            size={22}
+            color={colors["--text-primary"]}
+          />
+        )}
+      />
 
       <ControlledLabelInput
         ref={degreeRef}
@@ -82,15 +80,16 @@ const ProfessionalInfo: FC<Props> = ({ setStep }) => {
         name="professional.degree"
         title="Degree"
         placeholder="Computer Science"
-      >
-        <Icon
-          name="briefcase-outline"
-          size={20}
-          color={colors["--text-primary"]}
-        />
-      </ControlledLabelInput>
+        leftComponent={() => (
+          <Icon
+            name="business-outline"
+            size={22}
+            color={colors["--text-primary"]}
+          />
+        )}
+      />
 
-      <View className="flex-row justify-between">
+      <View className="flex-row justify-between m-4">
         <AppButton title="back" onPress={handlePrev} />
         <AppButton title="next" onPress={handleNext} />
       </View>

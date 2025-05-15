@@ -1,6 +1,6 @@
 import OnboardingSlide from "@components/onboarding/OnboardingSlide";
 import { AppButton } from "@components/ui";
-import Pagination from "@components/ui/Pagination";
+import {Pagination} from "@components/ui";
 import { hs, vs, width } from "@constants/metrics";
 import { ONBOARDING_SLIDES } from "@constants/onboardingSlides";
 import { useSafeArea } from "@hooks/useSafeArea";

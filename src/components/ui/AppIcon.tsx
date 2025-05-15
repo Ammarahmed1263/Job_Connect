@@ -11,6 +11,8 @@ import {
   bookmark_outline,
   person,
   person_outline,
+  eye_closed,
+  eye_outline
 } from "@assets/icons";
 
 // Map names to components
@@ -23,6 +25,8 @@ const icons: Record<string, FC<SvgProps>> = {
   "bookmark-outline": bookmark_outline,
   person: person,
   "person-outline": person_outline,
+  "eye-closed": eye_closed,
+  "eye-outline": eye_outline,
 };
 
 type IconProps = {

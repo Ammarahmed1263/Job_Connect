@@ -71,9 +71,10 @@ const Register = () => {
             <AppText className="text-center" variant="medium">
               Explore a new world of job hunting!
             </AppText>
-            <View className="border-2 border-[--primary-300] mx-4 mt-2 mb-4 py-4">
+            {/* <View className="border-2 border-[--primary-300] mx-4 mt-2 mb-4 py-4">
               <AppText className="text-center">progress: {step} / 4</AppText>
-            </View>
+            </View> */}
+            <AppText variant='semiBold' className="border-2 border-[--primary-300] mx-4 p-2 self-start">{step} / 4</AppText>
 
             {step === 1 && <PersonalInfo setStep={setStep} />}
 

@@ -1,4 +1,10 @@
-import { AppButton, AppLogo, AppText, ControlledLabelInput } from "@components/ui";
+import {
+  AppButton,
+  AppLogo,
+  AppText,
+  ControlledLabelInput,
+  AppIcon,
+} from "@components/ui";
 import { hs, vs } from "@constants/metrics";
 import { useTheme } from "@contexts/ThemeContext";
 import Icon from "@expo/vector-icons/Ionicons";
@@ -15,8 +21,7 @@ import {
   Keyboard,
   ScrollView,
   TextInput,
-  View,
-  Image,
+  View
 } from "react-native";
 import authRules from "schemas/auth";
 
@@ -61,7 +66,11 @@ const Login = () => {
     >
       <View className="flex-1 mx-4 justify-center">
         <View className="flex-1 flex-grow-0 justify-center">
-          <AppLogo width={hs(130)} height={hs(130)} style={{alignSelf: 'center', marginBottom: vs(15)}}/>
+          <AppLogo
+            width={hs(130)}
+            height={hs(130)}
+            style={{ alignSelf: "center", marginBottom: vs(15) }}
+          />
           <AppText className="text-center mx-8">
             Welcome back! We have missed you!
           </AppText>
@@ -79,13 +88,14 @@ const Login = () => {
             autoFocus={true}
             submitBehavior="submit"
             onSubmitEditing={() => focusRef(passwordRef)}
-          >
-            <Icon
-              name="mail-outline"
-              size={20}
-              color={colors["--text-primary"]}
-            />
-          </ControlledLabelInput>
+            leftComponent={() =>
+              <Icon
+                name="mail-outline"
+                size={24}
+                color={colors["--text-primary"]}
+              />
+            }
+          />
 
           <ControlledLabelInput
             ref={passwordRef}
@@ -96,14 +106,24 @@ const Login = () => {
             rules={authRules.password}
             autoComplete="password"
             returnKeyType="done"
+            rightComponent={
+              (passwordVisible) => (
+                <AppIcon
+                  name={passwordVisible ? "eye-outline" : "eye-closed"}
+                  size={22}
+                  color={colors["--text-primary"]}
+                />
+              )
+            }
+            leftComponent={() =>
+              <Icon
+                name="lock-closed-outline"
+                size={22}
+                color={colors["--text-primary"]}
+              />
+            }
             secureTextEntry
-          >
-            <Icon
-              name="lock-closed-outline"
-              size={20}
-              color={colors["--text-primary"]}
-            />
-          </ControlledLabelInput>
+          />
 
           {error && (
             <AppText

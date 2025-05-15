@@ -1,4 +1,4 @@
-import { AppButton, AppText, ControlledLabelInput } from "@components/ui";
+import { AppButton, AppIcon, AppText, ControlledLabelInput } from "@components/ui";
 import { focusRef } from "@utils";
 import React, { Dispatch, FC, SetStateAction, useRef } from "react";
 import { ActivityIndicator, TextInput, View } from "react-native";
@@ -40,13 +40,23 @@ const AccountSecurity: FC<Props> = ({ setStep, onSubmit }) => {
         autoFocus={true}
         submitBehavior="submit"
         onSubmitEditing={() => focusRef(confirmPasswordRef)}
+        leftComponent={() => <Icon
+          name="lock-open-outline"
+          size={22}
+          color={colors["--text-primary"]}
+        />}
+        rightComponent={
+          (passwordVisible) => (
+            <AppIcon
+              name={passwordVisible ? "eye-outline" : "eye-closed"}
+              size={22}
+              color={colors["--text-primary"]}
+            />
+          )
+        }
         secureTextEntry
       >
-        <Icon
-          name="lock-open-outline"
-          size={20}
-          color={colors["--text-primary"]}
-        />
+        
       </ControlledLabelInput>
 
       <ControlledLabelInput
@@ -58,16 +68,25 @@ const AccountSecurity: FC<Props> = ({ setStep, onSubmit }) => {
         placeholder="password"
         autoComplete="password"
         returnKeyType="done"
-        secureTextEntry
-      >
-        <Icon
+        leftComponent={() => <Icon
           name="lock-closed-outline"
-          size={20}
+          size={22}
           color={colors["--text-primary"]}
-        />
-      </ControlledLabelInput>
+        />}
+        rightComponent={
+          (passwordVisible) => (
+            <AppIcon
+              name={passwordVisible ? "eye-outline" : "eye-closed"}
+              size={22}
+              color={colors["--text-primary"]}
+            />
+          )
+        }
+        secureTextEntry
+      />
+        
       {error && <AppText variant='light' className="pt-4 text-center color-[--error-color]">{error}</AppText>}
-      <View className="flex-row justify-between pt-4">
+      <View className="flex-row justify-between m-4">
         <AppButton title="back" onPress={handlePrev} disabled={isLoading} />
         <AppButton title="Register" onPress={onSubmit} disabled={isLoading}>
           {isLoading && (

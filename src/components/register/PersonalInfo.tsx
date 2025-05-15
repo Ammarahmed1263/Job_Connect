@@ -1,6 +1,6 @@
 import { AppButton, AppText, ControlledLabelInput } from "@components/ui";
 import { useTheme } from "@contexts/ThemeContext";
-import Icon from '@expo/vector-icons/Ionicons';
+import Icon from "@expo/vector-icons/Ionicons";
 import { RegisterFormData } from "@type/authTypes";
 import { focusRef } from "@utils";
 import React, { Dispatch, FC, SetStateAction, useRef } from "react";
@@ -9,17 +9,17 @@ import { TextInput, View } from "react-native";
 import authRules from "schemas/auth";
 
 interface Props {
-  setStep: Dispatch<SetStateAction<number>>
+  setStep: Dispatch<SetStateAction<number>>;
 }
 
-const PersonalInfo: FC<Props> = ({setStep}) => {
+const PersonalInfo: FC<Props> = ({ setStep }) => {
   const { colors } = useTheme();
   const lastNameRef = useRef<TextInput>(null);
   const { control, trigger } = useFormContext<RegisterFormData>();
 
   const handleNext = async () => {
     const isValid = await trigger(["personal.firstName", "personal.lastName"]);
-    console.log('is valid: ', isValid);
+    console.log("is valid: ", isValid);
     if (isValid) setStep(2);
   };
 
@@ -36,13 +36,14 @@ const PersonalInfo: FC<Props> = ({setStep}) => {
         autoComplete="given-name"
         autoFocus={true}
         onSubmitEditing={() => focusRef(lastNameRef)}
-      >
-        <Icon
-          name="person-outline"
-          size={20}
-          color={colors["--text-primary"]}
-        />
-      </ControlledLabelInput>
+        leftComponent={() => (
+          <Icon
+            name="person-outline"
+            size={22}
+            color={colors["--text-primary"]}
+          />
+        )}
+      />
 
       <ControlledLabelInput
         ref={lastNameRef}
@@ -52,18 +53,16 @@ const PersonalInfo: FC<Props> = ({setStep}) => {
         title="Last Name"
         placeholder="Doe"
         autoComplete="family-name"
-      >
-        <Icon
-          name="person-outline"
-          size={20}
-          color={colors["--text-primary"]}
-        />
-      </ControlledLabelInput>
-
-      <AppButton
-        title="next"
-        onPress={handleNext}
+        leftComponent={() => (
+          <Icon
+            name="person-outline"
+            size={22}
+            color={colors["--text-primary"]}
+          />
+        )}
       />
+
+      <AppButton title="next" onPress={handleNext} wrapperClassName="m-4" />
     </View>
   );
 };
