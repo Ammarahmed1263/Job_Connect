@@ -29,6 +29,6 @@ export const fontVariants = {
   },
   bold: {
     fontFamily: fontFamily.bold,
-    fontSize: ms(32),
+    fontSize: ms(30),
   },
 }

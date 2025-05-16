@@ -1,7 +1,7 @@
 import { Tabs } from "expo-router";
 import React from "react";
 import CustomTabBar from "@components/customTabBar";
-import AppIcon from "@components/ui/AppIcon";
+import {AppIcon} from "@components/ui";
 import { View } from "react-native";
 import { useSafeArea } from "@hooks/useSafeArea";
 

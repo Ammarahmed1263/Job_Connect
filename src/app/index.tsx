@@ -1,47 +1,44 @@
-import { useEffect, useState } from "react";
-import { router } from "expo-router";
+import { Redirect, useRootNavigationState } from "expo-router";
 import useAuthStore from "@store/authStore";
 import "@api/interceptors";
-import { AppText } from "@components/ui";
 import { View } from "react-native";
+import { AppText } from "@components/ui";
+import { useEffect } from "react";
+import { SplashScreen } from "expo-router";
+import { useFonts } from "expo-font";
 
 export default function Index() {
-  const { isAuthenticated, hasCompletedOnboarding, isLoading, setOnboarding } =
-    useAuthStore();
-  const [isNavigationReady, setIsNavigationReady] = useState(false);
+  const { initializeAuth, hasCompletedOnboarding, isLoading } = useAuthStore();
+  const rootNavigationState = useRootNavigationState();
+  const [fontsLoaded] = useFonts({
+    "Montserrat-Light": require("@assets/fonts/Montserrat-Light.ttf"),
+    "Montserrat-Regular": require("@assets/fonts/Montserrat-Regular.ttf"),
+  });
+  console.log("states: ", fontsLoaded, rootNavigationState?.key, isLoading);
 
-  // First useEffect to ensure navigation is ready
   useEffect(() => {
-    // Small timeout to ensure the Root Layout is fully mounted
-    const timer = setTimeout(() => {
-      setIsNavigationReady(true);
-    }, 100);
+    (async () => {
+      try {
+        if (fontsLoaded) {
+          await initializeAuth();
 
-    return () => clearTimeout(timer);
-  }, []);
-
-  // Second useEffect to handle the actual navigation
-  useEffect(() => {
-    // Only navigate when both auth is initialized and navigation is ready
-    if (isLoading || !isNavigationReady) return;
-
-    try {
-      if (!hasCompletedOnboarding) {
-        router.replace("/onboarding");
-        // } else if (!isAuthenticated) {
-        //   router.replace('/login');
-      } else {
-        setOnboarding(true);
-        router.replace("/home");
+          if (rootNavigationState?.key && !isLoading) {
+            await SplashScreen.hideAsync();
+          }
+        }
+      } catch (error) {
+        console.error("Error preparing app:", error);
       }
-    } catch (error) {
-      console.error("Navigation error:", error);
-    }
-  }, [hasCompletedOnboarding, isAuthenticated, isLoading, isNavigationReady]);
+    })();
+  }, [fontsLoaded, rootNavigationState?.key, isLoading]);
 
-  return (
-    <View className="flex-1 items-center justify-center bg-yellow-300">
-      <AppText>loading from app index....</AppText>
-    </View>
-  ); // Render nothing while redirecting
+  if (isLoading || !rootNavigationState?.key || !fontsLoaded) {
+    return null;
+  }
+
+  if (!hasCompletedOnboarding) {
+    return <Redirect href="/onboarding" />;
+  }
+
+  return <Redirect href="/home" />;
 }
