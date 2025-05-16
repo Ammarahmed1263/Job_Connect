@@ -23,12 +23,6 @@ import { AnimatedTabBackground } from "./AnimatedTabBackground";
 import { TabButton } from "./TabButton";
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 
-// const state.routes = [
-//   { name: "index", label: "Home", icon: "home-outline" },
-//   { name: "explore", label: "Search", icon: "search-outline" },
-//   { name: "saved", label: "Likes", icon: "heart-outline" },
-//   { name: "profile", label: "Profile", icon: "person-outline" },
-// ];
 
 const CustomTabBar: React.FC<BottomTabBarProps> = ({
   state,
@@ -60,9 +54,10 @@ const CustomTabBar: React.FC<BottomTabBarProps> = ({
 
       curveY.value = withTiming(0, { duration: ANIMATION_DURATION / 2 }, () => {
         activeTabIndex.value = index;
-        curveY.value = withTiming(PATH_CONTROL_POINT_Y, {
-          duration: ANIMATION_DURATION / 2,
-        });
+        curveY.value = withSpring(PATH_CONTROL_POINT_Y, {
+          damping: 10,
+          stiffness: 200,
+        })
       });
 
       indicatorPosition.value = withTiming(index * tabWidth + tabWidth / 2, {
@@ -73,9 +68,10 @@ const CustomTabBar: React.FC<BottomTabBarProps> = ({
         INDICATOR_Y_OFFSET,
         { duration: ANIMATION_DURATION / 2 },
         () => {
-          indicatorY.value = withTiming(WHOLE_DEPTH, {
-            duration: ANIMATION_DURATION / 2,
-          });
+          indicatorY.value = withSpring(WHOLE_DEPTH, {
+            damping: 10,
+            stiffness: 200,
+          })
         }
       );
 
@@ -131,7 +127,7 @@ const CustomTabBar: React.FC<BottomTabBarProps> = ({
                 isFocused ? WHOLE_DEPTH - 5 : WHOLE_DEPTH,
                 {
                   damping: 5,
-                  stiffness: 150,
+                  stiffness: 200,
                 }
               ),
             },
