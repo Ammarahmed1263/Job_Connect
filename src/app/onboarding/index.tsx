@@ -49,7 +49,7 @@ const OnboardingScreen = () => {
       flatListRef.current?.scrollToIndex({ index: currentIndex + 1 });
     } else {
       setOnboarding(true);
-      router.replace("/home");
+      router.replace("/explore");
     }
   };
 

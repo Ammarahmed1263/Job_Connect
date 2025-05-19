@@ -45,7 +45,7 @@ const Login = () => {
     try {
       Keyboard.dismiss();
       await login(data);
-      const redirectTo = params.get("redirectTo") || "/home";
+      const redirectTo = params.get("redirectTo") || "/explore";
       router.replace({
         pathname: redirectTo as any,
       });
