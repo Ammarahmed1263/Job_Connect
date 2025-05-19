@@ -9,22 +9,20 @@ interface AnimatedTabBackgroundProps {
   activeTabIndex: SharedValue<number>;
   curveY: SharedValue<number>;
   tabWidth: number;
-  controlPointY: number;
   curveOffset: number;
   controlOffset: number;
   fill: string;
-  offsetX: number;
+  barHeight: number;
 }
 
 export const AnimatedTabBackground: FC<AnimatedTabBackgroundProps> = ({
   activeTabIndex,
   curveY,
   tabWidth,
-  controlPointY,
   curveOffset,
   controlOffset,
+  barHeight,
   fill,
-  offsetX,
 }: any) => {
   const pathAnimatedProps = useAnimatedProps(() => {
     const baseX = activeTabIndex.value * tabWidth + tabWidth / 2;
@@ -44,13 +42,11 @@ export const AnimatedTabBackground: FC<AnimatedTabBackgroundProps> = ({
   });
 
   return (
-    <Svg width={width} height={70} style={{ position: "absolute", top: 0 }}>
-      <G transform={`translate(${offsetX}, 0)`}>
+    <Svg width={width} height={barHeight} style={{ position: "absolute", top: 0}}>
         <AnimatedPath
           fill={fill}
           animatedProps={pathAnimatedProps}
         />
-      </G>
     </Svg>
   );
 };

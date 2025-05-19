@@ -2,18 +2,11 @@ import { AppText } from "@components/ui";
 import { ms } from "@constants/metrics";
 import clsx from "clsx";
 import React, { FC } from "react";
-import { TouchableOpacity, ViewStyle } from "react-native";
-import Animated, {
-  AnimatedProps,
-  AnimatedStyleProp,
-} from "react-native-reanimated";
-import { Ionicons } from "@expo/vector-icons";
+import { TouchableOpacity, TouchableOpacityProps, ViewStyle } from "react-native";
+import Animated from "react-native-reanimated";
 
-const AnimatedIcon = Animated.createAnimatedComponent(Ionicons);
-
-interface TabButtonProps {
+interface TabButtonProps extends TouchableOpacityProps{
   label: string;
-  index: number;
   isFocused: boolean;
   onPress: () => void;
   icon: React.ReactNode;
@@ -24,13 +17,13 @@ interface TabButtonProps {
 
 export const TabButton: FC<TabButtonProps> = ({
   label,
-  index,
   isFocused,
   onPress,
   icon,
   iconStyle,
   colorFocused,
   colorUnfocused,
+  ...props
 }) => (
   <TouchableOpacity
     key={label}
@@ -40,6 +33,7 @@ export const TabButton: FC<TabButtonProps> = ({
     accessibilityRole="button"
     accessibilityLabel={`Tab ${label}`}
     accessibilityState={{ selected: isFocused }}
+    {...props}
   >
     <Animated.View style={iconStyle}>{icon}</Animated.View>
     <AppText

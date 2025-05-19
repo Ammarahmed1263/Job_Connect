@@ -6,7 +6,7 @@ export const colors: { light: ThemeData; dark: ThemeData } = {
     "--bg-color": "#FFFFFF",
     "--card-color": "#efefef",
     "--border-color": "#E5E7EB",
-    "--text-primary": "#1E1B4B",
+    "--text-primary": "#2f2a77",
     "--text-secondary": "#4338CA",
     "--text-muted": "#6B7280",
 
