@@ -23,6 +23,7 @@ module.exports = function (api) {
             "@contexts": "./src/contexts",
             "@services": "./src/api/services",
             "@store": "./src/store",
+            "@queries": "./src/queries",
           },
         },
       ],

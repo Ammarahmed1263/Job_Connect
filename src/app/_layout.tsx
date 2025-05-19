@@ -1,23 +1,27 @@
-import { useFonts } from "expo-font";
+import ThemeProvider from "@contexts/ThemeContext";
+import {
+  QueryClient,
+  QueryClientProvider
+} from "@tanstack/react-query";
 import { Slot, SplashScreen } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import { useEffect } from "react";
-import "../../global.css";
-
-import ThemeProvider from "@contexts/ThemeContext";
-import useAuthStore from "@store/authStore";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import "../../global.css";
+import * as SystemUI from "expo-system-ui";
 
+SystemUI.setBackgroundColorAsync("transparent");
 SplashScreen.preventAutoHideAsync();
+const queryClient = new QueryClient();
 
 export default function RootLayout() {
-
   return (
-    <SafeAreaProvider>
-      <ThemeProvider>
-        <StatusBar style="auto" />
-        <Slot />
-      </ThemeProvider>
-    </SafeAreaProvider>
+    <QueryClientProvider client={queryClient}>
+      <SafeAreaProvider>
+        <ThemeProvider>
+          <StatusBar style="auto" />
+          <Slot />
+        </ThemeProvider>
+      </SafeAreaProvider>
+    </QueryClientProvider>
   );
 }

@@ -15,7 +15,8 @@
       "@type/*": ["./types/*"],
       "@contexts/*": ["./contexts/*"],
       "@services/*": ["./api/services/*"],
-      "@store/*": ["./store/*"]
+      "@store/*": ["./store/*"],
+      "@queries/*": ["./api/queries/*"],
     },
     "types": ["nativewind/types"]
   },
