@@ -9,6 +9,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import "../../global.css";
 import * as SystemUI from "expo-system-ui";
 
+// to solve white background flash issue
 SystemUI.setBackgroundColorAsync("transparent");
 SplashScreen.preventAutoHideAsync();
 const queryClient = new QueryClient();
