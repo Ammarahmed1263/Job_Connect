@@ -12,7 +12,11 @@ import {
   person,
   person_outline,
   eye_closed,
-  eye_outline
+  eye_outline,
+  case_outline,
+  case as case_,
+  bell,
+  bell_outline
 } from "@assets/icons";
 
 // Map names to components
@@ -27,6 +31,10 @@ const icons: Record<string, FC<SvgProps>> = {
   "person-outline": person_outline,
   "eye-closed": eye_closed,
   "eye-outline": eye_outline,
+  case: case_,
+  "case-outline": case_outline,
+  bell: bell,
+  "bell-outline": bell_outline
 };
 
 type IconProps = {
