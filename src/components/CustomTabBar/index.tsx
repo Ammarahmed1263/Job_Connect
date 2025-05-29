@@ -11,8 +11,8 @@ import {
 import { useTheme } from "@contexts/ThemeContext";
 import { useSafeArea } from "@hooks/useSafeArea";
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
-import React, { useCallback, useState } from "react";
-import { LayoutChangeEvent, View } from "react-native";
+import React, { useCallback, useEffect, useState } from "react";
+import { BackHandler, LayoutChangeEvent, View } from 'react-native';
 import {
   useAnimatedStyle,
   useSharedValue,
@@ -52,32 +52,45 @@ const CustomTabBar: React.FC<BottomTabBarProps> = ({
     setTabHeight(height);
   }, []);
 
-  const handleTabPress = useCallback(
-    (index: number) => () => {
-      // if (index === activeTabIndex.value) return;
+  const animateTab = useCallback((index: number) => {
+    curveY.value = withTiming(0, { duration: ANIMATION_DURATION / 2 }, () => {
+      activeTabIndex.value = index;
+      curveY.value = withSpring(PATH_CONTROL_POINT_Y, {
+        damping: 10,
+        stiffness: 200,
+      });
+    });
 
-      curveY.value = withTiming(0, { duration: ANIMATION_DURATION / 2 }, () => {
-        activeTabIndex.value = index;
-        curveY.value = withSpring(PATH_CONTROL_POINT_Y, {
+    indicatorPosition.value = withTiming(index * tabWidth + tabWidth / 2, {
+      duration: ANIMATION_DURATION,
+    });
+
+    indicatorY.value = withTiming(
+      INDICATOR_Y_OFFSET,
+      { duration: ANIMATION_DURATION / 2 },
+      () => {
+        indicatorY.value = withSpring(WHOLE_DEPTH, {
           damping: 10,
           stiffness: 200,
         });
-      });
+      }
+    );
+  }, []);
 
-      indicatorPosition.value = withTiming(index * tabWidth + tabWidth / 2, {
-        duration: ANIMATION_DURATION,
-      });
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+      if (state.index > 0) {
+        animateTab(0);
+      }
+      return false; // Let the default back behavior continue
+    });
 
-      indicatorY.value = withTiming(
-        INDICATOR_Y_OFFSET,
-        { duration: ANIMATION_DURATION / 2 },
-        () => {
-          indicatorY.value = withSpring(WHOLE_DEPTH, {
-            damping: 10,
-            stiffness: 200,
-          });
-        }
-      );
+    return () => backHandler.remove();
+  }, [animateTab, state.index]);
+
+  const handleTabPress = useCallback(
+    (index: number) => () => {
+      animateTab(index);
 
       const event = navigation.emit({
         type: "tabPress",
@@ -89,7 +102,7 @@ const CustomTabBar: React.FC<BottomTabBarProps> = ({
         navigation.navigate(state.routes[index].name);
       }
     },
-    [navigation, state.index]
+    [navigation, state.routes, animateTab]
   );
 
   return (
