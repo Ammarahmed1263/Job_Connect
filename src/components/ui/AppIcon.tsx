@@ -37,11 +37,11 @@ const icons: Record<string, FC<SvgProps>> = {
   "bell-outline": bell_outline
 };
 
-type IconProps = {
+interface IconProps extends SvgProps {
   name: keyof typeof icons;
   size?: number;
   color?: string;
-};
+}
 
 const AppIcon: FC<IconProps> = ({ name, size = 24, color = "black", ...props }) => {
   const SvgIcon = icons[name];
