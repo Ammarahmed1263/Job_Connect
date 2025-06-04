@@ -9,29 +9,41 @@ import jobService from "@api/services/jobService";
 import AboutTab from "@components/jobs/detailsTabs/AboutTab";
 import CompanyTab from "@components/jobs/detailsTabs/CompanyTab";
 import ReviewTab from "@components/jobs/detailsTabs/ReviewTab";
+import { useJobById } from "queries/jobQueries";
+import { formatSalary } from "@utils";
 
 const JobDetails = () => {
   const { id } = useLocalSearchParams();
   const { colors } = useTheme();
   const { top } = useSafeArea();
   const [activeTab, setActiveTab] = useState<'about' | 'company' | 'review'>('about');
-  const [jobDetails, setJobDetails] = useState<any>(null);
+  // const [jobDetails?, setJobDetails?] = useState<any>(null);
+  const { data: jobDetails, isPending, error} = useJobById(Number(id));
+  console.log('data here: ', jobDetails);
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const response = await jobService.fetchJobById(Number(id));
-        setJobDetails(response.data);
-      } catch (error) {
-        console.log("Error fetching job details:", error);
-      }
-    })();
-  }, [id]);
+  // useEffect(() => {
+  //   (async () => {
+  //     try {
+  //       const response = await jobService.fetchJobById(Number(id));
+  //       setJobDetails?(response.data);
+  //     } catch (error) {
+  //       console.log("Error fetching job details:", error);
+  //     }
+  //   })();
+  // }, [id]);
 
-  if (!jobDetails) {
+  if (isPending) {
     return (
       <View className="flex-1 items-center justify-center">
         <AppText>Loading...</AppText>
+      </View>
+    );
+  }
+
+  if (error) {
+    return (
+      <View className="flex-1 items-center justify-center">
+        <AppText>Oops..error occured please try again</AppText>
       </View>
     );
   }
@@ -57,13 +69,13 @@ const JobDetails = () => {
         {/* Company Info */}
         <View className="items-center py-4">
           <View className="w-20 h-20 rounded-full bg-[--accent-color] items-center justify-center mb-4">
-            <AppText className="text-white text-3xl">{jobDetails.employer.companyName[0]}.</AppText>
+            <AppText className="text-white text-3xl">{jobDetails?.employer?.companyName[0]}.</AppText>
           </View>
-          <AppText variant="medium" className="text-xl mb-1">{jobDetails.title}</AppText>
-          <AppText className="color-[--text-muted] mb-1">{jobDetails.employer.companyName}</AppText>
+          <AppText variant="medium" className="text-xl mb-1">{jobDetails?.title}</AppText>
+          <AppText className="color-[--text-muted] mb-1">{jobDetails?.employer?.companyName}</AppText>
           <View className="flex-row items-center gap-2">
             <Ionicons name="location" size={16} color={colors["--accent-color"]} />
-            <AppText className="color-[--text-muted]">{jobDetails.location}</AppText>
+            <AppText className="color-[--text-muted]">{jobDetails?.location}</AppText>
           </View>
         </View>
 
@@ -72,9 +84,9 @@ const JobDetails = () => {
           <View className="w-[48%] bg-[--card-color] p-4 rounded-xl mb-4">
             <View className="flex-row items-center gap-2 mb-2">
               <Ionicons name="wallet-outline" size={20} color={colors["--accent-color"]} />
-              <AppText className="color-[--text-muted]">Salary ({jobDetails.salaryType})</AppText>
+              <AppText className="color-[--text-muted]">Salary ({jobDetails?.salaryType})</AppText>
             </View>
-            <AppText variant="medium">${jobDetails.minSalary}k - ${jobDetails.maxSalary}k</AppText>
+            <AppText className='text-center'>${formatSalary(jobDetails?.minSalary)}k - ${formatSalary(jobDetails?.maxSalary)}k</AppText>
           </View>
 
           <View className="w-[48%] bg-[--card-color] p-4 rounded-xl mb-4">
@@ -82,7 +94,7 @@ const JobDetails = () => {
               <Ionicons name="briefcase-outline" size={20} color={colors["--accent-color"]} />
               <AppText className="color-[--text-muted]">Job Type</AppText>
             </View>
-            <AppText variant="medium">Full - Time</AppText>
+            <AppText className='text-center'>Full - Time</AppText>
           </View>
 
           <View className="w-[48%] bg-[--card-color] p-4 rounded-xl mb-4">
@@ -90,7 +102,7 @@ const JobDetails = () => {
               <Ionicons name="desktop-outline" size={20} color={colors["--accent-color"]} />
               <AppText className="color-[--text-muted]">Working Model</AppText>
             </View>
-            <AppText variant="medium">Remote</AppText>
+            <AppText className='text-center'>Remote</AppText>
           </View>
 
           <View className="w-[48%] bg-[--card-color] p-4 rounded-xl mb-4">
@@ -98,17 +110,17 @@ const JobDetails = () => {
               <Ionicons name="stats-chart" size={20} color={colors["--accent-color"]} />
               <AppText className="color-[--text-muted]">Level</AppText>
             </View>
-            <AppText variant="medium">Internship</AppText>
+            <AppText className='text-center'>Internship</AppText>
           </View>
         </View>
 
         {/* Tabs */}
-        <View className="flex-row px-4 border-b border-[--border-color]">
+        <View className="flex-row border-b border-[--border-color] justify-center">
           {['about', 'company', 'review'].map((tab) => (
             <TouchableOpacity
               key={tab}
               onPress={() => setActiveTab(tab as typeof activeTab)}
-              className={`pb-2 px-4 ${activeTab === tab ? 'border-b-2 border-[--accent-color]' : ''}`}
+              className={`pb-2 items-center flex-1 ${activeTab === tab ? 'border-b-2 border-[--accent-color]' : ''}`}
             >
               <AppText
                 variant="medium"
@@ -122,7 +134,7 @@ const JobDetails = () => {
 
         {/* Tab Content */}
         {activeTab === 'about' && <AboutTab job={jobDetails} />}
-        {activeTab === 'company' && <CompanyTab employer={jobDetails.employer} />}
+        {activeTab === 'company' && <CompanyTab employer={jobDetails?.employer} />}
         {activeTab === 'review' && <ReviewTab />}
       </ScrollView>
 

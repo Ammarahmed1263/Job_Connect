@@ -82,7 +82,7 @@ const CustomTabBar: React.FC<BottomTabBarProps> = ({
       if (state.index > 0) {
         animateTab(0);
       }
-      return false; // Let the default back behavior continue
+      return false;
     });
 
     return () => backHandler.remove();

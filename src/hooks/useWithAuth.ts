@@ -1,9 +1,8 @@
-// hooks/useWithAuth.ts
 import { useRouter, usePathname } from "expo-router";
 import useAuthStore from "@store/authStore";
 
 export const useWithAuth = () => {
-  const { isAuthenticated } = useAuthStore();
+  const isAuthenticated = useAuthStore(state => state.isAuthenticated);
   const router = useRouter();
   const pathname = usePathname();
 

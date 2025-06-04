@@ -1,21 +1,20 @@
-import { AppButton, AppText } from "@components/ui";
-import { AppIcon } from "@components/ui";
-import { hs, width } from "@constants/metrics";
+import { AppIcon, AppText } from "@components/ui";
 import { useTheme } from "@contexts/ThemeContext";
 import Icon from "@expo/vector-icons/Ionicons";
-import { useRouter } from "expo-router";
-import React, { useState } from "react";
+import { useWithAuth } from "@hooks/useWithAuth";
+import { formatSalary } from "@utils";
+import clsx from "clsx";
+import { usePathname, useRouter } from "expo-router";
+import { useSaveJob, useUnsaveJob } from "queries/jobQueries";
+import { useSavedJobs } from "queries/userQueries";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import {
   Pressable,
   PressableProps,
-  ScrollView,
   StyleProp,
   View,
-  ViewStyle,
+  ViewStyle
 } from "react-native";
-import jobService from "@api/services/jobService";
-import { useWithAuth } from "@hooks/useWithAuth";
-import clsx from "clsx";
 
 interface JobCardProps extends PressableProps {
   item: {
@@ -49,8 +48,23 @@ interface JobCardProps extends PressableProps {
 const JobCard = ({ item, wrapperStyle, ...props }: JobCardProps) => {
   const { colors } = useTheme();
   const router = useRouter();
+  const pathName = usePathname();
   const { requireAuth } = useWithAuth();
-  const [isSaved, setIsSaved] = useState(item.shortListed);
+  const { mutate: saveJob } = useUnsaveJob();
+  const { mutate: unsaveJob } = useSaveJob();
+  // Remove this line as we don't need to fetch saved jobs again
+  // const {data} = useSavedJobs();
+  
+  // Instead, use a simple useState without depending on saved jobs data
+  const [isSaved, setIsSaved] = useState(false);
+
+  // Use useEffect to set initial saved state based on props
+  useEffect(() => {
+    // If the job is being rendered in the Saved screen, it must be saved
+    if (pathName.includes('saved')) {
+      setIsSaved(true);
+    }
+  }, []);
 
   const handleJobPress = () => {
     router.push({
@@ -64,9 +78,9 @@ const JobCard = ({ item, wrapperStyle, ...props }: JobCardProps) => {
 
     try {
       if (isSaved) {
-        await jobService.unsaveJob(item.id);
+        unsaveJob(item.id);
       } else {
-        await jobService.saveJob(item.id);
+        saveJob(item.id);
       }
       setIsSaved(!isSaved);
     } catch (error) {
@@ -115,9 +129,9 @@ const JobCard = ({ item, wrapperStyle, ...props }: JobCardProps) => {
         <View className="flex-row justify-between items-center mt-4">
           <View className="flex-row items-center ">
             <Icon
-              name="location-outline"
+              name="location"
               size={24}
-              color={colors["--text-muted"]}
+              color={colors["--primary-300"]}
             />
             <AppText
               numberOfLines={1}
@@ -190,9 +204,9 @@ const JobCard = ({ item, wrapperStyle, ...props }: JobCardProps) => {
             className="flex-1 text-right color-[--text-primary]"
           >
             $
-            {item?.minSalary >= 1000 ? item?.minSalary / 1000 : item?.minSalary}
+            {formatSalary(item?.minSalary)}
             k - $
-            {item?.maxSalary >= 1000 ? item?.maxSalary / 1000 : item?.maxSalary}
+            {formatSalary(item?.maxSalary)}
             k / {item?.salaryType}
           </AppText>
         </View>
