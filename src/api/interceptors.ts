@@ -8,7 +8,7 @@ apiClient.interceptors.request.use(
   async (config) => {
     try {
       const isPublic = publicEndpoints.some((path) =>
-        config.url?.includes(path)
+        config?.url?.includes(path)
       );
       const token = await secureStorage.getToken("auth_token");
       const refreshToken = await secureStorage.getToken("refresh_token");
