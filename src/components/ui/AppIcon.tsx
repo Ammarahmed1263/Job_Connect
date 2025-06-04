@@ -17,7 +17,9 @@ import {
   bell_outline,
   arrow_left,
   arrow_right,
-  share
+  share,
+  map_point,
+  map_point_outline,
 } from "@assets/icons";
 import AppText from "./AppText";
 
@@ -38,7 +40,9 @@ const icons: Record<string, FC<SvgProps>> = {
   "bell-outline": bell_outline,
   "arrow-left": arrow_left,
   "arrow-right": arrow_right,
-  share: share
+  share: share,
+  "map-point": map_point,
+  "map-point-outline": map_point_outline,
 };
 
 interface IconProps extends SvgProps {

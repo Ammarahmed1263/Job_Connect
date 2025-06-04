@@ -26,6 +26,7 @@ const MainLayout = () => {
       }}
     >
       <Stack.Screen name="(tabs)" />
+      <Stack.Screen name="jobs" options={{title: "Jobs"}}/>
     </Stack>
   );
 };

@@ -15,3 +15,5 @@ export {default as bell_outline} from './bell-outline.svg';
 export {default as arrow_left} from './arrow-left.svg';
 export {default as arrow_right} from './arrow-right.svg';
 export {default as share} from './share.svg';
+export {default as map_point} from './map-point.svg';
+export {default as map_point_outline} from './map-point-outline.svg';
