@@ -49,7 +49,7 @@ const authService = {
         endpoints.accounts.refreshToken,
         { accessToken: token, refreshToken }
       );
-      console.log('token refreshed here: ', data)
+      console.log('tokens refreshed here: ', data)
       return data;
     } catch (error) {
       console.log('error refreshing token here: ', error);

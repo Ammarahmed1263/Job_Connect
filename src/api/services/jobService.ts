@@ -7,9 +7,10 @@ const jobService = {
   fetchAllJobs: async (page: number = 1, size: number = 10) => {
     try {
       const {data} = await apiClient.get(jobsBase.getAllJobs(page, size));
-      console.log('get all jobs called here: ', data);
+      // console.log('get all jobs called here: ', data.data.length);
       return data;
     } catch (error) {
+      console.error('error fetching all jobs: ', error);
       throw error;
     }
   },
@@ -17,7 +18,7 @@ const jobService = {
     try {
       const {data} = await apiClient.get(jobsBase.getJobById(id));
       console.log('api responded', data);
-      return data;
+      return data.data;
     } catch (error) {
       throw error;
     }

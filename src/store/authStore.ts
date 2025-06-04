@@ -45,6 +45,11 @@ const useAuthStore = create<authStore>()(
           console.log("data here: ", data);
           await secureStorage.setToken("auth_token", data.token);
           await secureStorage.setToken("refresh_token", data.refreshToken);
+
+          if (data.role !== 'jobseeker') {
+            throw new Error("JobSeeker account is required");
+          }
+
           set({
             user: data,
             isAuthenticated: true,
