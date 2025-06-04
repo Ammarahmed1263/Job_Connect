@@ -1,4 +1,4 @@
-import { AppButton, AppText } from "@components/ui";
+import { AppButton, AppIcon, AppText } from "@components/ui";
 import { useLocalSearchParams, router } from "expo-router";
 import { ScrollView, TouchableOpacity, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
@@ -53,15 +53,15 @@ const JobDetails = () => {
       {/* Header */}
       <View className="flex-row justify-between items-center p-4">
         <TouchableOpacity onPress={() => router.back()}>
-          <Ionicons name="arrow-back" size={24} color={colors["--text-primary"]} />
+          {/* <Ionicons name="arrow-back" size={24} color={colors["--text-primary"]} /> */}
+          <AppIcon name='arrow-left' color={colors["--text-primary"]} size={30}/>
         </TouchableOpacity>
         <View className="flex-row gap-4">
-          <TouchableOpacity>
+          {/* <TouchableOpacity>
             <Ionicons name="bookmark-outline" size={24} color={colors["--text-primary"]} />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Ionicons name="share-social-outline" size={24} color={colors["--text-primary"]} />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
+          <AppIcon name='bookmark-outline' color={colors["--text-primary"]} size={26}/>
+          <AppIcon name='share' color={colors["--text-primary"]} size={26}/>
         </View>
       </View>
 

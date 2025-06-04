@@ -13,3 +13,5 @@ export {default as case_outline} from './case-outline.svg';
 export {default as bell} from './bell.svg';
 export {default as bell_outline} from './bell-outline.svg';
 export {default as arrow_left} from './arrow-left.svg';
+export {default as arrow_right} from './arrow-right.svg';
+export {default as share} from './share.svg';
