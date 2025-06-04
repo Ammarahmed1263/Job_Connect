@@ -10,5 +10,6 @@ export {default as eye_outline} from './eye-outline.svg';
 export {default as eye_closed} from './eye-closed.svg';
 export {default as case} from './case.svg';
 export {default as case_outline} from './case-outline.svg';
-export {default as bell} from './bell.svg'
-export {default as bell_outline} from './bell-outline.svg'
+export {default as bell} from './bell.svg';
+export {default as bell_outline} from './bell-outline.svg';
+export {default as arrow_left} from './arrow-left.svg';
