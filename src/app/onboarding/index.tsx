@@ -1,18 +1,15 @@
 import OnboardingSlide from "@components/onboarding/OnboardingSlide";
-import { AppButton, Pagination } from "@components/ui";
+import { AppButton, AppIcon, Pagination } from "@components/ui";
 import { hs, vs, width } from "@constants/metrics";
 import { ONBOARDING_SLIDES } from "@constants/onboardingSlides";
+import { useTheme } from "@contexts/ThemeContext";
 import { useSafeArea } from "@hooks/useSafeArea";
 import useAuthStore from "@store/authStore";
 import { useOnboardingStore } from "@store/onboardingStore";
 import clsx from "clsx";
 import { useRouter } from "expo-router";
 import React, { useRef, useState } from "react";
-import {
-  FlatList,
-  StyleSheet,
-  View
-} from "react-native";
+import { FlatList, StyleSheet, View } from "react-native";
 import Animated, {
   runOnJS,
   useAnimatedScrollHandler,
@@ -21,16 +18,12 @@ import Animated, {
 
 const OnboardingScreen = () => {
   const flatListRef = useRef<FlatList>(null);
-  const {
-    currentSlide,
-    nextSlide,
-    prevSlide,
-    setSlide,
-    completeOnboarding,
-  } = useOnboardingStore();
+  const { currentSlide, nextSlide, prevSlide, setSlide, completeOnboarding } =
+    useOnboardingStore();
   const scrollProgress = useSharedValue(0);
   const router = useRouter();
   const { top } = useSafeArea();
+  const { colors } = useTheme();
 
   const scrollHandler = useAnimatedScrollHandler({
     onScroll: (event) => {
@@ -65,7 +58,10 @@ const OnboardingScreen = () => {
   };
 
   return (
-    <View className="flex-1 bg-[--bg-color] justify-center" style={{ paddingTop: top }}>
+    <View
+      className="flex-1 bg-[--bg-color] justify-center"
+      style={{ paddingTop: top }}
+    >
       <Animated.FlatList
         ref={flatListRef}
         horizontal
@@ -76,38 +72,47 @@ const OnboardingScreen = () => {
         keyExtractor={(item) => item.key}
         onScroll={scrollHandler}
         scrollEventThrottle={16}
-        style={{flexGrow: 0}}
-      />
-
-      <Pagination
-        scrollProgress={scrollProgress}
-        dotsLength={ONBOARDING_SLIDES.length}
-        activeDotIndex={currentSlide}
-        inactiveDotScale={0.23}
-        setActiveIndex={handleDotPress}
-        dotStyle={styles.paginationDot}
+        style={{ flexGrow: 0 }}
       />
 
       {/* Button */}
-      <View className="flex-row justify-between gap-4 my-4">
-        {currentSlide > 0 && (
-          <AppButton
-            title="back"
-            onPress={handlePrev}
-            // className="bg-[--primary-500] dark:bg-[--primary-200]"
-            wrapperClassName="flex-1 ms-4"
-          />
-        )}
+      <View className="flex-row justify-between gap-4 m-4">
         <AppButton
-          title={
-            currentSlide === ONBOARDING_SLIDES.length - 1
-              ? "Get Started"
-              : "Next"
-          }
-          onPress={handleNext}
-          // className="bg-[--primary-500] dark:bg-[--primary-200]"
-          wrapperClassName={clsx("flex-1 ", currentSlide === 0 ? 'mx-4' : 'me-4')}
+          title={''}
+          onPress={handlePrev}
+          wrapperClassName="!rounded-full ms-4 justify-center items-center w-16 h-16 bg-transparent border border-[--primary-100]"
+          className="w-full h-full"
+          wrapperStyle={{
+            opacity: currentSlide > 0 ? 1 : 0,
+            elevation: 0,
+          }}
+          disabled={currentSlide === 0}
+          pointerEvents={currentSlide === 0 ? "none" : "auto"}
+        >
+          <AppIcon
+            name="arrow-left"
+            size={30}
+            color={colors["--primary-100"]}
+          />
+        </AppButton>
+        <Pagination
+          scrollProgress={scrollProgress}
+          dotsLength={ONBOARDING_SLIDES.length}
+          activeDotIndex={currentSlide}
+          inactiveDotScale={0.23}
+          setActiveIndex={handleDotPress}
+          dotStyle={styles.paginationDot}
         />
+        <AppButton
+          title={''}
+          onPress={handleNext}
+          wrapperClassName={clsx(
+            "!rounded-full ms-4 justify-center items-center w-16 h-16",
+          )}
+          className="w-full h-full"
+        >
+          <AppIcon name="arrow-right" size={30} color="white" />
+        </AppButton>
       </View>
     </View>
   );

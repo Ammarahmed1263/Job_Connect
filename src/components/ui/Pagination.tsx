@@ -111,7 +111,6 @@ const Pagination: FC<PaginationProps> = ({
 
 const styles = StyleSheet.create({
   paginationContainer: {
-    width: "100%",
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",

@@ -1,3 +1,4 @@
+import { ONBOARDING_SLIDES } from "@constants/onboardingSlides";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { OnboardingStore } from "@type/onboardingTypes";
 import { create } from "zustand";
@@ -7,7 +8,7 @@ export const useOnboardingStore = create<OnboardingStore>()(
   persist(
     (set, get) => ({
       currentSlide: 0,
-      totalSlides: 3,
+      totalSlides: ONBOARDING_SLIDES.length,
       isOnboardingCompleted: false,
       nextSlide: () => {
         const { currentSlide, totalSlides } = get();
@@ -28,7 +29,7 @@ export const useOnboardingStore = create<OnboardingStore>()(
       setSlide: (index: number) => set({ currentSlide: index }),
 
       completeOnboarding: () => set({ isOnboardingCompleted: true }),
-      testOnboarding: (value: boolean) => set({ isOnboardingCompleted: value }),
+      testOnboarding: (value: boolean) => set({ isOnboardingCompleted: value, currentSlide: 0 }),
     }),
     {
       name: "onboarding-storage",
