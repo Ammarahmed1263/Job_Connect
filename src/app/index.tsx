@@ -1,14 +1,14 @@
-import { Redirect, useRootNavigationState } from "expo-router";
-import useAuthStore from "@store/authStore";
 import "@api/interceptors";
-import { View } from "react-native";
-import { AppText } from "@components/ui";
-import { useEffect } from "react";
-import { SplashScreen } from "expo-router";
+import useAuthStore from "@store/authStore";
+import { useOnboardingStore } from "@store/onboardingStore";
 import { useFonts } from "expo-font";
+import { Redirect, SplashScreen, useRootNavigationState } from "expo-router";
+import { useEffect } from "react";
 
 export default function Index() {
-  const { initializeAuth, hasCompletedOnboarding, isLoading } = useAuthStore();
+  const { initializeAuth, isLoading } = useAuthStore();
+  const {isOnboardingCompleted} = useOnboardingStore();
+  console.log('onboarding: ', isOnboardingCompleted);
   const rootNavigationState = useRootNavigationState();
   const [fontsLoaded] = useFonts({
     "Montserrat-Light": require("@assets/fonts/Montserrat-Light.ttf"),
@@ -36,7 +36,7 @@ export default function Index() {
     return null;
   }
 
-  if (!hasCompletedOnboarding) {
+  if (!isOnboardingCompleted) {
     return <Redirect href="/onboarding" />;
   }
 

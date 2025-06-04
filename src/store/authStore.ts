@@ -5,38 +5,13 @@ import { secureStorage } from "lib/storage/secureStorage";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
-const initialState: authStore = {
-  user: null,
-  isAuthenticated: false,
-  hasCompletedOnboarding: false,
-  isLoading: false,
-  error: null,
-  login: async (credentials) => {
-    {
-      throw new Error("Method not implemented.");
-    }
-  },
-  register: async (userData) => {
-    throw new Error("Method not implemented.");
-  },
-  setOnboarding: (status) => {
-    throw new Error("Method not implemented.");
-  },
-  initializeAuth: async () => {
-    throw new Error("Method not implemented.");
-  },
-  logout: async () => {
-    throw new Error("Method not implemented.");
-  },
-  clearError: () => {
-    throw new Error("Method not implemented.");
-  },
-};
-
 const useAuthStore = create<authStore>()(
   persist(
     (set) => ({
-      ...initialState,
+      user: null,
+      isAuthenticated: false,
+      isLoading: false,
+      error: null,
       login: async (credentials) => {
         console.log("credentials here: ", credentials);
         set({ isLoading: true, error: null });
@@ -46,7 +21,7 @@ const useAuthStore = create<authStore>()(
           await secureStorage.setToken("auth_token", data.token);
           await secureStorage.setToken("refresh_token", data.refreshToken);
 
-          if (data.role !== 'jobseeker') {
+          if (data.role !== "jobseeker") {
             throw new Error("JobSeeker account is required");
           }
 
@@ -83,9 +58,6 @@ const useAuthStore = create<authStore>()(
           });
           throw error;
         }
-      },
-      setOnboarding: (status: boolean) => {
-        set({ hasCompletedOnboarding: status });
       },
       initializeAuth: async () => {
         const token = await secureStorage.getToken("auth_token");
@@ -124,7 +96,6 @@ const useAuthStore = create<authStore>()(
       partialize: (state) => ({
         user: state.user,
         isAuthenticated: state.isAuthenticated,
-        hasCompletedOnboarding: state.hasCompletedOnboarding,
       }),
     }
   )

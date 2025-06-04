@@ -34,11 +34,9 @@ export type RefreshTokenResponse = {
 export interface authStore {
   user: Partial<AuthUser> | null;
   isAuthenticated: boolean;
-  hasCompletedOnboarding: boolean;
   isLoading: boolean;
   error: string | null;
   login: (credentials: LoginFormData) => Promise<AuthUser>;
-  setOnboarding: (status: boolean) => void;
   register: (formData: RegisterFormData) => Promise<AuthUser>;
   initializeAuth: () => Promise<boolean>;
   logout: () => Promise<void>;

@@ -1,33 +1,36 @@
 import OnboardingSlide from "@components/onboarding/OnboardingSlide";
-import { AppButton } from "@components/ui";
-import {Pagination} from "@components/ui";
+import { AppButton, Pagination } from "@components/ui";
 import { hs, vs, width } from "@constants/metrics";
 import { ONBOARDING_SLIDES } from "@constants/onboardingSlides";
 import { useSafeArea } from "@hooks/useSafeArea";
 import useAuthStore from "@store/authStore";
+import { useOnboardingStore } from "@store/onboardingStore";
 import clsx from "clsx";
 import { useRouter } from "expo-router";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import {
   FlatList,
-  Text,
-  TouchableOpacity,
-  View,
   StyleSheet,
+  View
 } from "react-native";
 import Animated, {
+  runOnJS,
   useAnimatedScrollHandler,
   useSharedValue,
-  runOnJS,
 } from "react-native-reanimated";
 
 const OnboardingScreen = () => {
   const flatListRef = useRef<FlatList>(null);
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const {
+    currentSlide,
+    nextSlide,
+    prevSlide,
+    setSlide,
+    completeOnboarding,
+  } = useOnboardingStore();
   const scrollProgress = useSharedValue(0);
   const router = useRouter();
   const { top } = useSafeArea();
-  const {setOnboarding} = useAuthStore();
 
   const scrollHandler = useAnimatedScrollHandler({
     onScroll: (event) => {
@@ -35,27 +38,29 @@ const OnboardingScreen = () => {
     },
     onMomentumEnd: (event) => {
       const index = Math.round(event.contentOffset.x / width);
-      runOnJS(setCurrentIndex)(index);
+      runOnJS(setSlide)(index);
     },
   });
 
   const handleDotPress = (index: number) => {
-    setCurrentIndex(index);
+    setSlide(index);
     flatListRef.current?.scrollToIndex({ index, animated: true });
   };
 
   const handleNext = () => {
-    if (currentIndex < ONBOARDING_SLIDES.length - 1) {
-      flatListRef.current?.scrollToIndex({ index: currentIndex + 1 });
+    if (currentSlide < ONBOARDING_SLIDES.length - 1) {
+      flatListRef.current?.scrollToIndex({ index: currentSlide + 1 });
+      nextSlide();
     } else {
-      setOnboarding(true);
+      completeOnboarding();
       router.replace("/explore");
     }
   };
 
   const handlePrev = () => {
-    if (currentIndex > 0) {
-      flatListRef.current?.scrollToIndex({ index: currentIndex - 1 });
+    if (currentSlide > 0) {
+      flatListRef.current?.scrollToIndex({ index: currentSlide - 1 });
+      prevSlide();
     }
   };
 
@@ -77,7 +82,7 @@ const OnboardingScreen = () => {
       <Pagination
         scrollProgress={scrollProgress}
         dotsLength={ONBOARDING_SLIDES.length}
-        activeDotIndex={currentIndex}
+        activeDotIndex={currentSlide}
         inactiveDotScale={0.23}
         setActiveIndex={handleDotPress}
         dotStyle={styles.paginationDot}
@@ -85,7 +90,7 @@ const OnboardingScreen = () => {
 
       {/* Button */}
       <View className="flex-row justify-between gap-4 my-4">
-        {currentIndex > 0 && (
+        {currentSlide > 0 && (
           <AppButton
             title="back"
             onPress={handlePrev}
@@ -95,13 +100,13 @@ const OnboardingScreen = () => {
         )}
         <AppButton
           title={
-            currentIndex === ONBOARDING_SLIDES.length - 1
+            currentSlide === ONBOARDING_SLIDES.length - 1
               ? "Get Started"
               : "Next"
           }
           onPress={handleNext}
           // className="bg-[--primary-500] dark:bg-[--primary-200]"
-          wrapperClassName={clsx("flex-1 ", currentIndex === 0 ? 'mx-4' : 'me-4')}
+          wrapperClassName={clsx("flex-1 ", currentSlide === 0 ? 'mx-4' : 'me-4')}
         />
       </View>
     </View>
