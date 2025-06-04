@@ -13,7 +13,7 @@ interface JobSectionProps {
 }
 
 const JobSection = ({ title, subtitle, data, onSeeAll }: JobSectionProps) => {
-  const { isAuthenticated } = useAuthStore();
+  const isAuthenticated = useAuthStore(state => state.isAuthenticated);
 
   if (!isAuthenticated) return null;
 

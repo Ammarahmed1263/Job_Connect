@@ -51,12 +51,9 @@ const useAuthStore = create<authStore>()(
             isLoading: false,
           });
           return data;
-        } catch (error) {
+        } catch (error: any) {
           set({
-            error:
-              error instanceof Error
-                ? error.message
-                : "Login failed - please try later",
+            error: error?.message || "Login failed - please try later",
             isLoading: false,
           });
           throw error;
@@ -74,12 +71,9 @@ const useAuthStore = create<authStore>()(
             isLoading: false,
           });
           return data;
-        } catch (error) {
+        } catch (error: any) {
           set({
-            error:
-              error instanceof Error
-                ? error.message
-                : "Register failed - please try later",
+            error: error?.message || "Register failed - please try later",
             isLoading: false,
           });
           throw error;
@@ -91,31 +85,21 @@ const useAuthStore = create<authStore>()(
       initializeAuth: async () => {
         const token = await secureStorage.getToken("auth_token");
         const refreshToken = await secureStorage.getToken("refresh_token");
-        
+
         if (token && refreshToken) {
-          try {
-            set({
-              isAuthenticated: true,
-              isLoading: false
-            });
-            return true;
-          } catch (error) {
-            await secureStorage.removeToken("auth_token");
-            await secureStorage.removeToken("refresh_token");
-            set({
-              user: null,
-              isAuthenticated: false,
-              isLoading: false
-            });
-            return false;
-          }
+          set({
+            isAuthenticated: true,
+            isLoading: false,
+          });
+          return true;
+        } else {
+          set({
+            isAuthenticated: false,
+            isLoading: false,
+            user: null,
+          });
+          return false;
         }
-        
-        set({
-          isAuthenticated: false,
-          isLoading: false
-        });
-        return false;
       },
       logout: async () => {
         await secureStorage.removeToken("auth_token");

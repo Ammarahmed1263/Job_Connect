@@ -18,7 +18,7 @@ export const endpoints = {
   },
   jobs: {
     getAllJobs: (page: number, size: number) =>
-      `JobSeeker/GetAllJobsPaginated?page=${page}&size=${size}`,
+      `JobSeeker/GetAllJobsPaginated?pageNumber=${page}&pageSize=${size}`,
     getJobById: (jobId: number) => `JobSeeker/GetJobById/${jobId}`,
     saveJob: "JobSeeker/SaveJob",
     unsaveJob: "JobSeeker/UnsaveJob",
