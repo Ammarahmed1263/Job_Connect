@@ -10,7 +10,7 @@ import { FlatList, View } from "react-native";
 const Saved = () => {
   // const { requireAuth } = useWithAuth();
   const isAuthenticated = useAuthStore(state => state.isAuthenticated);
-  const { data, isFetching } = useSavedJobs();
+  const { data, isFetching } = useSavedJobs(isAuthenticated);
   console.log("saved jobs: ", data);
 
   if (!isAuthenticated) {

@@ -1,17 +1,19 @@
 import userService from "@api/services/userService";
 import { useQuery } from "@tanstack/react-query";
 
-export const useSavedJobs = () => {
+export const useSavedJobs = (enabled: boolean = true) => {
   return useQuery({
     queryKey: ["getSavedJobs"],
     queryFn: () => userService.fetchSavedJobs(),
+    enabled
   })
 };
 
-export const useAppliedJobs = () => {
+export const useAppliedJobs = (enabled: boolean = true) => {
   return useQuery({
     queryKey: ["getAppliedJobs"],
     queryFn: () => userService.fetchAppliedJobs(),
+    enabled
   })
 };
 

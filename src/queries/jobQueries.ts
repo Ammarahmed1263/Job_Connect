@@ -7,7 +7,7 @@ import {
 } from "@tanstack/react-query";
 import { JobDetails } from "@type/jobTypes";
 
-export const useJobs = (size: number = 10) => {
+export const useJobs = (size: number = 10, enabled: boolean = true) => {
   return useInfiniteQuery({
     queryKey: ["getAllJobs", size],
     queryFn: async ({
@@ -34,6 +34,7 @@ export const useJobs = (size: number = 10) => {
         ? { page: pageNumber + 1, size }
         : undefined;
     },
+    enabled
   });
 };
 
