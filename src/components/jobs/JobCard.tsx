@@ -7,7 +7,7 @@ import { formatSalary } from "@utils";
 import clsx from "clsx";
 import { usePathname, useRouter } from "expo-router";
 import { useSaveJob, useUnsaveJob } from "queries/jobQueries";
-import React, { useEffect, useState } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import {
   Pressable,
   PressableProps,
@@ -18,10 +18,18 @@ import {
 
 interface JobCardProps extends PressableProps {
   item: JobDetails;
+  compact?: boolean;
+  rightComponent?: ReactNode;
   wrapperStyle?: StyleProp<ViewStyle>;
 }
 
-const JobCard = ({ item, wrapperStyle, ...props }: JobCardProps) => {
+const JobCard = ({
+  item,
+  wrapperStyle,
+  compact,
+  rightComponent,
+  ...props
+}: JobCardProps) => {
   const { colors } = useTheme();
   const router = useRouter();
   const pathName = usePathname();
@@ -66,18 +74,18 @@ const JobCard = ({ item, wrapperStyle, ...props }: JobCardProps) => {
 
   return (
     <View
-      className="p-4 rounded-2xl border border-[--primary-300]"
+      className="p-4 rounded-2xl border border-[--accent-color]"
       style={wrapperStyle}
     >
       <Pressable onPress={handleJobPress} {...props}>
         <View className="flex-row justify-between items-center">
           <View className="flex-row gap-3 flex-1 ">
-            <View className="w-16 h-16 bg-[--primary-100] rounded-xl items-center justify-center">
+            <View className="w-16 aspect-square bg-[--accent-color] rounded-xl items-center justify-center">
               <AppText
                 variant="bold"
-                className="text-[--bg-color] leading-none"
+                className="color-[--bg-color] leading-tight"
               >
-                {item?.employer?.companyName[0]}.
+                {item?.employer?.companyName[0].toUpperCase()}.
               </AppText>
             </View>
             <View className="flex-1 pe-2">
@@ -93,13 +101,15 @@ const JobCard = ({ item, wrapperStyle, ...props }: JobCardProps) => {
               </AppText>
             </View>
           </View>
-          <Pressable onPress={handleToggleSave} hitSlop={10}>
-            <AppIcon
-              name={isSaved ? "bookmark" : "bookmark-outline"}
-              color={colors["--text-primary"]}
-              size={26}
-            />
-          </Pressable>
+          {rightComponent ?? (
+            <Pressable onPress={handleToggleSave} hitSlop={10}>
+              <AppIcon
+                name={isSaved ? "bookmark" : "bookmark-outline"}
+                color={colors["--accent-color"]}
+                size={26}
+              />
+            </Pressable>
+          )}
         </View>
 
         <View className="flex-row justify-between items-center mt-4">
@@ -107,7 +117,7 @@ const JobCard = ({ item, wrapperStyle, ...props }: JobCardProps) => {
             <AppIcon
               name="map-point"
               size={26}
-              color={colors["--primary-300"]}
+              color={colors["--accent-color"]}
             />
             <AppText
               numberOfLines={1}
@@ -153,37 +163,39 @@ const JobCard = ({ item, wrapperStyle, ...props }: JobCardProps) => {
           </ScrollView>
         </View> */}
 
-      <Pressable onPress={handleJobPress}>
-        <View className="flex-row justify-between items-center mt-4 border-t-[1px] border-[--text-muted] pt-4">
-          <View className="items-center me-2">
-            <View className="flex-row ms-3">
-              {[1, 2, 3].map((_, i) => (
-                <View
-                  key={i}
-                  className={clsx(
-                    "w-8 h-8 rounded-full bg-[--primary-300] border-[--bg-color] border-2",
-                    "-ml-3"
-                  )}
-                />
-              ))}
+      {!compact && (
+        <Pressable onPress={handleJobPress}>
+          <View className="flex-row justify-between items-center mt-4 border-t-[1px] border-[--text-muted] pt-4">
+            <View className="items-center me-2">
+              <View className="flex-row ms-3">
+                {[1, 2, 3].map((_, i) => (
+                  <View
+                    key={i}
+                    className={clsx(
+                      "w-8 h-8 rounded-full bg-[--accent-color] border-[--bg-color] border-2",
+                      "-ml-3"
+                    )}
+                  />
+                ))}
+              </View>
+              <AppText
+                numberOfLines={1}
+                variant="light"
+                className="ml-2 color-[--text-muted] !text-sm"
+              >
+                {item?.applicationsCount} Applicants
+              </AppText>
             </View>
             <AppText
-              numberOfLines={1}
               variant="light"
-              className="ml-2 color-[--text-muted] !text-sm"
+              className="flex-1 text-right color-[--text-primary]"
             >
-              {item?.applicationsCount} Applicants
+              ${formatSalary(item?.minSalary)}k - $
+              {formatSalary(item?.maxSalary)}k / {item?.salaryType}
             </AppText>
           </View>
-          <AppText
-            variant="light"
-            className="flex-1 text-right color-[--text-primary]"
-          >
-            ${formatSalary(item?.minSalary)}k - ${formatSalary(item?.maxSalary)}
-            k / {item?.salaryType}
-          </AppText>
-        </View>
-      </Pressable>
+        </Pressable>
+      )}
     </View>
   );
 };

@@ -78,9 +78,9 @@ const JobDetails = () => {
       <ScrollView className="flex-1">
         {/* Company Info */}
         <View className="items-center py-4">
-          <View className="w-20 h-20 rounded-full bg-[--accent-color] items-center justify-center mb-4">
-            <AppText className="text-white text-3xl">
-              {jobDetails?.employer?.companyName[0]}.
+          <View className="w-20 aspect-square rounded-full bg-[--accent-color] items-center justify-center mb-4">
+            <AppText variant="bold" className="text-white text-3xl leading-tight">
+              {jobDetails?.employer?.companyName[0].toUpperCase()}.
             </AppText>
           </View>
           <AppText variant="medium" className="text-xl mb-1">

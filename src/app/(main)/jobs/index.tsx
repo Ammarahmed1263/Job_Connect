@@ -42,9 +42,9 @@ const JobListing = () => {
         onEndReached={() => hasNextPage && !isFetching && fetchNextPage()}
         onEndReachedThreshold={0.1}
         ListFooterComponent={
-          isFetchingNextPage ? (
+          hasNextPage ? (
             <ActivityIndicator size="small" />
-          ) : (
+          ) : ( 
             <View>
               <AppText className="text-center">no more jobs</AppText>
             </View>
