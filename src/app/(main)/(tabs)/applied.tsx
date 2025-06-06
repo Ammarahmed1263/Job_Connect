@@ -37,8 +37,8 @@ const Applied = () => {
           <JobCard
             item={item}
             rightComponent={
-              <View className="bg-[--accent-color] p-1 rounded-lg">
-                <AppText className='color-[--bg-color]' variant="light">status</AppText>
+              <View className="bg-[--accent-color] py-1 px-4 rounded-sm">
+                <AppText className='color-[--bg-color]' variant="light">{item?.status}</AppText>
               </View>
             }
             compact

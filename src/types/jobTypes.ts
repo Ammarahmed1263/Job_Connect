@@ -13,6 +13,8 @@ export interface JobDetails {
   title: string;
   status: string;
   jobType: string;
+  workPlace: string;
+  experience: string;
   daysRemaining: number;
   applicationsCount: number;
   postedDate: string;

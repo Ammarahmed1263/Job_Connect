@@ -49,7 +49,7 @@ const JobSection = ({ title, subtitle, data, onSeeAll }: JobSectionProps) => {
         data={data}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => <JobCard item={item} wrapperStyle={{width: width - width * 0.15}}/>}
-        contentContainerStyle={{ paddingHorizontal: hs(15), gap: hs(10) }}
+        contentContainerClassName="!px-5 !gap-4 !items-center"
         showsHorizontalScrollIndicator={false}
         horizontal
       />

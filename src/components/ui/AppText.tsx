@@ -18,7 +18,7 @@ const AppText: FC<AppTextProps> = ({
 }) => {
   return (
     <Text
-      className={clsx("text-[--text-primary]", className)}
+      className={clsx("text-[--text-primary] leading-tight", className)}
       style={[
         {
           ...fontVariants[variant],
