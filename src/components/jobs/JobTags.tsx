@@ -6,22 +6,22 @@ interface JobTagsProps {
   tags: string[];
 }
 
-const JobTags: FC<JobTagsProps> = ({tags}) => {
+const JobTags: FC<JobTagsProps> = ({ tags }) => {
   return (
     <ScrollView
-      horizontal
       showsHorizontalScrollIndicator={false}
       className="mt-4"
       contentContainerClassName="!gap-3"
-      nestedScrollEnabled
+      nestedScrollEnabled={tags.length > 2}
+      horizontal
     >
       {tags.map((tag, i) => (
         <AppButton
           key={tag + i}
-          variant="secondary"
+          variant="primary"
           textVariant="light"
           title={tag}
-          wrapperClassName="bg-[--text-secondary] !rounded-sm"
+          wrapperClassName="!bg-[--text-muted] !rounded-sm"
           textClassName="!py-1 !px-3 leading-tight"
           disabled
         />

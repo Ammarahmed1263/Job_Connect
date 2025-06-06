@@ -12,9 +12,9 @@ export const useWithAuth = () => {
         pathname: "/login",
         params: { redirectTo: pathname },
       });
-      return false;
+      return true;
     }
-    return true;
+    return false;
   };
 
   return { requireAuth, isAuthenticated };
