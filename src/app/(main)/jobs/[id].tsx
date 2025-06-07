@@ -1,16 +1,18 @@
-import { AppButton, AppIcon, AppText } from "@components/ui";
-import { useLocalSearchParams, router } from "expo-router";
-import { ScrollView, TouchableOpacity, View } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
-import { useTheme } from "@contexts/ThemeContext";
-import { useSafeArea } from "@hooks/useSafeArea";
-import { useState, useEffect } from "react";
-import jobService from "@api/services/jobService";
 import AboutTab from "@components/jobs/detailsTabs/AboutTab";
 import CompanyTab from "@components/jobs/detailsTabs/CompanyTab";
 import ReviewTab from "@components/jobs/detailsTabs/ReviewTab";
-import { useJobById } from "queries/jobQueries";
+import { AppButton, AppIcon, AppText } from "@components/ui";
+import { useTheme } from "@contexts/ThemeContext";
+import { Ionicons } from "@expo/vector-icons";
+import { useSafeArea } from "@hooks/useSafeArea";
+import { useWithAuth } from "@hooks/useWithAuth";
+import { useJobById, useSaveJob, useUnsaveJob } from "@queries/jobQueries";
+import { useSavedJobs } from "@queries/userQueries";
+import { JobDetails as JobDetailsType } from "@type/jobTypes";
 import { formatSalary } from "@utils";
+import { router, useLocalSearchParams } from "expo-router";
+import { useState } from "react";
+import { ScrollView, TouchableOpacity, View } from "react-native";
 
 const JobDetails = () => {
   const { id } = useLocalSearchParams();
@@ -19,20 +21,27 @@ const JobDetails = () => {
   const [activeTab, setActiveTab] = useState<"about" | "company" | "review">(
     "about"
   );
-  // const [jobDetails?, setJobDetails?] = useState<any>(null);
-  const { data: jobDetails, isPending, error } = useJobById(Number(id));
-  console.log("data here: ", jobDetails);
+  const { data: job, isPending, error } = useJobById(Number(id));
+  const { data: savedJobs } = useSavedJobs();
+  const { mutate: unsaveJob } = useUnsaveJob();
+  const { mutate: saveJob } = useSaveJob();
+  const { requireAuth } = useWithAuth();
+  console.log('saved jobs: ', savedJobs?.data)
+  const isSaved = job && savedJobs?.data?.some(
+    (savedJob: JobDetailsType) => savedJob.id === job.id
+  );
+  
+  console.log("data here: ", job);
 
-  // useEffect(() => {
-  //   (async () => {
-  //     try {
-  //       const response = await jobService.fetchJobById(Number(id));
-  //       setJobDetails?(response.data);
-  //     } catch (error) {
-  //       console.log("Error fetching job details:", error);
-  //     }
-  //   })();
-  // }, [id]);
+  const handleToggleSave = async () => {
+    if (requireAuth()) return;
+
+    try {
+      isSaved ? unsaveJob(job.id) : saveJob(job);
+    } catch (error) {
+      console.log("Error toggling job save:", error);
+    }
+  };
 
   if (isPending) {
     return (
@@ -63,14 +72,13 @@ const JobDetails = () => {
           />
         </TouchableOpacity>
         <View className="flex-row gap-4">
-          {/* <TouchableOpacity>
-            <Ionicons name="bookmark-outline" size={24} color={colors["--text-primary"]} />
-          </TouchableOpacity> */}
-          <AppIcon
-            name="bookmark-outline"
-            color={colors["--text-primary"]}
-            size={26}
-          />
+          <TouchableOpacity onPress={handleToggleSave}>
+            <AppIcon
+              name={isSaved ? "bookmark" : "bookmark-outline"}
+              color={colors["--text-primary"]}
+              size={26}
+            />
+          </TouchableOpacity>
           <AppIcon name="share" color={colors["--text-primary"]} size={28} />
         </View>
       </View>
@@ -79,15 +87,18 @@ const JobDetails = () => {
         {/* Company Info */}
         <View className="items-center py-4">
           <View className="w-20 aspect-square rounded-full bg-[--accent-color] items-center justify-center mb-4">
-            <AppText variant="bold" className="text-white text-3xl leading-tight">
-              {jobDetails?.employer?.companyName[0].toUpperCase()}.
+            <AppText
+              variant="bold"
+              className="text-white text-3xl leading-tight"
+            >
+              {job?.employer?.companyName[0].toUpperCase()}.
             </AppText>
           </View>
           <AppText variant="medium" className="text-xl mb-1">
-            {jobDetails?.title}
+            {job?.title}
           </AppText>
           <AppText className="color-[--text-muted] mb-1">
-            {jobDetails?.employer?.companyName}
+            {job?.employer?.companyName}
           </AppText>
           <View className="flex-row items-center gap-1">
             <AppIcon
@@ -95,9 +106,7 @@ const JobDetails = () => {
               size={28}
               color={colors["--accent-color"]}
             />
-            <AppText className="color-[--text-muted]">
-              {jobDetails?.location}
-            </AppText>
+            <AppText className="color-[--text-muted]">{job?.location}</AppText>
           </View>
         </View>
 
@@ -111,12 +120,12 @@ const JobDetails = () => {
                 color={colors["--accent-color"]}
               />
               <AppText className="color-[--text-muted]">
-                Salary ({jobDetails?.salaryType})
+                Salary ({job?.salaryType})
               </AppText>
             </View>
             <AppText className="text-center">
-              ${formatSalary(jobDetails?.minSalary)}k - $
-              {formatSalary(jobDetails?.maxSalary)}k
+              ${formatSalary(job?.minSalary)}k - ${formatSalary(job?.maxSalary)}
+              k
             </AppText>
           </View>
 
@@ -182,10 +191,8 @@ const JobDetails = () => {
         </View>
 
         {/* Tab Content */}
-        {activeTab === "about" && <AboutTab job={jobDetails} />}
-        {activeTab === "company" && (
-          <CompanyTab employer={jobDetails?.employer} />
-        )}
+        {activeTab === "about" && <AboutTab job={job} />}
+        {activeTab === "company" && <CompanyTab employer={job?.employer} />}
         {activeTab === "review" && <ReviewTab />}
       </ScrollView>
 

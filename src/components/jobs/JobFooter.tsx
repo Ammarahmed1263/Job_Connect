@@ -19,7 +19,7 @@ const JobFooter: FC<JobFooterProps> = ({
 }) => {
   return (
     <View className="flex-row justify-between items-center mt-4 border-t-[1px] border-[--text-muted] pt-4">
-      <View className="items-start me-2">
+      <View className="items-center me-2">
         <View className="flex-row ms-3">
           {Array(4)
             .fill(0)

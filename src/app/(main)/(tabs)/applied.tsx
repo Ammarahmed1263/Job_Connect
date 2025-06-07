@@ -2,7 +2,7 @@ import JobCard from "@components/jobs/JobCard";
 import { AppText } from "@components/ui";
 import { hs, vs } from "@constants/metrics";
 import useAuthStore from "@store/authStore";
-import { useAppliedJobs } from "queries/userQueries";
+import { useAppliedJobs } from "@queries/userQueries";
 import React from "react";
 import { FlatList, View } from "react-native";
 
