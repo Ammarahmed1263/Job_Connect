@@ -1,6 +1,6 @@
-import { AppButton } from "@components/ui";
+import { AppButton, AppText } from "@components/ui";
 import React, { FC } from "react";
-import { ScrollView } from "react-native";
+import { ScrollView, View } from "react-native";
 
 interface JobTagsProps {
   tags: string[];
@@ -15,16 +15,12 @@ const JobTags: FC<JobTagsProps> = ({ tags }) => {
       nestedScrollEnabled={tags.length > 2}
       horizontal
     >
-      {tags.map((tag, i) => (
-        <AppButton
-          key={tag + i}
-          variant="primary"
-          textVariant="light"
-          title={tag}
-          wrapperClassName="!bg-[--text-muted] !rounded-sm"
-          textClassName="!py-1 !px-3 leading-tight"
-          disabled
-        />
+      {tags.map((tag, index) => (
+        <View key={tag + index} className="bg-slate-500/30 dark:bg-white/30 py-1 px-3 rounded-sm">
+          <AppText variant="light" className="text-[--bg-color]">
+            {tag}
+          </AppText>
+        </View>
       ))}
     </ScrollView>
   );

@@ -1,23 +1,21 @@
-import { AppButton, AppIcon, AppText } from "@components/ui";
-import { useTheme } from "@contexts/ThemeContext";
 import { useWithAuth } from "@hooks/useWithAuth";
+import { useSaveJob, useUnsaveJob } from "@queries/jobQueries";
+import { useSavedJobs } from "@queries/userQueries";
 import { JobDetails } from "@type/jobTypes";
 import { extractTags } from "@utils";
-import { usePathname, useRouter } from "expo-router";
-import { useSaveJob, useUnsaveJob } from "queries/jobQueries";
-import React, { ReactNode, useState } from "react";
+import { useRouter } from "expo-router";
+import React, { ReactNode } from "react";
 import {
   Pressable,
   PressableProps,
-  ScrollView,
   StyleProp,
   View,
   ViewStyle,
 } from "react-native";
 import JobFooter from "./JobFooter";
-import JobTags from "./JobTags";
 import JobHeader from "./JobHeader";
 import JobMeta from "./JobMeta";
+import JobTags from "./JobTags";
 
 interface JobCardProps extends PressableProps {
   item: JobDetails;
@@ -34,12 +32,11 @@ const JobCard = ({
   ...props
 }: JobCardProps) => {
   const router = useRouter();
-  const pathName = usePathname();
   const { requireAuth } = useWithAuth();
-  const { mutate: saveJob } = useUnsaveJob();
-  const { mutate: unsaveJob } = useSaveJob();
-  const isInSavedPage = pathName.includes("saved");
-  const [isSaved, setIsSaved] = useState(isInSavedPage);
+  const { data: savedJobs } = useSavedJobs();
+  const { mutate: unsaveJob } = useUnsaveJob();
+  const { mutate: saveJob } = useSaveJob();
+  const isSaved = savedJobs?.data.some((job: JobDetails) => job.id === item.id);
 
   const handleJobPress = () => {
     router.push({
@@ -49,15 +46,10 @@ const JobCard = ({
   };
 
   const handleToggleSave = async () => {
-    if (!requireAuth()) return;
+    if (requireAuth()) return;
 
     try {
-      if (isSaved) {
-        unsaveJob(item.id);
-      } else {
-        saveJob(item.id);
-      }
-      setIsSaved(!isSaved);
+      isSaved ? unsaveJob(item.id) : saveJob(item);
     } catch (error) {
       console.log("Error toggling job save:", error);
     }
