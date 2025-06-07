@@ -1,44 +1,116 @@
-import { AppText } from '@components/ui';
-import { useTheme } from '@contexts/ThemeContext';
-import React from 'react';
-import { TouchableOpacity, View } from 'react-native';
+import React from "react";
+import { View, ScrollView } from "react-native";
+import { useRouter } from "expo-router";
+import { useTheme } from "@contexts/ThemeContext";
+import useAuthStore from "@store/authStore";
+import { useOnboardingStore } from "@store/onboardingStore";
+import ProfileHeader from "@components/profile/ProfileHeader";
+import ProfileMenuSection from "@components/profile/ProfileMenuSection";
+import { AppButton, AppDropdown, AppText } from "@components/ui";
+import { Ionicons } from "@expo/vector-icons";
+import { Theme } from "@type/theme";
+import { PROFILE_MENU_ITEMS } from "@constants/profileMenuItems";
 
-const profile = () => {
-  const { setTheme } = useTheme();
+const Profile = () => {
+  const { setTheme, theme, colors } = useTheme();
+  const router = useRouter();
+  const { logout, isAuthenticated, user } = useAuthStore();
+  const { testOnboarding } = useOnboardingStore();
+
+  const handleLogout = async () => {
+    await logout();
+  };
+
+  const handleLogin = () => {
+    router.push("/login");
+  };
+
+  const handleOnboarding = () => {
+    router.replace("/onboarding");
+    testOnboarding(false);
+  };
 
   return (
-    <View className="flex-1 mx-2 mt-4">
-      <AppText className="text-[--text-secondary] text-2xl font-montserrat-bold">
-        Preffered Theme:
-      </AppText>
-      <TouchableOpacity
-        className="mx-3 my-2 p-4 border-[--accent-color] border-2 rounded-xl"
-        onPress={() => setTheme("system")}
-      >
-        <AppText className="text-[--text-secondary] text-2xl">
-          System theme
-        </AppText>
-      </TouchableOpacity>
+    <ScrollView className="flex-1 bg-[--bg-color]">
+      {/* Profile Header */}
+      {isAuthenticated && (
+        <ProfileHeader
+          name={user?.name || "Marion Torphy"}
+          progress={70}
+          onPress={() => console.log("Profile pressed")}
+        />
+      )}
 
-      <TouchableOpacity
-        className="mx-3 my-2 p-4 border-[--accent-color] border-2 rounded-xl"
-        onPress={() => setTheme("light")}
-      >
-        <AppText className="text-[--text-secondary] text-2xl">
-          Light theme
-        </AppText>
-      </TouchableOpacity>
+      {/* Menu Items */}
+      <ProfileMenuSection items={PROFILE_MENU_ITEMS} />
 
-      <TouchableOpacity
-        className="mx-3 my-2 p-4 border-[--accent-color] border-2 rounded-xl"
-        onPress={() => setTheme("dark")}
-      >
-        <AppText className="text-[--text-secondary] text-2xl">
-          Dark theme
-        </AppText>
-      </TouchableOpacity>
-    </View>
+      {/* Theme Selector */}
+      <View className="mx-4 mt-6 mb-4 p-4 bg-[--card-color] rounded-xl shadow-sm">
+        <View className="flex-row justify-between items-center">
+          <AppText>
+            Preferred Theme:
+          </AppText>
+          <View className="flex-1 ml-4">
+            <AppDropdown
+              label="Theme"
+              data={
+                [
+                  { label: "System", value: "system" },
+                  { label: "Dark", value: "dark" },
+                  { label: "Light", value: "light" },
+                ] as { label: string; value: Theme }[]
+              }
+              value={theme}
+              onChange={(item) => setTheme(item.value)}
+              focusColor={colors["--accent-color"]}
+              unfocusColor={colors["--text-primary"]}
+              renderRightIcon={(isFocus) => (
+                <Ionicons
+                  name={isFocus ? "caret-up" : "caret-down"}
+                  size={20}
+                  color={
+                    isFocus
+                      ? colors["--accent-color"]
+                      : colors["--text-primary"]
+                  }
+                />
+              )}
+              renderLeftIcon={(isFocus) => (
+                <Ionicons
+                  name={"contrast"}
+                  size={20}
+                  color={
+                    isFocus
+                      ? colors["--accent-color"]
+                      : colors["--text-primary"]
+                  }
+                  style={{ marginRight: 5 }}
+                />
+              )}
+              labelField="label"
+              valueField="value"
+              disableSearch
+            />
+          </View>
+        </View>
+      </View>
+
+      {/* Action Buttons */}
+      <View className="items-end justify-between mx-4 my-6 gap-4">
+        <AppButton
+          title={!isAuthenticated ? "Login" : "Logout"}
+          onPress={!isAuthenticated ? handleLogin : handleLogout}
+          textClassName="!text-[--accent-color]"
+          flat
+        />
+        <AppButton
+          title="Onboarding"
+          onPress={handleOnboarding}
+          flat
+        />
+      </View>
+    </ScrollView>
   );
-}
+};
 
-export default profile;
+export default Profile;
