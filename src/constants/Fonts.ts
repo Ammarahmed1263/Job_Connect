@@ -12,7 +12,7 @@ export type FontVariants = keyof typeof fontVariants;
 
 export const fontVariants = {
   light: {
-    fontFamily: fontFamily.regular,
+    fontFamily: fontFamily.light,
     fontSize: ms(16),
   },
   regular: {

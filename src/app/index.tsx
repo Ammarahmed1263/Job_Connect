@@ -13,6 +13,9 @@ export default function Index() {
   const [fontsLoaded] = useFonts({
     "Montserrat-Light": require("@assets/fonts/Montserrat-Light.ttf"),
     "Montserrat-Regular": require("@assets/fonts/Montserrat-Regular.ttf"),
+    "Montserrat-Medium": require("@assets/fonts/Montserrat-Medium.ttf"),
+    "Montserrat-SemiBold": require("@assets/fonts/Montserrat-SemiBold.ttf"),
+    "Montserrat-Bold": require("@assets/fonts/Montserrat-Bold.ttf"),
   });
   console.log("states: ", fontsLoaded, rootNavigationState?.key, isLoading);
 
