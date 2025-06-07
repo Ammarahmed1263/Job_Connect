@@ -34,7 +34,7 @@ export const useJobs = (size: number = 10, enabled: boolean = true) => {
         ? { page: pageNumber + 1, size }
         : undefined;
     },
-    enabled
+    enabled,
   });
 };
 
@@ -48,8 +48,47 @@ export const useJobById = (id: number) => {
 export const useSaveJob = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (id: number) => jobService.saveJob(id),
-    onSuccess: () => {
+    mutationFn: (job: JobDetails) => jobService.saveJob(job.id),
+    onMutate: async (job) => {
+      const jobSummary = {
+        id: job.id,
+        title: job.title,
+        location: job.location,
+        jobType: job.jobType,
+        postedDate: job.postedDate,
+        applicationsCount: job.applicationsCount,
+      };
+      console.log("save job: ", jobSummary);
+
+      await queryClient.cancelQueries({ queryKey: ["getSavedJobs"] });
+      const previousJobs = queryClient.getQueryData(["getSavedJobs"]);
+      queryClient.setQueryData(
+        ["getSavedJobs"],
+        ({ message, data }: { message: string; data: JobDetails[] }) => ({
+          message,
+          data: [
+            ...(data || []),
+            {
+              id: job.id,
+              title: job.title,
+              location: job.location,
+              jobType: job.jobType,
+              postedDate: job.postedDate,
+              applicationsCount: job.applicationsCount,
+            },
+          ],
+        })
+      );
+      return { previousJobs };
+    },
+    onError: (err, jobId, context) => {
+      console.log("save error: ", err);
+      if (context?.previousJobs) {
+        queryClient.setQueryData(["getSavedJobs"], context.previousJobs);
+      }
+    },
+    onSettled: () => {
+      console.log("save settled");
       queryClient.invalidateQueries({ queryKey: ["getSavedJobs"] });
     },
   });
@@ -59,7 +98,28 @@ export const useUnsaveJob = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (id: number) => jobService.unsaveJob(id),
-    onSuccess: () => {
+    onMutate: async (jobId) => {
+      await queryClient.cancelQueries({ queryKey: ["getSavedJobs"] });
+      const previousJobs = queryClient.getQueryData(["getSavedJobs"]);
+      queryClient.setQueryData(
+        ["getSavedJobs"],
+        ({ message, data }: { message: string; data: JobDetails[] }) => ({
+          message: message,
+          data: data.filter((job) => job.id !== jobId),
+        })
+      );
+
+      console.log("unsave mutation: ", jobId, previousJobs);
+      return { previousJobs };
+    },
+    onError: (err, jobId, context) => {
+      console.error("unsave error: ", err);
+      if (context?.previousJobs) {
+        queryClient.setQueryData(["getSavedJobs"], context.previousJobs);
+      }
+    },
+    onSettled: () => {
+      console.log("unsave settled");
       queryClient.invalidateQueries({ queryKey: ["getSavedJobs"] });
     },
   });

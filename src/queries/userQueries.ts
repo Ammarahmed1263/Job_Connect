@@ -5,6 +5,7 @@ export const useSavedJobs = (enabled: boolean = true) => {
   return useQuery({
     queryKey: ["getSavedJobs"],
     queryFn: () => userService.fetchSavedJobs(),
+    staleTime: 1000 * 60 * 5,
     enabled
   })
 };
