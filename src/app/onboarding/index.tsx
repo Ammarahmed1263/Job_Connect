@@ -4,11 +4,10 @@ import { hs, vs, width } from "@constants/metrics";
 import { ONBOARDING_SLIDES } from "@constants/onboardingSlides";
 import { useTheme } from "@contexts/ThemeContext";
 import { useSafeArea } from "@hooks/useSafeArea";
-import useAuthStore from "@store/authStore";
 import { useOnboardingStore } from "@store/onboardingStore";
 import clsx from "clsx";
 import { useRouter } from "expo-router";
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 import Animated, {
   runOnJS,
@@ -76,7 +75,7 @@ const OnboardingScreen = () => {
       />
 
       {/* Button */}
-      <View className="flex-row justify-between gap-4 m-4">
+      <View className="flex-row justify-between items-center gap-4 m-4">
         <AppButton
           title={''}
           onPress={handlePrev}
@@ -99,9 +98,10 @@ const OnboardingScreen = () => {
           scrollProgress={scrollProgress}
           dotsLength={ONBOARDING_SLIDES.length}
           activeDotIndex={currentSlide}
-          inactiveDotScale={0.23}
+          inactiveDotScale={0.7}
           setActiveIndex={handleDotPress}
           dotStyle={styles.paginationDot}
+          containerStyle={styles.paginationContainer}
         />
         <AppButton
           title={''}
@@ -122,7 +122,11 @@ export default OnboardingScreen;
 
 const styles = StyleSheet.create({
   paginationDot: {
-    width: hs(40),
-    height: vs(8),
+    width: hs(18),
+    height: vs(18),
+    borderRadius: hs(9),
   },
+  paginationContainer: {
+    gap:hs(10)
+  }
 });

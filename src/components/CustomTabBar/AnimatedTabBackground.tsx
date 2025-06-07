@@ -23,7 +23,7 @@ export const AnimatedTabBackground: FC<AnimatedTabBackgroundProps> = ({
   controlOffset,
   barHeight,
   fill,
-}: any) => {
+}) => {
   const pathAnimatedProps = useAnimatedProps(() => {
     const baseX = activeTabIndex.value * tabWidth + tabWidth / 2;
     return {

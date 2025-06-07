@@ -44,6 +44,7 @@ const Pagination: FC<PaginationProps> = ({
 }) => {
   const { colors } = useTheme();
   const dotWidth = ((dotStyle as ViewStyle)?.width ?? 30) as number;
+  const dotHeight = ((dotStyle as ViewStyle)?.height ?? 30) as number;
 
   return (
     <Animated.View style={[styles.paginationContainer, containerStyle]}>
@@ -60,6 +61,17 @@ const Pagination: FC<PaginationProps> = ({
             Extrapolation.CLAMP
           );
 
+          const height = interpolate(
+            scrollProgress.value,
+            [index - 1, index, index + 1],
+            [
+              dotHeight * inactiveDotScale,
+              dotHeight,
+              dotHeight * inactiveDotScale,
+            ],
+            Extrapolation.CLAMP
+          );
+
           const opacity = interpolate(
             scrollProgress.value,
             [index - 1, index, index + 1],
@@ -72,13 +84,14 @@ const Pagination: FC<PaginationProps> = ({
             [index - 1, index, index + 1],
             [
               colors['--text-muted'],
-              colors['--accent-color'],
+              colors['--primary-100'],
               colors['--text-muted'],
             ]
           );
 
           return {
             width,
+            height,
             backgroundColor,
             opacity,
           };
@@ -95,7 +108,6 @@ const Pagination: FC<PaginationProps> = ({
             <Animated.View
               style={[
                 {
-                  height: vs(8),
                   borderRadius: hs(4),
                 },
                 dotStyle,
