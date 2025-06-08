@@ -23,12 +23,12 @@ const NavigationHeader: FC<NavigationHeaderProps> = ({
 
   return (
     <View
-      className="flex-row items-center justify-between px-4 py-2 min-h-14"
+      className="flex-row items-center justify-between px-4 py-3 min-h-14"
       style={{
         marginTop: top,
       }}
     >
-      <View className="w-20 h-12 items-center justify-center">
+      <View className="w-20 h-12 items-start justify-center">
         {showBackButton && router.canGoBack() && (
           <TouchableOpacity
             className="w-12 h-full rounded-full border-2 items-center justify-center border-[--border-color]"
@@ -36,7 +36,7 @@ const NavigationHeader: FC<NavigationHeaderProps> = ({
           >
             <AppIcon
               name="arrow-left"
-              size={24}
+              size={28}
               color={colors["--accent-color"]}
             />
           </TouchableOpacity>
@@ -58,7 +58,7 @@ const NavigationHeader: FC<NavigationHeaderProps> = ({
       )}
 
       {children && (
-        <View className="w-18 h-12 items-center justify-center">
+        <View className="w-18 h-12 items-end justify-center">
           {children}
         </View>
       )}

@@ -2,6 +2,7 @@ import AboutTab from "@components/jobs/detailsTabs/AboutTab";
 import CompanyTab from "@components/jobs/detailsTabs/CompanyTab";
 import ReviewTab from "@components/jobs/detailsTabs/ReviewTab";
 import { AppButton, AppIcon, AppText } from "@components/ui";
+import NavigationHeader from "@components/ui/NavigationHeader";
 import { useTheme } from "@contexts/ThemeContext";
 import { Ionicons } from "@expo/vector-icons";
 import { useSafeArea } from "@hooks/useSafeArea";
@@ -9,8 +10,8 @@ import { useWithAuth } from "@hooks/useWithAuth";
 import { useJobById, useSaveJob, useUnsaveJob } from "@queries/jobQueries";
 import { useSavedJobs } from "@queries/userQueries";
 import { JobDetails as JobDetailsType } from "@type/jobTypes";
-import { formatSalary } from "@utils";
-import { router, useLocalSearchParams } from "expo-router";
+import { formatSalary, getSeniorityLevel } from "@utils";
+import { useLocalSearchParams } from "expo-router";
 import { useState } from "react";
 import { ScrollView, TouchableOpacity, View } from "react-native";
 
@@ -26,18 +27,18 @@ const JobDetails = () => {
   const { mutate: unsaveJob } = useUnsaveJob();
   const { mutate: saveJob } = useSaveJob();
   const { requireAuth } = useWithAuth();
-  console.log('saved jobs: ', savedJobs?.data)
-  const isSaved = job && savedJobs?.data?.some(
-    (savedJob: JobDetailsType) => savedJob.id === job.id
-  );
-  
-  console.log("data here: ", job);
+  console.log("saved jobs: ", savedJobs?.data);
+  const isSaved =
+    job &&
+    savedJobs?.data?.some((savedJob: JobDetailsType) => savedJob.id === job.id);
+
+  console.log("job details: ", job);
 
   const handleToggleSave = async () => {
     if (requireAuth()) return;
 
     try {
-      isSaved ? unsaveJob(job.id) : saveJob(job);
+      isSaved ? unsaveJob(job.id) : saveJob(job!);
     } catch (error) {
       console.log("Error toggling job save:", error);
     }
@@ -60,28 +61,19 @@ const JobDetails = () => {
   }
 
   return (
-    <View className="flex-1 bg-[--bg-color]" style={{ paddingTop: top }}>
-      {/* Header */}
-      <View className="flex-row justify-between items-center p-4">
-        <TouchableOpacity onPress={() => router.back()}>
-          {/* <Ionicons name="arrow-back" size={24} color={colors["--text-primary"]} /> */}
-          <AppIcon
-            name="arrow-left"
-            color={colors["--text-primary"]}
-            size={30}
-          />
-        </TouchableOpacity>
+    <View className="flex-1 bg-[--bg-color]">
+      <NavigationHeader>
         <View className="flex-row gap-4">
           <TouchableOpacity onPress={handleToggleSave}>
             <AppIcon
               name={isSaved ? "bookmark" : "bookmark-outline"}
               color={colors["--text-primary"]}
-              size={26}
+              size={28}
             />
           </TouchableOpacity>
           <AppIcon name="share" color={colors["--text-primary"]} size={28} />
         </View>
-      </View>
+      </NavigationHeader>
 
       <ScrollView className="flex-1">
         {/* Company Info */}
@@ -138,7 +130,7 @@ const JobDetails = () => {
               />
               <AppText className="color-[--text-muted]">Job Type</AppText>
             </View>
-            <AppText className="text-center">Full - Time</AppText>
+            <AppText className="text-center">{job.jobType}</AppText>
           </View>
 
           <View className="w-[48%] bg-[--card-color] p-4 rounded-xl mb-4">
@@ -162,7 +154,9 @@ const JobDetails = () => {
               />
               <AppText className="color-[--text-muted]">Level</AppText>
             </View>
-            <AppText className="text-center">Internship</AppText>
+            <AppText className="text-center">
+              {getSeniorityLevel(job?.experience)}
+            </AppText>
           </View>
         </View>
 
