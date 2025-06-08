@@ -28,7 +28,7 @@ export const colors: { light: ThemeData; dark: ThemeData } = {
   dark: {
     "--bg-color": "#121212",
     "--card-color": "#2a2a2a",
-    "--border-color": "#2D2D2D",
+    "--border-color": "#6c6c6c",
     "--text-primary": "#D2DCFF",
     "--text-secondary": "#A5B4FC",
     "--text-muted": "#9CA3AF",

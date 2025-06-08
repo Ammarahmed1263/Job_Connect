@@ -21,14 +21,14 @@ export const fontVariants = {
   },
   medium: {
     fontFamily: fontFamily.medium,
-    fontSize: ms(24),
+    fontSize: ms(22),
   },
   semiBold: {
     fontFamily: fontFamily.semiBold,
-    fontSize: ms(28),
+    fontSize: ms(26),
   },
   bold: {
     fontFamily: fontFamily.bold,
-    fontSize: ms(30),
+    fontSize: ms(28),
   },
 }

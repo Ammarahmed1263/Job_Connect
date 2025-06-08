@@ -20,6 +20,8 @@ import {
   share,
   map_point,
   map_point_outline,
+  magnifier,
+  close_circle
 } from "@assets/icons";
 import AppText from "./AppText";
 
@@ -43,6 +45,8 @@ const icons: Record<string, FC<SvgProps>> = {
   share: share,
   "map-point": map_point,
   "map-point-outline": map_point_outline,
+  magnifier: magnifier,
+  "close-circle": close_circle,
 };
 
 interface IconProps extends SvgProps {
