@@ -13,7 +13,7 @@ export interface JobDetails {
   title: string;
   status: string;
   jobType: string;
-  workPlace: string;
+  workPlace: 'Remote' | 'On-site' | 'Hybrid';
   experience: string;
   daysRemaining: number;
   applicationsCount: number;

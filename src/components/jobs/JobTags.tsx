@@ -17,7 +17,7 @@ const JobTags: FC<JobTagsProps> = ({ tags }) => {
     >
       {tags.map((tag, index) => (
         <View key={tag + index} className="bg-slate-500/30 dark:bg-white/30 py-1 px-3 rounded-sm">
-          <AppText variant="light" className="text-[--bg-color]">
+          <AppText variant="light" className="!text-[--bg-color]">
             {tag}
           </AppText>
         </View>

@@ -1,3 +1,4 @@
+import { JobDetails } from "@type/jobTypes";
 import apiClient from "api/apiClient";
 import { endpoints } from "api/endpoints";
 
@@ -14,10 +15,10 @@ const jobService = {
       throw error;
     }
   },
-  fetchJobById: async (id: number) => {
+  fetchJobById: async (id: number): Promise<JobDetails> => {
     try {
       const {data} = await apiClient.get(jobsBase.getJobById(id));
-      console.log('api responded', data);
+      console.log('fetch jobs responded: ', data);
       return data.data;
     } catch (error) {
       throw error;
