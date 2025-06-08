@@ -24,4 +24,10 @@ export const endpoints = {
     unsaveJob: "JobSeeker/UnsaveJob",
     applyForJob: "JobSeeker/ApplyForJob",
   },
+  home: {
+    getAllJobs: (page: number, size: number) =>
+      `Home/GetAllJobs?pageNumber=${page}&pageSize=${size}`,
+    getAllTags: "Home/GetAllTags",
+    contactUs: "Home/ContactUs",
+  }
 };

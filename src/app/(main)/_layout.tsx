@@ -1,11 +1,11 @@
-import { Stack, Redirect } from "expo-router";
-import React from "react";
-import useAuthStore from "@store/authStore";
-import { View } from "react-native";
 import { AppText } from "@components/ui";
+import useAuthStore from "@store/authStore";
+import { Stack } from "expo-router";
+import React from "react";
+import { View } from "react-native";
 
 const MainLayout = () => {
-  const { isAuthenticated, isLoading } = useAuthStore();
+  const { isLoading } = useAuthStore();
 
   if (isLoading) {
     return (

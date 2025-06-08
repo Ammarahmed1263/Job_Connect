@@ -1,6 +1,7 @@
 import { JobDetails } from "@type/jobTypes";
 import apiClient from "api/apiClient";
 import { endpoints } from "api/endpoints";
+import { AxiosError } from "axios";
 
 const jobsBase = endpoints.jobs;
 
@@ -8,10 +9,10 @@ const jobService = {
   fetchAllJobs: async (page: number = 1, size: number = 10) => {
     try {
       const {data} = await apiClient.get(jobsBase.getAllJobs(page, size));
-      // console.log('get all jobs called here: ', data.data.length);
       return data;
     } catch (error) {
-      console.error('error fetching all jobs: ', error);
+      const axiosError = error as AxiosError;
+      console.error('error fetching all jobs: ', axiosError.response?.data);
       throw error;
     }
   },

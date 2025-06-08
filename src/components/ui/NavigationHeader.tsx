@@ -5,6 +5,7 @@ import { useSafeArea } from "@hooks/useSafeArea";
 import { useRouter } from "expo-router";
 import AppText from "./AppText";
 import { useTheme } from "@contexts/ThemeContext";
+import AppButton from "./AppButton";
 
 interface NavigationHeaderProps {
   children?: ReactNode;
@@ -23,23 +24,26 @@ const NavigationHeader: FC<NavigationHeaderProps> = ({
 
   return (
     <View
-      className="flex-row items-center justify-between px-4 py-3 min-h-14"
+      className="flex-row items-center justify-between px-4 min-h-14"
       style={{
         marginTop: top,
       }}
     >
       <View className="w-20 h-12 items-start justify-center">
         {showBackButton && router.canGoBack() && (
-          <TouchableOpacity
-            className="w-12 h-full rounded-full border-2 items-center justify-center border-[--border-color]"
+          <AppButton
+            title=""
             onPress={() => router.back()}
+            flat
+            wrapperClassName="w-12 h-full border-2 items-center justify-center border-[--border-color]"
+            className="flex-1"
           >
             <AppIcon
               name="arrow-left"
-              size={28}
+              size={30}
               color={colors["--accent-color"]}
             />
-          </TouchableOpacity>
+          </AppButton>
         )}
       </View>
 
@@ -58,9 +62,7 @@ const NavigationHeader: FC<NavigationHeaderProps> = ({
       )}
 
       {children && (
-        <View className="w-18 h-12 items-end justify-center">
-          {children}
-        </View>
+        <View className="w-18 h-12 items-end justify-center">{children}</View>
       )}
     </View>
   );

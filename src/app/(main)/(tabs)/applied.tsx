@@ -1,5 +1,5 @@
 import JobCard from "@components/jobs/JobCard";
-import { AppText } from "@components/ui";
+import { AppText, NavigationHeader } from "@components/ui";
 import { hs, vs } from "@constants/metrics";
 import useAuthStore from "@store/authStore";
 import { useAppliedJobs } from "@queries/userQueries";
@@ -27,9 +27,7 @@ const Applied = () => {
 
   return (
     <View className="flex-1">
-      <AppText variant="bold" className="text-center">
-        {data?.message}
-      </AppText>
+      <NavigationHeader showBackButton={false} title="Applied Jobs" />
       <FlatList
         data={data?.data}
         keyExtractor={(item) => item.id.toString()}
@@ -38,20 +36,20 @@ const Applied = () => {
             item={item}
             rightComponent={
               <View className="bg-[--accent-color] py-1 px-4 rounded-sm">
-                <AppText className='color-[--bg-color]' variant="light">{item?.status}</AppText>
+                <AppText className="color-[--bg-color]" variant="light">
+                  {item?.status}
+                </AppText>
               </View>
             }
             compact
           />
         )}
         ListEmptyComponent={() => (
+          <View className="flex-1 justify-center items-center">
           <AppText className="text-center">No Applied Jobs Yet</AppText>
+          </View>
         )}
-        contentContainerStyle={{
-          gap: vs(25),
-          paddingHorizontal: hs(15),
-          paddingVertical: vs(20),
-        }}
+        contentContainerClassName="pt-2 pb-4 gap-4 px-4 grow"
       />
     </View>
   );

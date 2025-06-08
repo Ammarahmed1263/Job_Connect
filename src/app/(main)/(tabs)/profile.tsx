@@ -1,18 +1,20 @@
-import React from "react";
-import { View, ScrollView } from "react-native";
-import { useRouter } from "expo-router";
-import { useTheme } from "@contexts/ThemeContext";
-import useAuthStore from "@store/authStore";
-import { useOnboardingStore } from "@store/onboardingStore";
 import ProfileHeader from "@components/profile/ProfileHeader";
 import ProfileMenuSection from "@components/profile/ProfileMenuSection";
 import { AppButton, AppDropdown, AppText } from "@components/ui";
-import { Ionicons } from "@expo/vector-icons";
-import { Theme } from "@type/theme";
 import { PROFILE_MENU_ITEMS } from "@constants/profileMenuItems";
+import { useTheme } from "@contexts/ThemeContext";
+import { Ionicons } from "@expo/vector-icons";
+import { useSafeArea } from "@hooks/useSafeArea";
+import useAuthStore from "@store/authStore";
+import { useOnboardingStore } from "@store/onboardingStore";
+import { Theme } from "@type/theme";
+import { useRouter } from "expo-router";
+import React from "react";
+import { ScrollView, View } from "react-native";
 
 const Profile = () => {
   const { setTheme, theme, colors } = useTheme();
+  const { top } = useSafeArea();
   const router = useRouter();
   const { logout, isAuthenticated, user } = useAuthStore();
   const { testOnboarding } = useOnboardingStore();
@@ -31,7 +33,7 @@ const Profile = () => {
   };
 
   return (
-    <ScrollView className="flex-1 bg-[--bg-color]">
+    <ScrollView className="flex-1 bg-[--bg-color]" style={{ paddingTop: top }}>
       {/* Profile Header */}
       {isAuthenticated && (
         <ProfileHeader
@@ -47,9 +49,7 @@ const Profile = () => {
       {/* Theme Selector */}
       <View className="mx-4 mt-6 mb-4 p-4 bg-[--card-color] rounded-xl shadow-sm">
         <View className="flex-row justify-between items-center">
-          <AppText>
-            Preferred Theme:
-          </AppText>
+          <AppText>Preferred Theme:</AppText>
           <View className="flex-1 ml-4">
             <AppDropdown
               label="Theme"
@@ -103,11 +103,7 @@ const Profile = () => {
           textClassName="!text-[--accent-color]"
           flat
         />
-        <AppButton
-          title="Onboarding"
-          onPress={handleOnboarding}
-          flat
-        />
+        <AppButton title="Onboarding" onPress={handleOnboarding} flat />
       </View>
     </ScrollView>
   );

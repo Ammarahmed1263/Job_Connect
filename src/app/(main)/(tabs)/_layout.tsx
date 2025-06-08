@@ -10,7 +10,7 @@ export default function TabLayout() {
   const { top, bottom } = useSafeArea();
 
   return (
-    <View style={{ paddingTop: top }} className="flex-1">
+    <View className="flex-1">
       <Tabs
         tabBar={(props) => <CustomTabBar {...props} />}
         screenOptions={{

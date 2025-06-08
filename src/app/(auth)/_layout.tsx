@@ -8,7 +8,7 @@ export default function AuthLayout() {
     <Stack
       screenOptions={{
         headerShown: false,
-        animation:  'none',
+        // animation:  'none',
       }}
     >
       <Stack.Screen name="login" />

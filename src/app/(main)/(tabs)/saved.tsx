@@ -1,5 +1,5 @@
 import JobCard from "@components/jobs/JobCard";
-import { AppText } from "@components/ui";
+import { AppText, NavigationHeader } from "@components/ui";
 import { hs, vs } from "@constants/metrics";
 import { useSavedJobs } from "@queries/userQueries";
 import useAuthStore from "@store/authStore";
@@ -28,21 +28,17 @@ const Saved = () => {
 
   return (
     <View className="flex-1">
-      <AppText variant="bold" className="text-center">
-        {data?.message}
-      </AppText>
+      <NavigationHeader showBackButton={false} title="Saved Jobs"/>
       <FlatList
         data={data?.data}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => <JobCard item={item} />}
         ListEmptyComponent={() => (
+          <View className="flex-1 justify-center items-center">
           <AppText className="text-center">No jobs saved</AppText>
+          </View>
         )}
-        contentContainerStyle={{
-          gap: vs(25),
-          paddingHorizontal: hs(15),
-          paddingVertical: vs(20),
-        }}
+        contentContainerClassName="pt-2 pb-4 gap-4 px-4 grow"
       />
     </View>
   );

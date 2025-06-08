@@ -2,14 +2,12 @@ import JobCard from "@components/jobs/JobCard";
 import { AppText } from "@components/ui";
 import { hs, vs } from "@constants/metrics";
 import useAuthStore from "@store/authStore";
-import { JobDetails } from "@type/jobTypes";
-import { secureStorage } from "lib/storage/secureStorage";
-import { useJobs } from "queries/jobQueries";
-import React, { useEffect, useRef } from "react";
+import { useJobs } from "@queries/jobQueries";
+import React from "react";
 import { ActivityIndicator, FlatList, View } from "react-native";
 
 const JobListing = () => {
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isFetching } =
+  const { data, fetchNextPage, hasNextPage, isFetching } =
     useJobs(4);
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const transformedData = data?.pages.flatMap((page) => page.data) || [];
@@ -17,7 +15,7 @@ const JobListing = () => {
 
   if (!isAuthenticated) {
     return (
-      <View className="flex-1 items-center justify-center bg-red-200">
+      <View className="flex-1 items-center justify-center">
         <AppText>You are not authenticated</AppText>
       </View>
     );
@@ -40,9 +38,9 @@ const JobListing = () => {
           paddingBottom: vs(20),
         }}
         onEndReached={() => hasNextPage && !isFetching && fetchNextPage()}
-        onEndReachedThreshold={0.1}
+        onEndReachedThreshold={0.5}
         ListFooterComponent={
-          hasNextPage ? (
+          isFetching ? (
             <ActivityIndicator size="small" />
           ) : ( 
             <View>

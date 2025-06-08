@@ -1,8 +1,7 @@
 import AboutTab from "@components/jobs/detailsTabs/AboutTab";
 import CompanyTab from "@components/jobs/detailsTabs/CompanyTab";
 import ReviewTab from "@components/jobs/detailsTabs/ReviewTab";
-import { AppButton, AppIcon, AppText } from "@components/ui";
-import NavigationHeader from "@components/ui/NavigationHeader";
+import { AppButton, AppIcon, AppText, NavigationHeader } from "@components/ui";
 import { useTheme } from "@contexts/ThemeContext";
 import { Ionicons } from "@expo/vector-icons";
 import { useSafeArea } from "@hooks/useSafeArea";
@@ -130,7 +129,7 @@ const JobDetails = () => {
               />
               <AppText className="color-[--text-muted]">Job Type</AppText>
             </View>
-            <AppText className="text-center">{job.jobType}</AppText>
+            <AppText className="text-center">{job?.jobType}</AppText>
           </View>
 
           <View className="w-[48%] bg-[--card-color] p-4 rounded-xl mb-4">
@@ -142,7 +141,7 @@ const JobDetails = () => {
               />
               <AppText className="color-[--text-muted]">Working Model</AppText>
             </View>
-            <AppText className="text-center">Remote</AppText>
+            <AppText className="text-center">{job?.workPlace}</AppText>
           </View>
 
           <View className="w-[48%] bg-[--card-color] p-4 rounded-xl mb-4">
