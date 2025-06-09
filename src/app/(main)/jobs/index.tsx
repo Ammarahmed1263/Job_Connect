@@ -7,8 +7,7 @@ import React from "react";
 import { ActivityIndicator, FlatList, View } from "react-native";
 
 const JobListing = () => {
-  const { data, fetchNextPage, hasNextPage, isFetching } =
-    useJobs(4);
+  const { data, fetchNextPage, hasNextPage, isFetching } = useJobs(4);
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const transformedData = data?.pages.flatMap((page) => page.data) || [];
   console.log("data here: ", data);
@@ -32,17 +31,13 @@ const JobListing = () => {
         renderItem={({ item }) => (
           <JobCard item={item} wrapperStyle={{ width: "100%" }} />
         )}
-        contentContainerStyle={{
-          paddingHorizontal: hs(15),
-          gap: hs(10),
-          paddingBottom: vs(20),
-        }}
+        contentContainerClassName="pb-4 gap-4 px-4"
         onEndReached={() => hasNextPage && !isFetching && fetchNextPage()}
         onEndReachedThreshold={0.5}
         ListFooterComponent={
           isFetching ? (
             <ActivityIndicator size="small" />
-          ) : ( 
+          ) : (
             <View>
               <AppText className="text-center">no more jobs</AppText>
             </View>

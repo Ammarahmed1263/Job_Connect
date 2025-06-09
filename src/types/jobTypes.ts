@@ -8,23 +8,34 @@ export interface Employer {
   logoBase64: string | null;
 }
 
-export interface JobDetails {
+export interface jobSummary {
   id: number;
   title: string;
   status: string;
   jobType: string;
-  workPlace: 'Remote' | 'On-site' | 'Hybrid';
+  workPlace: "Remote" | "On-site" | "Hybrid";
   experience: string;
-  daysRemaining: number;
   applicationsCount: number;
   postedDate: string;
-  location: string;
-  shortListed: boolean;
-  description: string;
   minSalary: number;
   maxSalary: number;
   salaryType: string;
+  employer: Employer;
+}
+export interface JobDetails extends jobSummary {
+  applicationsCount: number;
+  location: string;
+  shortListed: boolean;
+  description: string;
   tags: string[];
   responsibilities: string[];
-  employer: Employer;
+}
+
+export interface JobsApiResponse {
+  message: string;
+  data: JobDetails[];
+  pageNumber: number;
+  totalPages: number;
+  pageSize: number;
+  totalCount: number;
 }

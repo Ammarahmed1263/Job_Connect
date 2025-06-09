@@ -12,14 +12,7 @@ export const useJobs = (size: number = 10, enabled: boolean = true) => {
     queryKey: ["getAllJobs", size],
     queryFn: async ({
       pageParam,
-    }): Promise<{
-      pageNumber: number;
-      totalPages: number;
-      data: JobDetails;
-      message: string;
-      pageSize: number;
-      totalCount: number;
-    }> => {
+    }) => {
       console.log("page param: ", pageParam);
       const response = await jobService.fetchAllJobs(
         pageParam.page,

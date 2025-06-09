@@ -1,4 +1,4 @@
-import { JobDetails } from "@type/jobTypes";
+import { JobDetails, JobsApiResponse } from "@type/jobTypes";
 import apiClient from "api/apiClient";
 import { endpoints } from "api/endpoints";
 import { AxiosError } from "axios";
@@ -6,20 +6,23 @@ import { AxiosError } from "axios";
 const jobsBase = endpoints.jobs;
 
 const jobService = {
-  fetchAllJobs: async (page: number = 1, size: number = 10) => {
+  fetchAllJobs: async (
+    page: number = 1,
+    size: number = 10
+  ): Promise<JobsApiResponse> => {
     try {
-      const {data} = await apiClient.get(jobsBase.getAllJobs(page, size));
+      const { data } = await apiClient.get(jobsBase.getAllJobs(page, size));
       return data;
     } catch (error) {
       const axiosError = error as AxiosError;
-      console.error('error fetching all jobs: ', axiosError.response?.data);
+      console.error("error fetching all jobs: ", axiosError.response?.data);
       throw error;
     }
   },
   fetchJobById: async (id: number): Promise<JobDetails> => {
     try {
-      const {data} = await apiClient.get(jobsBase.getJobById(id));
-      console.log('fetch jobs responded: ', data);
+      const { data } = await apiClient.get(jobsBase.getJobById(id));
+      console.log("fetch jobs responded: ", data);
       return data.data;
     } catch (error) {
       throw error;
@@ -27,7 +30,7 @@ const jobService = {
   },
   saveJob: async (jobId: number) => {
     try {
-      const {data} = await apiClient.post(jobsBase.saveJob, {
+      const { data } = await apiClient.post(jobsBase.saveJob, {
         jobId,
       });
       console.log(data);
@@ -39,7 +42,7 @@ const jobService = {
   },
   unsaveJob: async (jobId: number) => {
     try {
-      const {data} = await apiClient.post(jobsBase.unsaveJob, {
+      const { data } = await apiClient.post(jobsBase.unsaveJob, {
         jobId,
       });
       console.log(data);
@@ -51,11 +54,11 @@ const jobService = {
   },
   applyForJob: async (jobDetails: any) => {
     try {
-      const {data} = await apiClient.postForm(jobsBase.applyForJob, {
+      const { data } = await apiClient.postForm(jobsBase.applyForJob, {
         jobId: 1,
-        coverLetter: '',
-        resume: '',
-        selectedResumePath: ''
+        coverLetter: "",
+        resume: "",
+        selectedResumePath: "",
       });
       console.log(data);
       return data;
