@@ -22,7 +22,7 @@ const JobSection = ({ title, subtitle, data, onSeeAll }: JobSectionProps) => {
   }
 
   if (data.length === 0) {
-    return <AppText className="text-center">Sorry...section not available now</AppText>;
+    return null;
   }
 
   return (
@@ -49,7 +49,7 @@ const JobSection = ({ title, subtitle, data, onSeeAll }: JobSectionProps) => {
         data={data}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => <JobCard item={item} wrapperStyle={{width: width - width * 0.15}}/>}
-        contentContainerClassName="!px-5 !gap-4 !items-center"
+        contentContainerClassName="pb-4 gap-4 px-4 items-center"
         showsHorizontalScrollIndicator={false}
         horizontal
       />

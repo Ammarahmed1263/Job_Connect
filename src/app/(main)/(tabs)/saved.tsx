@@ -1,6 +1,5 @@
 import JobCard from "@components/jobs/JobCard";
 import { AppText, NavigationHeader } from "@components/ui";
-import { hs, vs } from "@constants/metrics";
 import { useSavedJobs } from "@queries/userQueries";
 import useAuthStore from "@store/authStore";
 import React from "react";

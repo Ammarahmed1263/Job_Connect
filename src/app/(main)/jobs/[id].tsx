@@ -1,3 +1,4 @@
+import DetailsBlock from "@components/jobs/DetailsBlock";
 import AboutTab from "@components/jobs/detailsTabs/AboutTab";
 import CompanyTab from "@components/jobs/detailsTabs/CompanyTab";
 import ReviewTab from "@components/jobs/detailsTabs/ReviewTab";
@@ -8,16 +9,16 @@ import { useSafeArea } from "@hooks/useSafeArea";
 import { useWithAuth } from "@hooks/useWithAuth";
 import { useJobById, useSaveJob, useUnsaveJob } from "@queries/jobQueries";
 import { useSavedJobs } from "@queries/userQueries";
+import { useRecentJobsStore } from "@store/recentJobsStore";
 import { JobDetails as JobDetailsType } from "@type/jobTypes";
 import { formatSalary, getSeniorityLevel } from "@utils";
 import { useLocalSearchParams } from "expo-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ScrollView, TouchableOpacity, View } from "react-native";
 
 const JobDetails = () => {
   const { id } = useLocalSearchParams();
   const { colors } = useTheme();
-  const { top } = useSafeArea();
   const [activeTab, setActiveTab] = useState<"about" | "company" | "review">(
     "about"
   );
@@ -25,6 +26,7 @@ const JobDetails = () => {
   const { data: savedJobs } = useSavedJobs();
   const { mutate: unsaveJob } = useUnsaveJob();
   const { mutate: saveJob } = useSaveJob();
+  const addRecentJob = useRecentJobsStore((state) => state.addRecentJob);
   const { requireAuth } = useWithAuth();
   console.log("saved jobs: ", savedJobs?.data);
   const isSaved =
@@ -32,6 +34,26 @@ const JobDetails = () => {
     savedJobs?.data?.some((savedJob: JobDetailsType) => savedJob.id === job.id);
 
   console.log("job details: ", job);
+
+  useEffect(() => {
+    if (job) {
+      console.log("added to recent successfully");
+      addRecentJob({
+        id: job.id,
+        title: job.title,
+        status: job.status,
+        jobType: job.jobType,
+        workPlace: job.workPlace,
+        experience: job.experience,
+        applicationsCount: job.applicationsCount,
+        postedDate: job.postedDate,
+        minSalary: job.minSalary,
+        maxSalary: job.maxSalary,
+        salaryType: job.salaryType,
+        employer: job.employer,
+      });
+    }
+  }, [job]);
 
   const handleToggleSave = async () => {
     if (requireAuth()) return;
@@ -74,7 +96,7 @@ const JobDetails = () => {
         </View>
       </NavigationHeader>
 
-      <ScrollView className="flex-1">
+      <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
         {/* Company Info */}
         <View className="items-center py-4">
           <View className="w-20 aspect-square rounded-full bg-[--accent-color] items-center justify-center mb-4">
@@ -103,60 +125,29 @@ const JobDetails = () => {
 
         {/* Job Details Grid */}
         <View className="flex-row flex-wrap justify-between px-4 py-2">
-          <View className="w-[48%] bg-[--card-color] p-4 rounded-xl mb-4">
-            <View className="flex-row items-center gap-2 mb-2">
-              <Ionicons
-                name="wallet-outline"
-                size={20}
-                color={colors["--accent-color"]}
-              />
-              <AppText className="color-[--text-muted]">
-                Salary ({job?.salaryType})
-              </AppText>
-            </View>
-            <AppText className="text-center">
-              ${formatSalary(job?.minSalary)}k - ${formatSalary(job?.maxSalary)}
-              k
-            </AppText>
-          </View>
+          <DetailsBlock
+            title={`Salary (${job?.salaryType})`}
+            icon="wallet-outline"
+            value={`$${formatSalary(job?.minSalary)}k - $${formatSalary(
+              job?.maxSalary
+            )}k`}
+          />
 
-          <View className="w-[48%] bg-[--card-color] p-4 rounded-xl mb-4">
-            <View className="flex-row items-center gap-2 mb-2">
-              <Ionicons
-                name="briefcase-outline"
-                size={20}
-                color={colors["--accent-color"]}
-              />
-              <AppText className="color-[--text-muted]">Job Type</AppText>
-            </View>
-            <AppText className="text-center">{job?.jobType}</AppText>
-          </View>
-
-          <View className="w-[48%] bg-[--card-color] p-4 rounded-xl mb-4">
-            <View className="flex-row items-center gap-2 mb-2">
-              <Ionicons
-                name="desktop-outline"
-                size={20}
-                color={colors["--accent-color"]}
-              />
-              <AppText className="color-[--text-muted]">Working Model</AppText>
-            </View>
-            <AppText className="text-center">{job?.workPlace}</AppText>
-          </View>
-
-          <View className="w-[48%] bg-[--card-color] p-4 rounded-xl mb-4">
-            <View className="flex-row items-center gap-2 mb-2">
-              <Ionicons
-                name="stats-chart"
-                size={20}
-                color={colors["--accent-color"]}
-              />
-              <AppText className="color-[--text-muted]">Level</AppText>
-            </View>
-            <AppText className="text-center">
-              {getSeniorityLevel(job?.experience)}
-            </AppText>
-          </View>
+          <DetailsBlock
+            title="Job Type"
+            icon="briefcase-outline"
+            value={job?.jobType}
+          />
+          <DetailsBlock
+            title="Working Model"
+            icon="desktop-outline"
+            value={job?.workPlace}
+          />
+          <DetailsBlock
+            title="Level"
+            icon="stats-chart"
+            value={getSeniorityLevel(job?.experience) ?? "N/A"}
+          />
         </View>
 
         {/* Tabs */}
@@ -202,3 +193,6 @@ const JobDetails = () => {
 };
 
 export default JobDetails;
+function addRecentJob(job: JobDetailsType) {
+  throw new Error("Function not implemented.");
+}

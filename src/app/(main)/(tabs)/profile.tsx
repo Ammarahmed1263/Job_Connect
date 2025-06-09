@@ -33,13 +33,13 @@ const Profile = () => {
   };
 
   return (
-    <ScrollView className="flex-1 bg-[--bg-color]" style={{ paddingTop: top }}>
+    <ScrollView className="flex-1 bg-[--bg-color]" style={{ marginTop: top }} showsVerticalScrollIndicator={false}>
       {/* Profile Header */}
       {isAuthenticated && (
         <ProfileHeader
           name={user?.name || "Marion Torphy"}
           progress={70}
-          onPress={() => console.log("Profile pressed")}
+          onPress={() => router.push("/complete-profile")}
         />
       )}
 
