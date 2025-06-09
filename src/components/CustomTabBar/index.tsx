@@ -12,7 +12,7 @@ import { useTheme } from "@contexts/ThemeContext";
 import { useSafeArea } from "@hooks/useSafeArea";
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import React, { useCallback, useEffect, useState } from "react";
-import { BackHandler, LayoutChangeEvent, View } from 'react-native';
+import { BackHandler, LayoutChangeEvent, View } from "react-native";
 import {
   useAnimatedStyle,
   useSharedValue,
@@ -78,12 +78,13 @@ const CustomTabBar: React.FC<BottomTabBarProps> = ({
   }, []);
 
   useEffect(() => {
-    const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
-      if (state.index > 0) {
-        animateTab(0);
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      () => {
+        animateTab(state.index);
+        return false;
       }
-      return false;
-    });
+    );
 
     return () => backHandler.remove();
   }, [animateTab, state.index]);
