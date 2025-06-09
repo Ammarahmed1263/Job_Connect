@@ -15,11 +15,7 @@ import { TextInput, View } from "react-native";
 const Explore = () => {
   const router = useRouter();
   const { top, bottom } = useSafeArea();
-  const {
-    barState,
-    setBarState,
-    clearSearchText,
-  } = useSearchStore();
+  const { barState, setBarState, clearSearchText } = useSearchStore();
   const inputRef = useRef<TextInput>(null);
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
 
@@ -33,7 +29,9 @@ const Explore = () => {
     inputRef.current?.blur();
   };
 
-
+  const blurSearchInput = () => {
+    inputRef.current?.blur();
+  };
 
   const renderScreenContent = () => {
     if (!isAuthenticated) {
@@ -48,7 +46,7 @@ const Explore = () => {
       case "idle":
         return <ExploreContent />;
       case "focused":
-        return <EmptySearch />;
+        return <EmptySearch onSearchItemPress={blurSearchInput} />;
       case "submitted":
         return <SearchResults />;
     }
@@ -56,7 +54,7 @@ const Explore = () => {
 
   return (
     <View className="flex-1" style={{ marginTop: top, marginBottom: bottom }}>
-      <ExploreHeader 
+      <ExploreHeader
         inputRef={inputRef}
         onBackButtonPress={handleBackButton}
         onNotificationPress={handleNotificationPress}

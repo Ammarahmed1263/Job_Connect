@@ -12,7 +12,6 @@ import {
   View,
 } from "react-native";
 
-// interface SearchBarProps extends TextInputProps {}
 
 const SearchBar = forwardRef<TextInput, TextInputProps>(
   ({ onFocus, onBlur, ...props }, ref) => {
@@ -50,16 +49,12 @@ const SearchBar = forwardRef<TextInput, TextInputProps>(
     const handleSubmit = (
       e: NativeSyntheticEvent<TextInputSubmitEditingEventData>
     ) => {
-      console.log("search history value", e.nativeEvent.text);
       const finalText = e.nativeEvent.text.trim();
 
       if (searchText !== finalText) {
         setSearchText(finalText);
       }
       setSearchHistory(finalText);
-
-
-      
 
       setBarState("submitted");
     };

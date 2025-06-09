@@ -1,14 +1,19 @@
-import {RecentJobsSection, RecentSearchSection} from "@components/search";
+import { RecentJobsSection, RecentSearchSection } from "@components/search";
 import { useSearchStore } from "@store/searchStore";
-import React from "react";
+import React, { FC } from "react";
 import { ScrollView } from "react-native";
 
-export default function SearchScreen() {
+interface EmptySearchProps {
+  onSearchItemPress: () => void
+}
+
+const EmptySearch: FC<EmptySearchProps> = ({onSearchItemPress}) => {
   const { setSearchText, setBarState } = useSearchStore();
 
   const handleSearchItemPress = (query: string) => {
     setSearchText(query);
     setBarState("submitted");
+    onSearchItemPress();
   };
 
   return (
@@ -22,4 +27,6 @@ export default function SearchScreen() {
       <RecentJobsSection />
     </ScrollView>
   );
-}
+};
+
+export default EmptySearch;
