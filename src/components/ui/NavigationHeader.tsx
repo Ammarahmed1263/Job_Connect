@@ -55,7 +55,7 @@ const NavigationHeader: FC<NavigationHeaderProps> = ({
             right: 0,
           }}
         >
-          <AppText numberOfLines={1} style={{ textAlign: "center" }}>
+          <AppText variant="semiBold" numberOfLines={1} style={{ textAlign: "center" }}>
             {title}
           </AppText>
         </View>
