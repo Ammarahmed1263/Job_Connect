@@ -1,10 +1,9 @@
-import { View, Text, ActivityIndicator, FlatList } from "react-native";
-import React from "react";
-import { AppText } from "@components/ui";
 import JobCard from "@components/jobs/JobCard";
-import { hs, vs } from "@constants/metrics";
+import { AppText } from "@components/ui";
 import { useSearchJobs } from "@queries/homeQuries";
 import { useSearchStore } from "@store/searchStore";
+import React from "react";
+import { ActivityIndicator, FlatList, View } from "react-native";
 
 const SearchResults = () => {
   const { searchText } = useSearchStore();

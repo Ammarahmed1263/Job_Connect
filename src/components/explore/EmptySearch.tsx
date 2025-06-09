@@ -1,5 +1,4 @@
-import RecentJobsSection from "@components/search/RecentJobsSection";
-import RecentSearchSection from "@components/search/RecentSearchSection";
+import {RecentJobsSection, RecentSearchSection} from "@components/search";
 import { useSearchStore } from "@store/searchStore";
 import React from "react";
 import { ScrollView } from "react-native";

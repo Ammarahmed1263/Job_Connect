@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { SvgProps } from "react-native-svg";
+import { Filter, SvgProps } from "react-native-svg";
 import {
   home,
   home_outline,
@@ -23,11 +23,13 @@ import {
   magnifier,
   close_circle,
   arrow_right_up,
-  close
+  close,
+  filter,
+  filter_outline,
 } from "@assets/icons";
 import AppText from "./AppText";
 
-const icons: Record<string, FC<SvgProps>> = {
+const icons = {
   home: home,
   "home-outline": home_outline,
   map: map,
@@ -50,11 +52,15 @@ const icons: Record<string, FC<SvgProps>> = {
   magnifier: magnifier,
   "close-circle": close_circle,
   "arrow-right-up": arrow_right_up,
-  close: close
-};
+  close: close,
+  filter: filter,
+  "filter-outline": filter_outline,
+} as const;
+
+type IconName = keyof typeof icons;
 
 interface IconProps extends SvgProps {
-  name: keyof typeof icons;
+  name: IconName;
   size?: number;
   color?: string;
 }

@@ -44,10 +44,7 @@ const SearchBar = forwardRef<TextInput, TextInputProps>(
 
     const handleClearButton = () => {
       clearSearchText();
-      if (barState !== "focused") {
-        internalRef.current?.blur();
-        setBarState("idle");
-      }
+      setBarState("focused");
     };
 
     const handleSubmit = (
