@@ -2,15 +2,13 @@ import {
   NotificationItem,
   NotificationSection,
 } from "@components/notifications";
-import { AppIcon, AppText } from "@components/ui";
-import NavigationHeader from "@components/ui/NavigationHeader";
-import { height, vs } from "@constants/metrics";
+import { AppIcon, AppText, NavigationHeader } from "@components/ui";
+import initialNotifications from "@constants/mockNotifications";
 import { useTheme } from "@contexts/ThemeContext";
 import { useSafeArea } from "@hooks/useSafeArea";
-import { Notification, NotificationCategory } from "@type/notificationTypes"; // Import types
-import initialNotifications from "mocks/mockNotifications"; // Import mock data
+import { Notification, NotificationCategory } from "@type/notificationTypes";
 import React, { useMemo, useState } from "react";
-import { ScrollView, TouchableOpacity, View } from "react-native";
+import { ScrollView, View } from "react-native";
 
 const getNotificationCategory = (dateString: string): NotificationCategory => {
   const date = new Date(dateString);
@@ -83,18 +81,16 @@ const Notifications = () => {
   ];
 
   return (
-    <View
-      style={{
-        flex: 1,
-      }}
-    >
+    <View className="flex-1">
       <NavigationHeader title="Notifications">
-        <View className="bg-[--primary-50] px-2 py-1 rounded-md">
-          <AppText className="text-white">{unreadCount} NEW</AppText>
-        </View>
+        {unreadCount > 0 ? (
+          <View className="bg-[--primary-50] px-2 py-1 rounded-md">
+            <AppText className="text-white">{unreadCount} NEW</AppText>
+          </View>
+        ) : null}
       </NavigationHeader>
 
-      <ScrollView className="bg-[--bg-color]">
+      <ScrollView className="bg-[--bg-color]" showsVerticalScrollIndicator={false}>
         {notificationSections.map((sectionTitle) => {
           const sectionNotifications = categorizedNotifications[sectionTitle];
           if (!sectionNotifications || sectionNotifications.length === 0) {

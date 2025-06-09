@@ -34,7 +34,7 @@ export default function TabLayout() {
         <Tabs.Screen
           name="applied"
           options={{
-            title: "Applied",
+            title: "Applied Jobs",
             tabBarIcon: ({ color, focused }) => (
               <AppIcon
                 name={focused ? "case" : "case-outline"}
@@ -48,7 +48,7 @@ export default function TabLayout() {
         <Tabs.Screen
           name="saved"
           options={{
-            title: "Saved",
+            title: "Saved Jobs",
             tabBarIcon: ({ color, focused }) => (
               <AppIcon
                 name={focused ? "bookmark" : "bookmark-outline"}
