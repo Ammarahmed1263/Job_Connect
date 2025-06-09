@@ -29,7 +29,7 @@ const ProfileMenuItem: React.FC<ProfileMenuItemProps> = ({
       activeOpacity={0.7}
     >
       {/* Icon */}
-      <View className="w-10 h-10 rounded-full bg-[--primary-500] justify-center items-center mr-4">
+      <View className="w-10 h-10 rounded-full bg-[--bg-color] justify-center items-center mr-4">
         <Ionicons
           name={icon}
           size={20}

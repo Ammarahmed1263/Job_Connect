@@ -3,7 +3,7 @@ import { View, TouchableOpacity, Image } from "react-native";
 import { AppText } from "@components/ui";
 import { useTheme } from "@contexts/ThemeContext";
 import { getStringInitials } from "@utils";
-// import { CircularProgress } from "react-native-circular-progress-indicator";
+import CircularProgress from "@components/ui/CircularProgress";
 
 interface ProfileHeaderProps {
   name: string;
@@ -47,37 +47,22 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
       {/* User Info */}
       <View className="flex-1">
         <AppText className="text-[--text-primary] mb-1">{name}</AppText>
-        <AppText variant="light" className="text-white/80">{subtitle}</AppText>
+        <AppText variant="light" className="text-white/80">
+          {subtitle}
+        </AppText>
       </View>
 
-      {/* Progress Circle */}
-      <View className="relative">
-        <View className="w-16 h-16 rounded-full border-4 border-white/30 justify-center items-center">
-          <View
-            className="absolute inset-0 rounded-full border-4 border-yellow-400"
-            style={{
-              transform: [{ rotate: "-90deg" }],
-              borderTopColor: "transparent",
-              borderRightColor: "transparent",
-              borderBottomColor: progress > 50 ? "#FBBF24" : "transparent",
-              borderLeftColor: "#FBBF24",
-            }}
-          />
-          <AppText className="text-white font-bold text-sm">
-            {progress}%
-          </AppText>
-        </View>
-      </View>
-      {/* <CircularProgress
-        value={progress}
-        radius={25}
-        duration={1000}
-        progressValueColor="#fff"
-        activeStrokeColor="#FFD700"
-        inActiveStrokeColor="#FFFFFF"
-        inActiveStrokeOpacity={0.2}
-        maxValue={100}
-      /> */}
+      <CircularProgress
+        progress={progress}
+        size={55}
+        labelStyle={{
+          fontFamily: "Montserrat-Bold",
+        }}
+        labelSize={14}
+        strokeWidth={5}
+        progressCircleColor={colors["--warning-color"]}
+        outerCircleColor={colors["--card-color"]}
+      />
     </TouchableOpacity>
   );
 };
