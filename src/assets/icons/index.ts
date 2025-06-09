@@ -19,3 +19,5 @@ export {default as map_point} from './map-point.svg';
 export {default as map_point_outline} from './map-point-outline.svg';
 export {default as magnifier} from './magnifier.svg';
 export {default as close_circle} from './close-circle.svg';
+export {default as close} from './close.svg';
+export {default as arrow_right_up} from './arrow-right-up.svg';

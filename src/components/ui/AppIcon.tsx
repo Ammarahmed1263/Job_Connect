@@ -21,7 +21,9 @@ import {
   map_point,
   map_point_outline,
   magnifier,
-  close_circle
+  close_circle,
+  arrow_right_up,
+  close
 } from "@assets/icons";
 import AppText from "./AppText";
 
@@ -47,6 +49,8 @@ const icons: Record<string, FC<SvgProps>> = {
   "map-point-outline": map_point_outline,
   magnifier: magnifier,
   "close-circle": close_circle,
+  "arrow-right-up": arrow_right_up,
+  close: close
 };
 
 interface IconProps extends SvgProps {
