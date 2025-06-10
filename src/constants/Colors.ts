@@ -3,50 +3,43 @@ import { vars } from "nativewind";
 
 export const colors: { light: ThemeData; dark: ThemeData } = {
   light: {
-    "--bg-color": "#FFFFFF",
-    "--card-color": "#efefef",
-    "--border-color": "#E5E7EB",
-    "--text-primary": "#2f2a77",
-    "--text-secondary": "#4338CA",
-    "--text-muted": "#6B7280",
-
-    "--primary-50": "#6366F1",
-    "--primary-100": "#818CF8",
-    "--primary-200": "#A5B4FC",
-    "--primary-300": "#B7C6FF",
-    "--primary-400": "#D2DCFF",
-    "--primary-500": "#EEF2FF",
-
-    "--accent-color": "#4F46E5",
-
-    "--success-color": "#10B981",
-    "--error-color": "#EF4444",
-    "--warning-color": "#F59E0B",
-    "--info-color": "#3B82F6",
+    "--bg-color": "rgb(255, 255, 255)",
+    "--card-color": "rgb(239, 239, 239)",
+    "--border-color": "rgb(229, 231, 235)",
+    "--text-primary": "rgb(47, 42, 119)",
+    "--text-secondary": "rgb(67, 56, 202)",
+    "--text-muted": "rgb(107, 114, 128)",
+    "--primary-50": "rgb(99, 102, 241)",
+    "--primary-100": "rgb(129, 140, 248)",
+    "--primary-200": "rgb(165, 180, 252)",
+    "--primary-300": "rgb(183, 198, 255)",
+    "--primary-400": "rgb(210, 220, 255)",
+    "--primary-500": "rgb(238, 242, 255)",
+    "--accent-color": "rgb(79, 70, 229)",
+    "--success-color": "rgb(16, 185, 129)",
+    "--error-color": "rgb(239, 68, 68)",
+    "--warning-color": "rgb(245, 158, 11)",
+    "--info-color": "rgb(59, 130, 246)"
   },
-
   dark: {
-    "--bg-color": "#121212",
-    "--card-color": "#2a2a2a",
-    "--border-color": "#6c6c6c",
-    "--text-primary": "#D2DCFF",
-    "--text-secondary": "#A5B4FC",
-    "--text-muted": "#9CA3AF",
-
-    "--primary-50": "#6366F1",
-    "--primary-100": "#4F46E5",
-    "--primary-200": "#4338CA",
-    "--primary-300": "#3730A3",
-    "--primary-400": "#312E81",
-    "--primary-500": "#1E1B4B",
-
-    "--accent-color": "#818CF8",
-
-    "--success-color": "#34D399",
-    "--error-color": "#F87171",
-    "--warning-color": "#FBBF24",
-    "--info-color": "#60A5FA",
-  },
+    "--bg-color": "rgb(18, 18, 18)",
+    "--card-color": "rgb(42, 42, 42)",
+    "--border-color": "rgb(108, 108, 108)",
+    "--text-primary": "rgb(210, 220, 255)",
+    "--text-secondary": "rgb(165, 180, 252)",
+    "--text-muted": "rgb(156, 163, 175)",
+    "--primary-50": "rgb(99, 102, 241)",
+    "--primary-100": "rgb(79, 70, 229)",
+    "--primary-200": "rgb(67, 56, 202)",
+    "--primary-300": "rgb(55, 48, 163)",
+    "--primary-400": "rgb(49, 46, 129)",
+    "--primary-500": "rgb(30, 27, 75)",
+    "--accent-color": "rgb(129, 140, 248)",
+    "--success-color": "rgb(52, 211, 153)",
+    "--error-color": "rgb(248, 113, 113)",
+    "--warning-color": "rgb(251, 191, 36)",
+    "--info-color": "rgb(96, 165, 250)"
+  }
 };
 
 export const themes = {

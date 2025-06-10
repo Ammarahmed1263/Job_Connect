@@ -7,3 +7,5 @@ export {default as getSeniorityLevel} from './getSeniorityLevel';
 export {default as getStringInitials} from './getStringInitials';
 export {default as getCleanedFilters} from './getCleanedFilters';
 export {default as applyAndDismissFilters} from './applyAndDismissFilters';
+export {default as statusColorSelector} from './statusColorSelector';
+export {default as applyOpacity} from './applyOpacity'

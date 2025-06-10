@@ -1,6 +1,6 @@
 import getExperienceYears from "./getExperienceYears";
 
-type SeniorityLevel = 'Entry-level' | 'Junior' | 'Mid-level' | 'Senior' | 'Lead' | null;
+export type SeniorityLevel = 'Entry-level' | 'Junior' | 'Mid-level' | 'Senior' | 'Lead' | null;
 
 
 export const getSeniorityLevel = (input: number | string | null | undefined): SeniorityLevel => {

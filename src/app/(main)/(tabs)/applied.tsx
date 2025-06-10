@@ -1,15 +1,16 @@
 import JobCard from "@components/jobs/JobCard";
 import { AppText, NavigationHeader } from "@components/ui";
-import { hs, vs } from "@constants/metrics";
-import useAuthStore from "@store/authStore";
+import { useTheme } from "@contexts/ThemeContext";
 import { useAppliedJobs } from "@queries/userQueries";
+import useAuthStore from "@store/authStore";
+import { applyOpacity, statusColorSelector } from "@utils";
 import React from "react";
 import { FlatList, View } from "react-native";
 
 const Applied = () => {
-  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const { isAuthenticated } = useAuthStore((state) => state);
   const { data, isPending } = useAppliedJobs(isAuthenticated);
-  console.log("data here: ", data);
+  const { colors } = useTheme();
 
   if (!isAuthenticated)
     return (
@@ -30,23 +31,40 @@ const Applied = () => {
       <NavigationHeader showBackButton={false} title="Applied Jobs" />
       <FlatList
         data={data?.data}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
-          <JobCard
-            item={item}
-            rightComponent={
-              <View className="bg-[--accent-color] py-1 px-4 rounded-sm">
-                <AppText className="color-[--bg-color]" variant="light">
-                  {item?.status}
-                </AppText>
-              </View>
-            }
-            compact
-          />
-        )}
+        keyExtractor={(item, index) => item.id.toString() + index.toString()}
+        renderItem={({ item }) => {
+          const { backgroundColorClass, textColorClass } = statusColorSelector(
+            item?.applicants[0]?.status
+          );
+          return (
+            <JobCard
+              item={item}
+              rightComponent={
+                <View
+                  className={"p-2 ms-2 rounded-lg"}
+                  style={{
+                    backgroundColor: applyOpacity(
+                      colors[backgroundColorClass],
+                      0.3
+                    ),
+                  }}
+                >
+                  <AppText
+                    variant="semiBold"
+                    className={"!leading-tight !text-lg"}
+                    style={{ color: colors[textColorClass] }}
+                  >
+                    {item?.applicants[0]?.status}
+                  </AppText>
+                </View>
+              }
+              compact
+            />
+          );
+        }}
         ListEmptyComponent={() => (
           <View className="flex-1 justify-center items-center">
-          <AppText className="text-center">No Applied Jobs Yet</AppText>
+            <AppText className="text-center">No Applied Jobs Yet</AppText>
           </View>
         )}
         contentContainerClassName="pt-2 pb-4 gap-4 px-4 grow"
