@@ -12,7 +12,6 @@ import {
   View,
 } from "react-native";
 
-
 const SearchBar = forwardRef<TextInput, TextInputProps>(
   ({ onFocus, onBlur, ...props }, ref) => {
     const { colors } = useTheme();
@@ -51,10 +50,8 @@ const SearchBar = forwardRef<TextInput, TextInputProps>(
     ) => {
       const finalText = e.nativeEvent.text.trim();
 
-      if (searchText !== finalText) {
-        setSearchText(finalText);
-      }
-      setSearchHistory(finalText);
+      if (searchText !== finalText) setSearchText(finalText);
+      if (finalText.length > 0) setSearchHistory(finalText);
 
       setBarState("submitted");
     };

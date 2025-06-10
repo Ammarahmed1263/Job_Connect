@@ -1,6 +1,8 @@
 import { SearchBar } from "@components/search";
-import { AppButton, AppIcon } from "@components/ui";
+import { AppButton, AppIcon, AppText } from "@components/ui";
+import { hs } from "@constants/metrics";
 import { useTheme } from "@contexts/ThemeContext";
+import { useFilterStore } from "@store/filterStore";
 import { useSearchStore } from "@store/searchStore";
 import React, { FC, RefObject } from "react";
 import { TextInput, View } from "react-native";
@@ -20,6 +22,7 @@ const ExploreHeader: FC<ExploreHeaderProps> = ({
 }) => {
   const barState = useSearchStore((state) => state.barState);
   const { colors } = useTheme();
+  const activeFilterCount = useFilterStore((state) => state.activeFilterCount);
 
   return (
     <View className="w-full flex-row px-4 mt-6 pb-2 gap-2 justify-center items-center">
@@ -54,9 +57,16 @@ const ExploreHeader: FC<ExploreHeaderProps> = ({
           title=""
           flat
           className="flex-1 border-2 border-[--accent-color] p-2 rounded-xl"
-          onPress={onNotificationPress}
+          onPress={onFilterPress}
         >
-          <AppIcon name="filter" color={colors["--accent-color"]} size={30} />
+          <AppIcon name="filter" color={colors["--accent-color"]} size={28} />
+          {activeFilterCount > 0 && (
+            <View className="absolute bg-[--error-color] min-w-4 h-4 rounded-full overflow-hidden end-1.5 top-1.5 items-center justify-center">
+              <AppText variant="light" className=" text-center !text-[10px]">
+                {activeFilterCount}
+              </AppText>
+            </View>
+          )}
         </AppButton>
       )}
     </View>

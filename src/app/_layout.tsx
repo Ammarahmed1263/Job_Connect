@@ -6,6 +6,9 @@ import * as SystemUI from "expo-system-ui";
 import queryClient from "@queries/queryClient";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import "../../global.css";
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { StyleSheet } from "react-native";
 
 // to solve white background flash issue
 SystemUI.setBackgroundColorAsync("transparent");
@@ -13,13 +16,23 @@ SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <SafeAreaProvider>
+    <GestureHandlerRootView style={styles.container}>
+      <QueryClientProvider client={queryClient}>
         <ThemeProvider>
-          <StatusBar style="auto" />
-          <Slot />
+          <BottomSheetModalProvider>
+            <SafeAreaProvider>
+              <StatusBar style="auto" />
+              <Slot />
+            </SafeAreaProvider>
+          </BottomSheetModalProvider>
         </ThemeProvider>
-      </SafeAreaProvider>
-    </QueryClientProvider>
+      </QueryClientProvider>
+    </GestureHandlerRootView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});

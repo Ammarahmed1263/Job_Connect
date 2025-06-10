@@ -4,7 +4,9 @@ import {
   ExploreHeader,
   SearchResults,
 } from "@components/explore";
+import { FiltersSheet } from "@components/filters/FiltersSheet";
 import { AppText } from "@components/ui";
+import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { useSafeArea } from "@hooks/useSafeArea";
 import useAuthStore from "@store/authStore";
 import { useSearchStore } from "@store/searchStore";
@@ -18,6 +20,12 @@ const Explore = () => {
   const { barState, setBarState, clearSearchText } = useSearchStore();
   const inputRef = useRef<TextInput>(null);
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const filterSheetRef = useRef<BottomSheetModal>(null);
+
+  const openFilters = () => {
+    filterSheetRef.current?.present();
+  };
+
 
   const handleNotificationPress = () => {
     router.push("/notifications");
@@ -58,8 +66,10 @@ const Explore = () => {
         inputRef={inputRef}
         onBackButtonPress={handleBackButton}
         onNotificationPress={handleNotificationPress}
+        onFilterPress={openFilters}
       />
       {renderScreenContent()}
+      <FiltersSheet ref={filterSheetRef} />
     </View>
   );
 };

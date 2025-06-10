@@ -10,14 +10,14 @@ import { ScrollView, View } from 'react-native';
 const ExploreContent = () => {
   const router = useRouter();
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
-  const { data } = useJobs(4, isAuthenticated);
+  const { data, isPending } = useJobs(4, isAuthenticated);
   const recentJobs = useRecentJobsStore((state) => state.recentJobs);
 
   const handleSeeAll = () => {
     router.push("/jobs");
   };
 
-  if (!data || data?.pages.length === 0)
+  if ((!data || data?.pages.length === 0) && !isPending)
     return (
       <View className="flex-1 items-center justify-center">
         <AppText>No jobs found</AppText>
