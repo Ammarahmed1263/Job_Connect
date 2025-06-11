@@ -62,8 +62,12 @@ const LabelInput = forwardRef<TextInput, LabelInputProps>(
     };
 
     return (
-      <View style={containerStyle} className={clsx("mx-2", containerClassName)}>
-        {title.length > 0 && <AppText className="ms-2">{title}</AppText>}
+      <View
+        style={containerStyle}
+        className={clsx("mx-2", containerClassName)}
+        testID="container"
+      >
+        {title.length > 0 && <AppText className="ms-2" testID="label-input-title">{title}</AppText>}
         <Pressable
           onPress={() => inputRef?.current?.focus()}
           hitSlop={20}
@@ -75,8 +79,13 @@ const LabelInput = forwardRef<TextInput, LabelInputProps>(
               ? "border-[--accent-color]"
               : "border-transparent"
           )}
+          testID="pressable-container"
         >
-          {leftComponent && <View className="mx-3">{leftComponent()}</View>}
+          {leftComponent && (
+            <View className="mx-3" testID="left-component-container">
+              {leftComponent()}
+            </View>
+          )}
 
           <TextInput
             ref={inputRef}
@@ -88,6 +97,7 @@ const LabelInput = forwardRef<TextInput, LabelInputProps>(
             className="flex-1 text-[--text-primary] min-h-22 font-montserrat-light px-2"
             onFocus={handleFocus}
             onBlur={handleBlur}
+            testID="label-input"
             {...props}
           />
 
@@ -96,6 +106,7 @@ const LabelInput = forwardRef<TextInput, LabelInputProps>(
               onPress={togglePasswordVisibility}
               hitSlop={20}
               className="mx-3"
+              testID="toggle-visibility" // Added testID for password toggle
             >
               {rightComponent ? (
                 <>{rightComponent(isPasswordVisible)}</>
@@ -104,6 +115,7 @@ const LabelInput = forwardRef<TextInput, LabelInputProps>(
                   name={!isPasswordVisible ? "eye-off-outline" : "eye-outline"}
                   size={ms(20)}
                   color={colors["--text-primary"]}
+                  testID={`icon-${!isPasswordVisible ? "eye-off-outline" : "eye-outline"}`} // Added testID for icon
                 />
               )}
             </Pressable>
@@ -114,6 +126,7 @@ const LabelInput = forwardRef<TextInput, LabelInputProps>(
             variant="light"
             numberOfLines={1}
             className="pt-2 ps-2 color-[--error-color]"
+            testID="error-message"
           >
             {error}
           </AppText>

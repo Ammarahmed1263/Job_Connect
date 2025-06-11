@@ -63,6 +63,7 @@ const AppButton = forwardRef<ElementRef<typeof Pressable>, Props>(
           variant === "primary" ? "bg-[--primary-100]" : "bg-[--primary-300]",
           wrapperClassName
         )}
+        testID="app-button-wrapper"
         style={[
           !flat && !disableShadow && { ...styles.shadow, shadowColor: colors["--accent-color"] },
           flat && { backgroundColor: "transparent" },
