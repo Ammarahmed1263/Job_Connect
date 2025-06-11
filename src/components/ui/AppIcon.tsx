@@ -28,7 +28,14 @@ import {
   filter_outline,
   alt_arrow_up,
   alt_arrow_down,
-  contrast
+  contrast,
+  academic_cap,
+  chart,
+  diploma,
+  document_text,
+  user_id,
+  check_circle,
+  alt_arrow_right
 } from "@assets/icons";
 import AppText from "./AppText";
 
@@ -60,7 +67,14 @@ const icons = {
   "filter-outline": filter_outline,
   "alt-arrow-up": alt_arrow_up,
   "alt-arrow-down": alt_arrow_down,
-  contrast: contrast
+  contrast: contrast,
+  "academic-cap": academic_cap,
+  chart: chart,
+  diploma: diploma,
+  "document-text": document_text,
+  "user-id": user_id,
+  "checkmark": check_circle,
+  "alt-arrow-right": alt_arrow_right
 } as const;
 
 type IconName = keyof typeof icons;
