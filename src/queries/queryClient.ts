@@ -19,14 +19,17 @@ onlineManager.setEventListener(setOnline => {
   })
 })
 
-export const asyncStoragePersistor = createAsyncStoragePersister({
-  storage: AsyncStorage,
-})
 
-persistQueryClient({
-  queryClient,
-  persister: asyncStoragePersistor,
-  maxAge: 1000 * 60 * 60 * 24,
-})
+if (typeof window !== 'undefined') {
+  const asyncStoragePersistor = createAsyncStoragePersister({
+    storage: AsyncStorage,
+  })
+
+  persistQueryClient({
+    queryClient,
+    persister: asyncStoragePersistor,
+    maxAge: 1000 * 60 * 60 * 24,
+  })
+}
 
 export default queryClient

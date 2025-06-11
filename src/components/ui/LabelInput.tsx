@@ -63,11 +63,12 @@ const LabelInput = forwardRef<TextInput, LabelInputProps>(
 
     return (
       <View style={containerStyle} className={clsx("mx-2", containerClassName)}>
-        <AppText className="ms-2">{title}</AppText>
+        {title.length > 0 && <AppText className="ms-2">{title}</AppText>}
         <Pressable
           onPress={() => inputRef?.current?.focus()}
+          hitSlop={20}
           className={clsx(
-            "rounded-xl flex-row items-center justify-between bg-[--primary-300] border-2 min-h-12",
+            "rounded-xl flex-row items-center justify-between bg-[--primary-400] border-2 min-h-12",
             error
               ? "border-[--error-color]"
               : isFocused
@@ -84,7 +85,7 @@ const LabelInput = forwardRef<TextInput, LabelInputProps>(
             autoCapitalize="none"
             cursorColor={colors["--accent-color"]}
             secureTextEntry={secureTextEntry && !isPasswordVisible}
-            className="flex-1 text-[--text-primary] min-h-22 font-montserrat-light"
+            className="flex-1 text-[--text-primary] min-h-22 font-montserrat-light px-2"
             onFocus={handleFocus}
             onBlur={handleBlur}
             {...props}
@@ -97,9 +98,7 @@ const LabelInput = forwardRef<TextInput, LabelInputProps>(
               className="mx-3"
             >
               {rightComponent ? (
-                <>
-                  {rightComponent(isPasswordVisible)}
-                </>
+                <>{rightComponent(isPasswordVisible)}</>
               ) : (
                 <Ionicons
                   name={!isPasswordVisible ? "eye-off-outline" : "eye-outline"}

@@ -1,11 +1,11 @@
 import { AppIcon, AppText } from "@components/ui";
 import { useTheme } from "@contexts/ThemeContext";
-import { JobDetails } from "@type/jobTypes";
+import { jobSummary } from "@type/jobTypes";
 import React, { FC, ReactNode } from "react";
 import { Pressable, View } from "react-native";
 
 interface JobHeaderProps {
-  item: JobDetails;
+  item: jobSummary;
   rightComponent?: ReactNode;
   isSaved?: boolean;
   onToggleSave?: () => void;
@@ -22,7 +22,7 @@ const JobHeader: FC<JobHeaderProps> = ({
   return (
     <View className="flex-row justify-between items-center">
       <View className="flex-row gap-3 flex-1 ">
-        <View className="w-16 aspect-square bg-[--accent-color] rounded-xl items-center justify-center">
+        <View className="w-16 aspect-square bg-app-accent rounded-xl items-center justify-center">
           <AppText variant="bold" className="color-[--bg-color] leading-tight">
             {item?.employer?.companyName[0].toUpperCase()}.
           </AppText>

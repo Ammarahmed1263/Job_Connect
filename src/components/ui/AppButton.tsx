@@ -19,6 +19,8 @@ import AppText from "./AppText";
 interface Props extends PressableProps {
   title: string;
   flat?: boolean;
+  disableRipple?: boolean;
+  disableShadow?: boolean;
   variant?: "primary" | "secondary";
   textVariant?: FontVariants;
   textClassName?: TextProps["className"];
@@ -31,6 +33,8 @@ const AppButton = forwardRef<ElementRef<typeof Pressable>, Props>(
   (
     {
       title,
+      disableRipple = false,
+      disableShadow = false,
       flat = false,
       onPress,
       style,
@@ -60,7 +64,7 @@ const AppButton = forwardRef<ElementRef<typeof Pressable>, Props>(
           wrapperClassName
         )}
         style={[
-          !flat && { ...styles.shadow, shadowColor: colors["--accent-color"] },
+          !flat && !disableShadow && { ...styles.shadow, shadowColor: colors["--accent-color"] },
           flat && { backgroundColor: "transparent" },
           wrapperStyle,
         ]}
@@ -69,8 +73,7 @@ const AppButton = forwardRef<ElementRef<typeof Pressable>, Props>(
           onPressIn={() => setPressed(true)}
           onPressOut={() => setPressed(false)}
           onPress={handlePress}
-          android_ripple={!flat ? { color: colors["--accent-color"] } : null}
-          style={!flat && styles.shadow}
+          android_ripple={!flat && !disableRipple ? { color: colors["--accent-color"] } : null}
           hitSlop={20}
           {...props}
           className={clsx(

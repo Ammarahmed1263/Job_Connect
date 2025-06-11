@@ -43,7 +43,7 @@ function ControlledLabelInputInner<T extends FieldValues>({
           <LabelInput
             {...props}
             ref={ref}
-            value={value}
+            value={value ?? ""}
             onChangeText={(text) => {
               onChange(text);
 

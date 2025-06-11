@@ -1,7 +1,7 @@
 import { useWithAuth } from "@hooks/useWithAuth";
 import { useSaveJob, useUnsaveJob } from "@queries/jobQueries";
 import { useSavedJobs } from "@queries/userQueries";
-import { JobDetails } from "@type/jobTypes";
+import { jobSummary } from "@type/jobTypes";
 import { extractTags } from "@utils";
 import { useRouter } from "expo-router";
 import React, { ReactNode } from "react";
@@ -18,7 +18,7 @@ import JobMeta from "./JobMeta";
 import JobTags from "./JobTags";
 
 interface JobCardProps extends PressableProps {
-  item: JobDetails;
+  item: jobSummary;
   compact?: boolean;
   rightComponent?: ReactNode;
   wrapperStyle?: StyleProp<ViewStyle>;
@@ -36,7 +36,7 @@ const JobCard = ({
   const { data: savedJobs } = useSavedJobs();
   const { mutate: unsaveJob } = useUnsaveJob();
   const { mutate: saveJob } = useSaveJob();
-  const isSaved = savedJobs?.data.some((job: JobDetails) => job.id === item.id);
+  const isSaved = savedJobs?.data.some((job: jobSummary) => job.id === item.id);
 
   const handleJobPress = () => {
     router.push({

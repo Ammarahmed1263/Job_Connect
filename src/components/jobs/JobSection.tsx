@@ -1,14 +1,15 @@
 import { AppButton, AppText } from "@components/ui";
+import { width } from "@constants/metrics";
+import useAuthStore from "@store/authStore";
+import { jobSummary } from "@type/jobTypes";
 import React from "react";
 import { FlatList, View } from "react-native";
 import JobCard from "./JobCard";
-import { hs, width } from "@constants/metrics";
-import useAuthStore from "@store/authStore";
 
 interface JobSectionProps {
   title: string;
   subtitle: string;
-  data: any[];
+  data?: jobSummary[];
   onSeeAll: () => void;
 }
 

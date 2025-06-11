@@ -20,11 +20,12 @@ export interface jobSummary {
   minSalary: number;
   maxSalary: number;
   salaryType: string;
+  location: string;
   employer: Employer;
 }
+
 export interface JobDetails extends jobSummary {
   applicationsCount: number;
-  location: string;
   shortListed: boolean;
   description: string;
   tags: string[];
