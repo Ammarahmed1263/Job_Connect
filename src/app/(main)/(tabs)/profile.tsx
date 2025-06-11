@@ -1,6 +1,7 @@
 import ProfileHeader from "@components/profile/ProfileHeader";
 import ProfileMenuSection from "@components/profile/ProfileMenuSection";
-import { AppButton, AppDropdown, AppText } from "@components/ui";
+import { AppButton, AppDropdown, AppIcon, AppText } from "@components/ui";
+import { hs } from "@constants/metrics";
 import { PROFILE_MENU_ITEMS } from "@constants/profileMenuItems";
 import { useTheme } from "@contexts/ThemeContext";
 import { Ionicons } from "@expo/vector-icons";
@@ -10,7 +11,7 @@ import { useOnboardingStore } from "@store/onboardingStore";
 import { Theme } from "@type/theme";
 import { useRouter } from "expo-router";
 import React from "react";
-import { ScrollView, View } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 
 const Profile = () => {
   const { setTheme, theme, colors } = useTheme();
@@ -33,7 +34,11 @@ const Profile = () => {
   };
 
   return (
-    <ScrollView className="flex-1 bg-[--bg-color]" style={{ marginTop: top }} showsVerticalScrollIndicator={false}>
+    <ScrollView
+      className="flex-1 bg-[--bg-color]"
+      style={{ marginTop: top }}
+      showsVerticalScrollIndicator={false}
+    >
       {/* Profile Header */}
       {isAuthenticated && (
         <ProfileHeader
@@ -47,9 +52,8 @@ const Profile = () => {
       <View className="mx-4 mt-6 mb-4 p-4 bg-[--card-color] rounded-xl shadow-sm">
         <View className="flex-row justify-between items-center">
           <AppText>Preferred Theme:</AppText>
-          <View className="flex-1 ml-4">
+          <View className="flex-1 ml-4 justify-center">
             <AppDropdown
-              label="Theme"
               data={
                 [
                   { label: "System", value: "system" },
@@ -59,29 +63,26 @@ const Profile = () => {
               }
               value={theme}
               onChange={(item) => setTheme(item.value)}
-              focusColor={colors["--accent-color"]}
-              unfocusColor={colors["--text-primary"]}
+              containerStyle={[
+                styles.dropDownContainer,
+                { backgroundColor: 'colors["--bg-color"]' },
+              ]}
+              fontFamily="Montserrat-Medium"
               renderRightIcon={(isFocus) => (
-                <Ionicons
-                  name={isFocus ? "caret-up" : "caret-down"}
-                  size={20}
-                  color={
-                    isFocus
-                      ? colors["--accent-color"]
-                      : colors["--text-primary"]
-                  }
+                <AppIcon
+                  name={isFocus ? "alt-arrow-up" : "alt-arrow-down"}
+                  size={25}
+                  color={colors["--text-primary"]}
                 />
               )}
               renderLeftIcon={(isFocus) => (
-                <Ionicons
-                  name={"contrast"}
-                  size={20}
-                  color={
-                    isFocus
-                      ? colors["--accent-color"]
-                      : colors["--text-primary"]
-                  }
-                  style={{ marginRight: 5 }}
+                <AppIcon
+                  name="contrast"
+                  color={colors["--text-primary"]}
+                  size={22}
+                  style={{
+                    marginEnd: hs(5),
+                  }}
                 />
               )}
               labelField="label"
@@ -94,7 +95,6 @@ const Profile = () => {
 
       {/* Menu Items */}
       <ProfileMenuSection items={PROFILE_MENU_ITEMS} />
-
 
       {/* Action Buttons */}
       <View className="items-end justify-between mx-4 my-6 gap-4">
@@ -111,3 +111,11 @@ const Profile = () => {
 };
 
 export default Profile;
+
+const styles = StyleSheet.create({
+  dropDownContainer: {
+    borderWidth: 0,
+    borderRadius: hs(10),
+    overflow: "hidden",
+  },
+});

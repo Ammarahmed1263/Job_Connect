@@ -84,7 +84,7 @@ const Notifications = () => {
     <View className="flex-1">
       <NavigationHeader title="Notifications">
         {unreadCount > 0 ? (
-          <View className="bg-[--primary-50] px-2 py-1 rounded-md">
+          <View className="!bg-[--primary-50] px-2 py-1 rounded-md">
             <AppText className="text-white">{unreadCount} NEW</AppText>
           </View>
         ) : null}

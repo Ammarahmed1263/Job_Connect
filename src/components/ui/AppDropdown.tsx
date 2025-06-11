@@ -1,9 +1,6 @@
 import { useTheme } from "@contexts/ThemeContext";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import React, {
-  ReactElement,
-  useState
-} from "react";
+import React, { ReactElement, useState } from "react";
 import {
   StyleProp,
   StyleSheet,
@@ -15,18 +12,29 @@ import {
 import { Dropdown } from "react-native-element-dropdown";
 import { DropdownProps } from "react-native-element-dropdown/lib/typescript/components/Dropdown/model";
 import AppText from "./AppText";
+import { hs, ms, vs } from "@constants/metrics";
 
 interface BaseDropdownItem {
   label: string;
   value: string;
-};
+}
 
-interface AppDropdownProps<T extends BaseDropdownItem> extends Omit<DropdownProps<T>, 'onChange' | 'data' | 'value' | 'renderLeftIcon' | 'renderRightIcon' | 'renderItem'> {
+interface AppDropdownProps<T extends BaseDropdownItem>
+  extends Omit<
+    DropdownProps<T>,
+    | "onChange"
+    | "data"
+    | "value"
+    | "renderLeftIcon"
+    | "renderRightIcon"
+    | "renderItem"
+  > {
   title?: string;
   label?: string;
   data: T[];
   value: T["value"];
   onChange: (item: T) => void;
+  error?: string;
 
   renderLeftIcon?: (isFocus: boolean) => ReactElement | null;
   renderRightIcon?: (isFocus: boolean) => ReactElement | null;
@@ -52,6 +60,7 @@ const AppDropdown = <T extends BaseDropdownItem>({
   data,
   value,
   onChange,
+  error,
   renderLeftIcon,
   renderRightIcon,
   renderItem,
@@ -72,140 +81,117 @@ const AppDropdown = <T extends BaseDropdownItem>({
 
   const activeColor = focusColor || colors["--accent-color"];
   const inactiveColor = unfocusColor || colors["--text-primary"];
+  const errorColor = colors["--error-color"];
 
   const defaultRenderItem = (item: T, isSelected: boolean) => (
     <View
       style={{
-        padding: 12,
+        padding: hs(12),
         backgroundColor: isSelected
-          ? colors["--primary-100"]
+          ? colors["--accent-color"]
           : colors["--bg-color"],
       }}
     >
-      <Text
+      <AppText
+        variant="light"
+        className="!text-lg"
         style={{
-          color: isSelected ? activeColor : inactiveColor,
+          color: isSelected ? colors["--bg-color"] : inactiveColor,
         }}
       >
         {item.label}
-      </Text>
+      </AppText>
     </View>
   );
 
   return (
     <View className="flex-1">
-      {title && <AppText>{title}</AppText>}
+      {(title || label) && (
+        <View className="flex-row justify-between items-center mb-1">
+          <AppText style={{ color: error ? errorColor : inactiveColor }}>
+            {title || label}
+          </AppText>
+          {error && (
+            <AppText className="text-sm" style={{ color: errorColor }}>
+              {error}
+            </AppText>
+          )}
+        </View>
+      )}
       <Dropdown
         style={[
           styles.dropdown,
           {
-            // backgroundColor: colors["--primary-300"],
-            borderColor: isFocus ? activeColor : inactiveColor,
+            borderColor: error
+              ? errorColor
+              : isFocus
+              ? activeColor
+              : "transparent",
+            backgroundColor: colors["--primary-400"],
           },
           dropdownStyle,
         ]}
         containerStyle={[
-          {
-            borderRadius: 12,
-            overflow: "hidden",
-            borderWidth: 0.5,
-            borderColor: isFocus ? activeColor : inactiveColor,
-          },
+          { backgroundColor: colors["--bg-color"] },
           containerStyle,
         ]}
         placeholderStyle={[
           styles.placeholderStyle,
-          { color: inactiveColor },
+          { color: colors["--text-muted"] },
           placeholderStyle,
         ]}
         selectedTextStyle={[
           styles.selectedTextStyle,
-          { color: isFocus ? activeColor : inactiveColor },
+          { color: inactiveColor },
           selectedTextStyle,
         ]}
         inputSearchStyle={[
           styles.inputSearchStyle,
-          { color: inactiveColor },
+          { color: inactiveColor, backgroundColor: colors["--bg-color"] },
           inputSearchStyle,
         ]}
-        iconStyle={[
-          styles.iconStyle,
-          {
-            tintColor: isFocus ? activeColor : inactiveColor,
-          },
-        ]}
-        showsVerticalScrollIndicator={false}
         data={data}
+        maxHeight={300}
+        placeholder={!isFocus ? placeholder : "..."}
+        searchPlaceholder={searchPlaceholder}
         value={value}
         onFocus={() => setIsFocus(true)}
         onBlur={() => setIsFocus(false)}
-        search={!disableSearch}
-        placeholder={!isFocus ? placeholder : "..."}
-        searchPlaceholder={searchPlaceholder}
-        onChange={(item: T) => {
+        onChange={(item) => {
           onChange(item);
           setIsFocus(false);
         }}
-        renderItem={(item: T) =>
-          renderItem
-            ? renderItem(item, item.value === value)
-            : defaultRenderItem(item, item.value === value)
+        search={!disableSearch}
+        renderItem={(item, selected) =>
+          renderItem?.(item, selected ?? false) ??
+          defaultRenderItem(item, selected ?? false)
         }
-        renderRightIcon={() =>
-          renderRightIcon ? renderRightIcon(isFocus) : (
-            <Ionicons
-              name="chevron-down"
-              size={20}
-              color={isFocus ? activeColor : inactiveColor}
-            />
-          )
-        }
-        renderLeftIcon={() =>
-          renderLeftIcon ? renderLeftIcon(isFocus) : (
-            <Ionicons
-              name="chevron-down"
-              size={20}
-              color={isFocus ? activeColor : inactiveColor}
-              style={{ marginRight: 5 }}
-            />
-          )
-        }
+        renderLeftIcon={(visible) => renderLeftIcon?.(isFocus) ?? null}
+        renderRightIcon={(visible) => renderRightIcon?.(isFocus) ?? null}
         {...props}
       />
     </View>
   );
 };
 
-export default AppDropdown;
-
 const styles = StyleSheet.create({
   dropdown: {
-    minHeight: 45,
-    borderRadius: 12,
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderWidth: 2,
-  },
-  label: {
-    position: "absolute",
-    left: 22,
-    top: 8,
-    zIndex: 999,
-    paddingHorizontal: 8,
-    fontSize: 14,
+    height: vs(48),
+    borderWidth: hs(2),
+    borderRadius: hs(8),
+    paddingHorizontal: hs(12),
   },
   placeholderStyle: {
-    fontSize: 16,
+    fontSize: ms(14),
   },
   selectedTextStyle: {
-    fontSize: 16,
-  },
-  iconStyle: {
-    width: 20,
-    height: 20,
+    fontSize: ms(14),
   },
   inputSearchStyle: {
-    height: 40,
-    fontSize: 16,
+    height: vs(40),
+    fontSize: ms(14),
+    borderRadius: hs(8),
   },
 });
+
+export default AppDropdown;

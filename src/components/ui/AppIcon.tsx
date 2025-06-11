@@ -26,6 +26,9 @@ import {
   close,
   filter,
   filter_outline,
+  alt_arrow_up,
+  alt_arrow_down,
+  contrast
 } from "@assets/icons";
 import AppText from "./AppText";
 
@@ -55,6 +58,9 @@ const icons = {
   close: close,
   filter: filter,
   "filter-outline": filter_outline,
+  "alt-arrow-up": alt_arrow_up,
+  "alt-arrow-down": alt_arrow_down,
+  contrast: contrast
 } as const;
 
 type IconName = keyof typeof icons;

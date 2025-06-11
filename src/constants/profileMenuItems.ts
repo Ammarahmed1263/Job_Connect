@@ -6,13 +6,13 @@ export const PROFILE_MENU_ITEMS = [
     onPress: () => console.log('Personal Information'),
     iconColor: '#6366F1'
   },
-  {
-    id: 'analytics',
-    icon: 'analytics-outline' as const,
-    title: 'Analytics',
-    onPress: () => console.log('Analytics'),
-    iconColor: '#8B5CF6'
-  },
+  // {
+  //   id: 'analytics',
+  //   icon: 'analytics-outline' as const,
+  //   title: 'Analytics',
+  //   onPress: () => console.log('Analytics'),
+  //   iconColor: '#8B5CF6'
+  // },
   {
     id: 'applications',
     icon: 'document-text-outline' as const,
@@ -34,13 +34,13 @@ export const PROFILE_MENU_ITEMS = [
     onPress: () => console.log('Settings'),
     iconColor: '#6B7280'
   },
-  {
-    id: 'language',
-    icon: 'globe-outline' as const,
-    title: 'Language',
-    onPress: () => console.log('Language'),
-    iconColor: '#F59E0B'
-  },
+  // {
+  //   id: 'language',
+  //   icon: 'globe-outline' as const,
+  //   title: 'Language',
+  //   onPress: () => console.log('Language'),
+  //   iconColor: '#F59E0B'
+  // },
   {
     id: 'help',
     icon: 'help-circle-outline' as const,
@@ -55,13 +55,13 @@ export const PROFILE_MENU_ITEMS = [
     onPress: () => console.log('Privacy Policy'),
     iconColor: '#8B5CF6'
   },
-  {
-    id: 'invite',
-    icon: 'people-outline' as const,
-    title: 'Invites Friends',
-    onPress: () => console.log('Invite Friends'),
-    iconColor: '#06B6D4'
-  }
+  // {
+  //   id: 'invite',
+  //   icon: 'people-outline' as const,
+  //   title: 'Invites Friends',
+  //   onPress: () => console.log('Invite Friends'),
+  //   iconColor: '#06B6D4'
+  // }
 ];
 
 export type OnboardingSlideItem = typeof PROFILE_MENU_ITEMS[number];

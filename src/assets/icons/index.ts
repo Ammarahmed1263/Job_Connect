@@ -23,3 +23,6 @@ export {default as close} from './close.svg';
 export {default as arrow_right_up} from './arrow-right-up.svg';
 export {default as filter} from './filter.svg';
 export {default as filter_outline} from './filter-outline.svg';
+export {default as alt_arrow_up} from './alt-arrow-up.svg';
+export {default as alt_arrow_down} from './alt-arrow-down.svg';
+export {default as contrast} from './contrast.svg';
