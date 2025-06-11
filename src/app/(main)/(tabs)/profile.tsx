@@ -43,9 +43,6 @@ const Profile = () => {
         />
       )}
 
-      {/* Menu Items */}
-      <ProfileMenuSection items={PROFILE_MENU_ITEMS} />
-
       {/* Theme Selector */}
       <View className="mx-4 mt-6 mb-4 p-4 bg-[--card-color] rounded-xl shadow-sm">
         <View className="flex-row justify-between items-center">
@@ -94,6 +91,10 @@ const Profile = () => {
           </View>
         </View>
       </View>
+
+      {/* Menu Items */}
+      <ProfileMenuSection items={PROFILE_MENU_ITEMS} />
+
 
       {/* Action Buttons */}
       <View className="items-end justify-between mx-4 my-6 gap-4">

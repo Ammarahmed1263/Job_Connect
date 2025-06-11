@@ -15,11 +15,11 @@ export const jobTypeOptions = [
 
 export const experienceLevelOptions = [
   { label: 'All', value: '' },
-  { label: 'Internship', value: 'Internship' },
-  { label: 'Entry level', value: 'Entry' }, 
-  { label: 'Associate', value: 'Associate' },
-  { label: 'Mid-level', value: 'Mid-level' },
-  { label: 'Senior', value: 'Senior' },
+  { label: 'Entry-level', value: '0' },
+  { label: 'Junior', value: '0-2' },
+  { label: 'Mid-level', value: '2-5' },
+  { label: 'Senior', value: '5-8' },
+  { label: 'Lead', value: '8+' },
 ];
 
 export const educationLevelOptions = [

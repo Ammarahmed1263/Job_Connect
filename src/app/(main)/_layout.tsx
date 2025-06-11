@@ -1,23 +1,14 @@
-import { AppText } from "@components/ui";
 import useAuthStore from "@store/authStore";
-import { Stack } from "expo-router";
+import { Redirect, Stack } from "expo-router";
 import React from "react";
-import { View } from "react-native";
 
 const MainLayout = () => {
-  const { isLoading } = useAuthStore();
+  const { isAuthenticated } = useAuthStore();
 
-  if (isLoading) {
-    return (
-      <View className="flex-1 items-center justify-center bg-green-500">
-        <AppText>Loading...</AppText>
-      </View>
-    );
+  if (!isAuthenticated) {
+    console.error("YOU HAVE BEEN LOGGED OUT");
+    return <Redirect href="/login" />;
   }
-
-  // if (!isAuthenticated) {
-  //   return <Redirect href="/login" />;
-  // }
 
   return (
     <Stack
@@ -26,7 +17,7 @@ const MainLayout = () => {
       }}
     >
       <Stack.Screen name="(tabs)" />
-      <Stack.Screen name="jobs"/>
+      <Stack.Screen name="jobs" />
     </Stack>
   );
 };

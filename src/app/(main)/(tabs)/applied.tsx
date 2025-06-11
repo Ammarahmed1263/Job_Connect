@@ -45,12 +45,12 @@ const Applied = () => {
                   style={{
                     backgroundColor: applyOpacity(
                       colors[backgroundColorClass],
-                      0.3
+                      0.2
                     ),
                   }}
                 >
                   <AppText
-                    variant="semiBold"
+                    variant="bold"
                     className={"!leading-tight !text-lg"}
                     style={{ color: colors[textColorClass] }}
                   >

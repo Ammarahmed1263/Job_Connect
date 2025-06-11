@@ -15,7 +15,7 @@ const jobService = {
       return data;
     } catch (error) {
       const axiosError = error as AxiosError;
-      console.error("error fetching all jobs: ", axiosError.response?.data);
+      console.error("error fetching all jobs: ", axiosError);
       throw error;
     }
   },

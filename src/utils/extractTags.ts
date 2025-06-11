@@ -1,7 +1,7 @@
-import { JobDetails } from "@type/jobTypes";
+import { jobSummary } from "@type/jobTypes";
 import getSeniorityLevel from "./getSeniorityLevel";
 
-const extractTags = (item: JobDetails) => {
+const extractTags = (item: jobSummary) => {
   const jobType = item?.jobType ?? "";
   const workPlace = item?.workPlace ?? "";
   const experience = getSeniorityLevel(item?.experience) ?? "";
