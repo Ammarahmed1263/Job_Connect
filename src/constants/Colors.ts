@@ -1,4 +1,5 @@
 import { ThemeData } from "@type/theme";
+import { processThemeColors } from "@utils";
 import { vars } from "nativewind";
 
 export const colors: { light: ThemeData; dark: ThemeData } = {
@@ -43,6 +44,6 @@ export const colors: { light: ThemeData; dark: ThemeData } = {
 };
 
 export const themes = {
-  light: vars<ThemeData>(colors.light),
-  dark: vars<ThemeData>(colors.dark),
+  light: vars<ThemeData>(processThemeColors(colors.light)),
+  dark: vars<ThemeData>(processThemeColors(colors.dark)),
 };
