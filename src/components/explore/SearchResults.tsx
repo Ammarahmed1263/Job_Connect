@@ -18,7 +18,15 @@ const SearchResults = () => {
 
   const cleanedQueryFilters = getCleanedFilters(queryFilters);
 
-  const { data, isPending, isFetching } = useSearchJobs(cleanedQueryFilters);
+  const { data, isPending, isFetching, error } = useSearchJobs(cleanedQueryFilters);
+
+  if (error) {
+    return (
+      <View className="flex-1 items-center justify-center mx-8">
+        <AppText className="text-center">Oops..error occured please try again later</AppText>
+      </View>
+    );
+  }
 
   if (!data || isPending) {
     return (
