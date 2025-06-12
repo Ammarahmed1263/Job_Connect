@@ -55,6 +55,18 @@ const authService = {
       console.log('error refreshing token here: ', error);
       throw handleApiError(error);
     }
+  },
+
+  logout: async (accessToken: string, refreshToken: string) => {
+    try {
+      await apiClient.post(endpoints.accounts.logout, {
+        accessToken,
+        refreshToken,
+      });
+    } catch (error) {
+      console.log("Error logging out: ", error);
+      throw error;
+    }
   }
 };
 

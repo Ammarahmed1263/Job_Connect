@@ -1,6 +1,10 @@
 export const publicEndpoints = [
   "Accounts/Register/JobSeeker",
   "Accounts/Login",
+  "Accounts/Logout",
+  "Accounts/ForgotPassword",
+  "Accounts/ResetPassword",
+  "Accounts/RefreshToken",
   "Home/GetAllJobs",
   "Home/GetAllTags",
   "Home/ContactUs",
@@ -10,6 +14,7 @@ export const endpoints = {
   accounts: {
     register: "Accounts/Register/JobSeeker",
     login: "Accounts/Login",
+    logout: "Accounts/Logout",
     forgotPassword: "Accounts/ForgotPassword",
     resetPassword: "Accounts/ResetPassword",
     refreshToken: "Accounts/RefreshToken",
@@ -21,13 +26,13 @@ export const endpoints = {
     getSeekerProfile: "JobSeeker/GetSeekerProfile",
     updateSeekerProfile: "JobSeeker/UpdateSeekerProfile",
     deleteSeekerProfile: "JobSeeker/DeleteSeekerProfile",
-    getEmployerById: 'JobSeeker/GetEmployerById',
+    getEmployerById: "JobSeeker/GetEmployerById",
   },
   resumes: {
-    getResumeByPath: 'JobSeeker/GetResume',
-    uploadResume: 'JobSeeker/UploadResume',
-    deleteResume: 'JobSeeker/DeleteResume',
-    getResumes: 'JobSeeker/GetResumes',
+    getResumeByPath: "JobSeeker/GetResume",
+    uploadResume: "JobSeeker/UploadResume",
+    deleteResume: "JobSeeker/DeleteResume",
+    getResumes: "JobSeeker/GetResumes",
   },
   jobs: {
     getAllJobs: (page: number, size: number) =>

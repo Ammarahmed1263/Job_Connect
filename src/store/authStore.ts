@@ -79,14 +79,26 @@ const useAuthStore = create<authStore>()(
         }
       },
       logout: async () => {
-        await secureStorage.removeToken("auth_token");
-        await secureStorage.removeToken("refresh_token");
-        set({
-          user: null,
-          isAuthenticated: false,
-          isLoading: false,
-          error: null,
-        });
+        try {
+          const token = await secureStorage.getToken("auth_token");
+          const refreshToken = await secureStorage.getToken("refresh_token");
+          if (token && refreshToken) {
+            await authService.logout(token, refreshToken);
+
+            await secureStorage.removeToken("auth_token");
+            await secureStorage.removeToken("refresh_token");
+
+            set({
+              user: null,
+              isAuthenticated: false,
+              isLoading: false,
+              error: null,
+            });
+          }
+        } catch (error) {
+          console.log("Error logging out: ", error);
+          throw new Error(`error logging out: ${error}`);
+        }
       },
       clearError: () => set({ error: null }),
     }),
