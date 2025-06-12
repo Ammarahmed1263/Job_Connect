@@ -5,7 +5,7 @@ import {
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
-import { JobDetails } from "@type/jobTypes";
+import { jobSummary } from "@type/jobTypes";
 
 export const useJobs = (size: number = 10, enabled: boolean = true) => {
   return useInfiniteQuery({
@@ -41,7 +41,7 @@ export const useJobById = (id: number) => {
 export const useSaveJob = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (job: JobDetails) => jobService.saveJob(job.id),
+    mutationFn: (job: jobSummary) => jobService.saveJob(job.id),
     onMutate: async (job) => {
       const jobSummary = {
         id: job.id,
@@ -57,7 +57,7 @@ export const useSaveJob = () => {
       const previousJobs = queryClient.getQueryData(["getSavedJobs"]);
       queryClient.setQueryData(
         ["getSavedJobs"],
-        ({ message, data }: { message: string; data: JobDetails[] }) => ({
+        ({ message, data }: { message: string; data: jobSummary[] }) => ({
           message,
           data: [
             ...(data || []),
@@ -96,7 +96,7 @@ export const useUnsaveJob = () => {
       const previousJobs = queryClient.getQueryData(["getSavedJobs"]);
       queryClient.setQueryData(
         ["getSavedJobs"],
-        ({ message, data }: { message: string; data: JobDetails[] }) => ({
+        ({ message, data }: { message: string; data: jobSummary[] }) => ({
           message: message,
           data: data.filter((job) => job.id !== jobId),
         })

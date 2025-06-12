@@ -1,11 +1,17 @@
+export type JobType = 'Full-time' | 'Part-time' | 'Contract' | 'Internship' | '';
+export type Workplace = 'Remote' | 'On-site' | 'Hybrid' | '';
+export type Experience = 'Entry' | 'Mid-level' | 'Senior' | 'Lead' | 'Manager' | '';
+export type Education = 'High School' | "Associate's" | "Bachelor's" | "Master's" | "PhD" | '';
+
+
 type BaseFilter = {
   location: string;
-  jobType: 'Full-time' | 'Part-time' | 'Contract' | 'Internship' | '';
-  workplace: 'Remote' | 'On-site' | 'Hybrid' | '';
+  jobType: JobType;
+  workplace: Workplace;
   minSalary: string;
   maxSalary: string;
-  experience: 'Entry' | 'Mid-level' | 'Senior' | 'Lead' | 'Manager' | '';
-  education: 'High School' | "Associate's" | "Bachelor's" | "Master's" | "PhD" | '';
+  experience: Experience;
+  education: Education;
 }
 
 export type Filters = Partial<BaseFilter> 

@@ -1,6 +1,9 @@
 export const publicEndpoints = [
   "Accounts/Register/JobSeeker",
   "Accounts/Login",
+  "Home/GetAllJobs",
+  "Home/GetAllTags",
+  "Home/ContactUs",
 ];
 
 export const endpoints = {
@@ -15,6 +18,16 @@ export const endpoints = {
     getSavedJobs: "JobSeeker/GetSavedJobs",
     getAppliedJobs: "JobSeeker/GetAppliedJobs",
     getAllEmployers: "JobSeeker/GetAllEmployers",
+    getSeekerProfile: "JobSeeker/GetSeekerProfile",
+    updateSeekerProfile: "JobSeeker/UpdateSeekerProfile",
+    deleteSeekerProfile: "JobSeeker/DeleteSeekerProfile",
+    getEmployerById: 'JobSeeker/GetEmployerById',
+  },
+  resumes: {
+    getResumeByPath: 'JobSeeker/GetResume',
+    uploadResume: 'JobSeeker/UploadResume',
+    deleteResume: 'JobSeeker/DeleteResume',
+    getResumes: 'JobSeeker/GetResumes',
   },
   jobs: {
     getAllJobs: (page: number, size: number) =>
@@ -23,6 +36,7 @@ export const endpoints = {
     saveJob: "JobSeeker/SaveJob",
     unsaveJob: "JobSeeker/UnsaveJob",
     applyForJob: "JobSeeker/ApplyForJob",
+    applyForJobByResumeId: "JobSeeker/ApplyForJobByResumeId",
   },
   home: {
     getAllJobs: "Home/GetAllJobs",
