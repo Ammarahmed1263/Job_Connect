@@ -8,7 +8,10 @@ import { onlineManager } from '@tanstack/react-query'
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      gcTime: 1000 * 60 * 60 * 24,
+      gcTime: 1000 * 60 * 60 * 24, // 25 hours
+      staleTime: 1000 * 60 * 15, // 15 minutes
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
     },
   },
 })
@@ -28,7 +31,7 @@ if (typeof window !== 'undefined') {
   persistQueryClient({
     queryClient,
     persister: asyncStoragePersistor,
-    maxAge: 1000 * 60 * 60 * 24,
+    maxAge: 1000 * 60 * 60 * 24, // 24 hours
   })
 }
 
