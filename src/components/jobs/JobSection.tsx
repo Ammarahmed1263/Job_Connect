@@ -47,7 +47,7 @@ const JobSection = ({ title, subtitle, data, onSeeAll }: JobSectionProps) => {
       </View>
 
       <FlatList
-        data={data}
+        data={data.slice(0, 6)}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => <JobCard item={item} wrapperStyle={{width: width - width * 0.15}}/>}
         contentContainerClassName="pb-4 gap-4 px-4 items-center"

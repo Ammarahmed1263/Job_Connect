@@ -41,7 +41,7 @@ const ExploreHeader: FC<ExploreHeaderProps> = ({
         </AppButton>
       )}
       <SearchBar ref={inputRef} placeholder="Find your next dream job" />
-      {barState === "idle" && (
+      {barState === "idle" ? (
         <AppButton
           title=""
           flat
@@ -51,8 +51,7 @@ const ExploreHeader: FC<ExploreHeaderProps> = ({
           <AppIcon name="bell" color={colors["--accent-color"]} size={30} />
           <View className="absolute end-3 top-2 w-3 h-3 rounded-full bg-[--error-color]" />
         </AppButton>
-      )}
-      {barState === "submitted" && (
+      ) : (
         <AppButton
           title=""
           flat

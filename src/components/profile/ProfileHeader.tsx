@@ -28,7 +28,6 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
       onPress={onPress}
       activeOpacity={0.8}
     >
-      {/* Profile Image or Initials */}
       <View className="mr-4">
         {imageUri ? (
           <Image
@@ -44,7 +43,6 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
         )}
       </View>
 
-      {/* User Info */}
       <View className="flex-1">
         <AppText className="text-[--text-primary] mb-1">{name}</AppText>
         <AppText variant="light" className="text-white/80">

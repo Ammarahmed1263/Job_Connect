@@ -10,7 +10,7 @@ import { ScrollView, View } from 'react-native';
 const ExploreContent = () => {
   const router = useRouter();
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
-  const { data, isPending } = useJobs(4, isAuthenticated);
+  const { data, isPending } = useJobs(10, isAuthenticated);
   const recentJobs = useRecentJobsStore((state) => state.recentJobs);
 
   const handleSeeAll = () => {
