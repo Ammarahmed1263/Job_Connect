@@ -14,7 +14,7 @@ const DetailsBlock: FC<DetailsBlockProps> = ({ title, icon, value }) => {
   const { colors } = useTheme();
 
   return (
-    <View className="w-[48%] bg-[--card-color] p-4 rounded-xl mb-4">
+    <View className="flex-1 bg-[--card-color] p-4 rounded-xl">
       <View className="flex-row items-center gap-2 mb-2">
         <Ionicons name={icon} size={20} color={colors["--accent-color"]} />
         <AppText variant="light" className="color-[--text-muted]">

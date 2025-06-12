@@ -51,6 +51,7 @@ const JobDetails = () => {
         maxSalary: job.maxSalary,
         salaryType: job.salaryType,
         employer: job.employer,
+        location: job.location,
       });
     }
   }, [job]);
@@ -124,24 +125,33 @@ const JobDetails = () => {
         </View>
 
         {/* Job Details Grid */}
-        <View className="flex-row flex-wrap justify-between px-4 py-2">
+        <View className="flex-row flex-wrap justify-between px-4 pt-2 gap-4 mb-4">
           <DetailsBlock
             title={`Salary (${job?.salaryType})`}
             icon="wallet-outline"
-            value={`$${formatSalary(job?.minSalary)}k - $${formatSalary(
-              job?.maxSalary
-            )}k`}
+            value={
+              `$${formatSalary(job?.minSalary)}k - $${formatSalary(
+                job?.maxSalary
+              )}k`.length > 0
+                ? `$${formatSalary(job?.minSalary)}k - $${formatSalary(
+                    job?.maxSalary
+                  )}k`
+                : "N/A"
+            }
           />
 
           <DetailsBlock
             title="Job Type"
             icon="briefcase-outline"
-            value={job?.jobType}
+            value={job?.jobType.length > 0 ? job?.jobType : "N/A"}
           />
+        </View>
+
+        <View className="flex-row flex-wrap justify-between px-4 pb-2 gap-4">
           <DetailsBlock
             title="Working Model"
             icon="desktop-outline"
-            value={job?.workPlace}
+            value={job?.workPlace.length > 0 ? job?.workPlace : "N/A"}
           />
           <DetailsBlock
             title="Level"
@@ -149,7 +159,6 @@ const JobDetails = () => {
             value={getSeniorityLevel(job?.experience) ?? "N/A"}
           />
         </View>
-
         {/* Tabs */}
         <View className="flex-row border-b border-[--border-color] justify-center">
           {["about", "company", "review"].map((tab) => (

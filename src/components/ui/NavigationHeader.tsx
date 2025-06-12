@@ -1,22 +1,24 @@
-import { View, TouchableOpacity } from "react-native";
-import React, { FC, ReactNode } from "react";
-import AppIcon from "./AppIcon";
+import { useTheme } from "@contexts/ThemeContext";
 import { useSafeArea } from "@hooks/useSafeArea";
 import { useRouter } from "expo-router";
-import AppText from "./AppText";
-import { useTheme } from "@contexts/ThemeContext";
+import React, { FC, ReactNode } from "react";
+import { StyleProp, View, ViewStyle } from "react-native";
 import AppButton from "./AppButton";
+import AppIcon from "./AppIcon";
+import AppText from "./AppText";
 
 interface NavigationHeaderProps {
   children?: ReactNode;
   title?: string;
   showBackButton?: boolean;
+  style?: StyleProp<ViewStyle>
 }
 
 const NavigationHeader: FC<NavigationHeaderProps> = ({
   title,
   children,
   showBackButton = true,
+  style,
 }) => {
   const { top } = useSafeArea();
   const { colors } = useTheme();
@@ -25,9 +27,10 @@ const NavigationHeader: FC<NavigationHeaderProps> = ({
   return (
     <View
       className="flex-row items-center justify-between px-4 min-h-14"
-      style={{
-        marginTop: top,
-      }}
+      style={[
+        style,
+        {marginTop: top + (style && 'marginTop' in style && typeof style.marginTop === 'number' ? style.marginTop : 0)},
+      ]}
     >
       <View className="w-20 h-12 items-start justify-center">
         {showBackButton && router.canGoBack() && (
