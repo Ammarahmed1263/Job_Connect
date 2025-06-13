@@ -8,6 +8,7 @@ import { useProfileForm } from "@contexts/formContext";
 import { useSafeArea } from "@hooks/useSafeArea";
 import { useUpdateSeekerProfile } from "@queries/userQueries";
 import { ProfileFormData } from "@type/userTypes";
+import { useRouter } from "expo-router";
 import React from "react";
 import { ScrollView, View, StyleSheet } from "react-native";
 
@@ -15,15 +16,17 @@ const AboutMe = () => {
   // about me: bio, coverLetter, dateOfBirth, nationality, maritalStatus, gender
   const { control, handleSubmit, formState } = useProfileForm();
   const { bottom } = useSafeArea();
-  const { mutate } = useUpdateSeekerProfile();
+  const { mutateAsync } = useUpdateSeekerProfile();
+  const router = useRouter();
 
   console.log("form data: ", formState.defaultValues);
 
-  const updateUserAbout = (data: ProfileFormData) => {
+  const updateUserAbout = async (data: ProfileFormData) => {
     console.log("data: ", data.about);
-    mutate({
+    await mutateAsync({
       ...data.about,
     });
+    router.back();
   };
 
   return (

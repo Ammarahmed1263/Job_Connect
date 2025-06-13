@@ -17,7 +17,7 @@ const useAuthStore = create<authStore>()(
         set({ isLoading: true, error: null });
         try {
           const data = await authService.login(credentials);
-          console.log("data here: ", data);
+          console.log("user here: ", data);
           await secureStorage.setToken("auth_token", data.token);
           await secureStorage.setToken("refresh_token", data.refreshToken);
 
@@ -82,6 +82,8 @@ const useAuthStore = create<authStore>()(
         try {
           const token = await secureStorage.getToken("auth_token");
           const refreshToken = await secureStorage.getToken("refresh_token");
+
+          console.log("token and refresh token before logout: ", token, refreshToken);
           if (token && refreshToken) {
             await authService.logout(token, refreshToken);
 

@@ -42,8 +42,8 @@ const CompleteProfileScreen = () => {
               <ProfileSectionItem
                 key={item.id}
                 item={item}
-                isCompleted={completed === total}
-                fieldsCount={total}
+                completedFields={completed}
+                totalFields={total}
                 onPress={() => handleSectionPress(item)}
               />
             );

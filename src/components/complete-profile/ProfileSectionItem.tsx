@@ -7,14 +7,14 @@ import { TouchableOpacity, View } from "react-native";
 interface ProfileSectionItemProps {
   item: ProfileSection;
   onPress: () => void;
-  isCompleted?: boolean;
-  fieldsCount?: number;
+  completedFields?: number;
+  totalFields?: number;
 }
 
 const ProfileSectionItem: FC<ProfileSectionItemProps> = ({
   item,
-  isCompleted,
-  fieldsCount,
+  completedFields,
+  totalFields,
   onPress,
 }) => {
   const { colors } = useTheme();
@@ -30,20 +30,20 @@ const ProfileSectionItem: FC<ProfileSectionItemProps> = ({
       >
         <AppIcon name={item.iconName} size={24} color={colors["--bg-color"]} />
       </View>
-      <AppText className="flex-1 text-[--text-primary] ms-2 mt-1">
+      <AppText numberOfLines={1} className="flex-1 text-[--text-primary] ms-2 mt-1">
         {item.sectionName}
       </AppText>
 
-      {isCompleted ? (
+      {completedFields === totalFields ? (
         <AppIcon
           name="checkmark"
           size={28}
           color={colors["--text-secondary"]}
         />
       ) : (
-        <View className="flex-row items-center justify-center">
+        <View className="flex-row items-center justify-center ms-2">
           <AppText variant="light" className="!text-[--text-secondary] !text-lg mt-1">
-            {fieldsCount}
+            {completedFields} / {totalFields}
           </AppText>
           <AppIcon
             name="alt-arrow-right"

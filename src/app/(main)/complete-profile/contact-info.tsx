@@ -1,33 +1,35 @@
-import { View, Text, ScrollView, StyleSheet } from "react-native";
-import React from "react";
 import {
   AppButton,
   AppIcon,
-  AppText,
   ControlledLabelInput,
-  NavigationHeader,
+  NavigationHeader
 } from "@components/ui";
+import { vs } from "@constants/metrics";
 import { useProfileForm } from "@contexts/formContext";
 import { useTheme } from "@contexts/ThemeContext";
 import Icon from "@expo/vector-icons/Ionicons";
-import { ProfileFormData } from "@type/userTypes";
-import { vs } from "@constants/metrics";
 import { useSafeArea } from "@hooks/useSafeArea";
 import { useUpdateSeekerProfile } from "@queries/userQueries";
+import { ProfileFormData } from "@type/userTypes";
+import { useRouter } from "expo-router";
+import React from "react";
+import { ScrollView, StyleSheet, View } from "react-native";
 
 const ContactInfo = () => {
   // first name, last name, email, phone number, address, facebookLink, twitterLink, instagramLink, linkedinLink
   const { control, handleSubmit, formState } = useProfileForm();
   const { colors } = useTheme();
   const { bottom } = useSafeArea();
-  const { mutate } = useUpdateSeekerProfile();
+  const { mutateAsync } = useUpdateSeekerProfile();
   console.log("form state: ", formState.defaultValues);
+  const router = useRouter();
 
-  const updateUserContact = (data: ProfileFormData) => {
+  const updateUserContact = async (data: ProfileFormData) => {
     console.log("data: ", data.contactInfo);
-    mutate({
+    await mutateAsync({
       ...data.contactInfo,
     });
+    router.back();
   };
 
   return (

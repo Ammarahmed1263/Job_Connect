@@ -41,18 +41,19 @@ const userService = {
       throw error;
     }
   },
-  updateSeekerProfile: async (profile: Omit<UserProfile, 'id'>) => {
+  updateSeekerProfile: async (profile: Partial<Omit<UserProfile, 'id'>>) => {
     try {
-      const { data } = await apiClient.post(userBase.getSeekerProfile, profile);
+      const { data } = await apiClient.put(userBase.updateSeekerProfile, profile);
       console.log("updated seeker profile: ", JSON.stringify(data, null, 2));
       return data;
     } catch (error) {
+      console.log('error updating seeker profile', error);
       throw error;
     }
   },
   deleteSeekerProfile: async () => {
     try {
-      const { data } = await apiClient.delete(userBase.getSeekerProfile);
+      const { data } = await apiClient.delete(userBase.deleteSeekerProfile);
       console.log("delete seeker profile: ");
       return data;
     } catch (error) {
