@@ -27,8 +27,11 @@ export type RegisterFormData = {
 };
 
 export type RefreshTokenResponse = {
-  accessToken: string;
-  refreshToken: string;
+  success: boolean;
+  tokens: {
+    accessToken: string;
+    refreshToken: string;
+  };
 };
 
 export interface authStore {

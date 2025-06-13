@@ -3,10 +3,10 @@ import { Redirect, Stack } from "expo-router";
 import React from "react";
 
 const MainLayout = () => {
-  const { isAuthenticated } = useAuthStore();
+  const { isAuthenticated, isLoading } = useAuthStore();
 
-  if (!isAuthenticated) {
-    console.error("YOU HAVE BEEN LOGGED OUT");
+  if (!isAuthenticated && !isLoading) {
+    console.warn("YOU HAVE BEEN LOGGED OUT");
     return <Redirect href="/login" />;
   }
 
@@ -18,6 +18,9 @@ const MainLayout = () => {
     >
       <Stack.Screen name="(tabs)" />
       <Stack.Screen name="jobs" />
+      <Stack.Screen name="complete-profile" options={{
+        animation: "slide_from_bottom"
+      }} />
     </Stack>
   );
 };

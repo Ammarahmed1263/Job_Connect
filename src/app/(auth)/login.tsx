@@ -27,7 +27,7 @@ import authRules from "schemas/auth";
 
 const Login = () => {
   const router = useRouter();
-  const { colors, theme } = useTheme();
+  const { colors } = useTheme();
   const passwordRef = useRef<TextInput>(null);
   const { control, handleSubmit, setError } = useForm<LoginFormData>({
     mode: "onBlur",

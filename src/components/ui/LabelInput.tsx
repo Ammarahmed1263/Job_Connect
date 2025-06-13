@@ -67,7 +67,7 @@ const LabelInput = forwardRef<TextInput, LabelInputProps>(
         className={clsx("mx-2", containerClassName)}
         testID="container"
       >
-        {title.length > 0 && <AppText className="ms-2" testID="label-input-title">{title}</AppText>}
+        {title.length > 0 && <AppText className="ms-2 mb-1" testID="label-input-title">{title}</AppText>}
         <Pressable
           onPress={() => inputRef?.current?.focus()}
           hitSlop={20}

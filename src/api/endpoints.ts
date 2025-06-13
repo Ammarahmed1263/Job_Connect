@@ -31,7 +31,7 @@ export const endpoints = {
   resumes: {
     getResumeByPath: "JobSeeker/GetResume",
     uploadResume: "JobSeeker/UploadResume",
-    deleteResume: "JobSeeker/DeleteResume",
+    deleteResume: (resumeId: number) => `JobSeeker/DeleteResume/${resumeId}`,
     getResumes: "JobSeeker/GetResumes",
   },
   jobs: {

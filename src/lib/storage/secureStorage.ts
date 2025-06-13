@@ -16,7 +16,7 @@ export const secureStorage = {
     try {
       await SecureStore.setItemAsync(key, value);
     } catch (error) {
-      console.error('Failed to store token in secure storage', error);
+      console.error('Failed to store token in secure storage', error, key, value);
     }
   },
   

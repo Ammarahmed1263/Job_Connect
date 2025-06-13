@@ -52,7 +52,7 @@ const authService = {
       console.log('tokens refreshed here: ', data)
       return data;
     } catch (error) {
-      console.log('error refreshing token here: ', error);
+      console.log('error refreshing token here: ', error, token, refreshToken);
       throw handleApiError(error);
     }
   },
