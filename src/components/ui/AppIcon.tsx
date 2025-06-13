@@ -35,7 +35,20 @@ import {
   document_text,
   user_id,
   check_circle,
-  alt_arrow_right
+  alt_arrow_right,
+  file_send,
+  trash_bin,
+  facebook,
+  instagram,
+  linkedin,
+  twitter,
+  calendar,
+  city,
+  clipboard,
+  family,
+  home_person,
+  letter,
+  ring
 } from "@assets/icons";
 import AppText from "./AppText";
 
@@ -74,7 +87,20 @@ const icons = {
   "document-text": document_text,
   "user-id": user_id,
   "checkmark": check_circle,
-  "alt-arrow-right": alt_arrow_right
+  "alt-arrow-right": alt_arrow_right,
+  "file-send": file_send,
+  "trash-bin": trash_bin,
+  facebook: facebook,
+  instagram: instagram,
+  linkedin: linkedin,
+  twitter: twitter,
+  calendar: calendar,
+  city: city,
+  clipboard: clipboard,
+  family: family,
+  "home-person": home_person,
+  letter: letter,
+  ring: ring
 } as const;
 
 type IconName = keyof typeof icons;
