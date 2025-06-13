@@ -1,16 +1,18 @@
 import ProfileHeader from "@components/profile/ProfileHeader";
 import ProfileMenuSection from "@components/profile/ProfileMenuSection";
 import { AppButton, AppDropdown, AppIcon, AppText } from "@components/ui";
-import { hs } from "@constants/metrics";
+import { hs, vs } from "@constants/metrics";
 import { PROFILE_MENU_ITEMS } from "@constants/profileMenuItems";
 import { useTheme } from "@contexts/ThemeContext";
-import { Ionicons } from "@expo/vector-icons";
 import { useSafeArea } from "@hooks/useSafeArea";
+import { useSeekerProfile } from "@queries/userQueries";
 import useAuthStore from "@store/authStore";
 import { useOnboardingStore } from "@store/onboardingStore";
+import { useProfileStore } from "@store/profileStore";
 import { Theme } from "@type/theme";
+import { countNonEmptyFields } from "@utils";
 import { useRouter } from "expo-router";
-import React from "react";
+import React, { useEffect } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 
 const Profile = () => {
@@ -18,7 +20,20 @@ const Profile = () => {
   const { top } = useSafeArea();
   const router = useRouter();
   const { logout, isAuthenticated, user } = useAuthStore();
-  const { testOnboarding } = useOnboardingStore();
+  const testOnboarding = useOnboardingStore((state) => state.testOnboarding);
+  const { data, isPending } = useSeekerProfile();
+  const { setProfile } = useProfileStore();
+
+  const progress =
+    data && data.data
+      ? Math.round((countNonEmptyFields(data.data) / Object.keys(data.data).length) * 100)
+      : 0;
+
+  useEffect(() => {
+    if (data && data.data) {
+      setProfile(data.data);
+    }
+  }, [data, setProfile]);
 
   const handleLogout = async () => {
     await logout();
@@ -33,17 +48,26 @@ const Profile = () => {
     testOnboarding(false);
   };
 
+  if (isPending) {
+    return (
+      <View className="flex-1 items-center justify-center">
+        <AppText>Loading...</AppText>
+      </View>
+    );
+  }
+
   return (
     <ScrollView
       className="flex-1 bg-[--bg-color]"
       style={{ marginTop: top }}
+      contentContainerStyle={{ paddingVertical: vs(12) }}
       showsVerticalScrollIndicator={false}
     >
       {/* Profile Header */}
       {isAuthenticated && (
         <ProfileHeader
-          name={user?.name || "Marion Torphy"}
-          progress={70}
+          name={user?.name || "unavailable"}
+          progress={progress}
           onPress={() => router.push("/complete-profile")}
         />
       )}
@@ -105,6 +129,11 @@ const Profile = () => {
           flat
         />
         <AppButton title="Onboarding" onPress={handleOnboarding} flat />
+        <AppButton
+          title="register"
+          onPress={() => router.push("/register")}
+          flat
+        />
       </View>
     </ScrollView>
   );

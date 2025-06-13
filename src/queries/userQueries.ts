@@ -1,7 +1,6 @@
 import userService from "@api/services/userService";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { UserProfile } from "@type/userTypes";
-import queryClient from "./queryClient";
 
 export const useSavedJobs = (enabled: boolean = true) => {
   return useQuery({
@@ -31,20 +30,25 @@ export const useSeekerProfile = (enabled: boolean = true) => {
   return useQuery({
     queryKey: ["getSeekerProfile"],
     queryFn: () => userService.fetchSeekerProfile(),
+    enabled
   })
 };
 
-export const updateSeekerProfile = (profile: Omit<UserProfile, 'id'>) => {
+export const useUpdateSeekerProfile = () => {
+  const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: () => userService.updateSeekerProfile(profile),
+    mutationFn: (profile: Partial<Omit<UserProfile, 'id'>>) => userService.updateSeekerProfile(profile),
     onSuccess: () => {
-      console.log("updated seeker profile");
       queryClient.invalidateQueries({ queryKey: ["getSeekerProfile"] });
+    },
+    onError: (error) => {
+      console.log('update query failed', error);
     }
   })
 }
 
-export const deleteSeekerProfile = () => {
+export const useDeleteSeekerProfile = () => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: () => userService.deleteSeekerProfile(),
     onSuccess: () => {
