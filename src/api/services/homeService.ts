@@ -1,23 +1,19 @@
 import apiClient from "@api/apiClient";
 import { endpoints } from "@api/endpoints";
+import { SearchJobsParams } from "@queries/homeQueries";
 import { JobsApiResponse } from "@type/jobTypes";
 import { AxiosError } from "axios";
 
 const homeBase = endpoints.home;
 
 const homeService = {
-  fetchSearchJobs: async (
-    filters?: {},
-    page: number = 1,
-    size: number = 10,
-  ): Promise<JobsApiResponse> => {
+  fetchSearchJobs: async (filters: SearchJobsParams): Promise<JobsApiResponse> => {
     try {
-      console.log('filters passed: ', filters);
       const { data } = await apiClient.get(homeBase.getAllJobs, {
         params: {
-          page,
-          size,
           ...filters,
+          pageSize: filters.size,
+          pageNumber: filters.page,
         },
       });
       return data;

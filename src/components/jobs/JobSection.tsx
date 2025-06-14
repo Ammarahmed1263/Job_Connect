@@ -1,5 +1,7 @@
 import { AppButton, AppText } from "@components/ui";
 import { width } from "@constants/metrics";
+import { useQueries } from "@tanstack/react-query";
+import jobService from "@api/services/jobService"; // <- import directly
 import useAuthStore from "@store/authStore";
 import { jobSummary } from "@type/jobTypes";
 import React from "react";
@@ -9,22 +11,35 @@ import JobCard from "./JobCard";
 interface JobSectionProps {
   title: string;
   subtitle: string;
-  data?: jobSummary[];
-  onSeeAll: () => void;
+  data: jobSummary[];
+  onSeeAll?: () => void;
+  useRecommendCard?: boolean;
 }
 
-const JobSection = ({ title, subtitle, data, onSeeAll }: JobSectionProps) => {
-  const isAuthenticated = useAuthStore(state => state.isAuthenticated);
+const JobSection = ({
+  title,
+  subtitle,
+  data,
+  onSeeAll,
+  useRecommendCard = false,
+}: JobSectionProps) => {
 
-  if (!isAuthenticated) return null;
+  const jobDetails = useRecommendCard
+    ? useQueries({
+        queries: data.slice(0, 6).map((job) => ({
+          queryKey: ["getJobById", job.id],
+          queryFn: () => jobService.fetchJobById(job.id),
+        })),
+      })
+    : [];
 
-  if (!data) {
-    return <AppText className="text-center">Loading...</AppText>;
-  }
+  const isLoadingDetails =
+    useRecommendCard && jobDetails.some((q) => q.isLoading);
 
-  if (data.length === 0) {
-    return null;
-  }
+  if (isLoadingDetails)
+    return (
+      <AppText className="text-center">Loading recommended jobs...</AppText>
+    );
 
   return (
     <View className="py-4">
@@ -37,19 +52,34 @@ const JobSection = ({ title, subtitle, data, onSeeAll }: JobSectionProps) => {
             {subtitle}
           </AppText>
         </View>
-        <AppButton
-          variant="primary"
-          title="See all"
-          textClassName="color-[--accent-color]"
-          onPress={onSeeAll}
-          flat
-        />
+        {onSeeAll && (
+          <AppButton
+            variant="primary"
+            title="See all"
+            textClassName="color-[--accent-color]"
+            onPress={onSeeAll}
+            flat
+          />
+        )}
       </View>
 
       <FlatList
         data={data.slice(0, 6)}
         keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => <JobCard item={item} wrapperStyle={{width: width - width * 0.15}}/>}
+        renderItem={({ item, index }) => {
+          const jobItem = useRecommendCard
+            ? (jobDetails[index]?.data as jobSummary)
+            : item;
+
+          if (!jobItem) return null;
+
+          return (
+            <JobCard
+              item={jobItem}
+              wrapperStyle={{ width: width - width * 0.15 }}
+            />
+          );
+        }}
         contentContainerClassName="pb-4 gap-4 px-4 items-center"
         showsHorizontalScrollIndicator={false}
         horizontal

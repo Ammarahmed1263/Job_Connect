@@ -30,6 +30,7 @@ export interface JobDetails extends jobSummary {
   description: string;
   tags: string[];
   responsibilities: string[];
+  daysRemaining: number;
 }
 
 export interface JobsApiResponse {
@@ -40,3 +41,5 @@ export interface JobsApiResponse {
   pageSize: number;
   totalCount: number;
 }
+
+export type JobCategory = 'suggested' | 'recent' | 'trending' | 'bigCompanies' | 'remote' | 'fullTime';

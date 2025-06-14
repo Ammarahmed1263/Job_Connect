@@ -70,7 +70,7 @@ apiClient.interceptors.response.use(
       try {
         const refreshToken = await secureStorage.getToken("refresh_token");
         const oldToken = await secureStorage.getToken("auth_token");
-        console.log('tokens old: ', oldToken, refreshToken)
+        console.log(`old access ${oldToken} and refresh ${refreshToken}`)
 
         if (!refreshToken || !oldToken) {
           useAuthStore.getState().logout();

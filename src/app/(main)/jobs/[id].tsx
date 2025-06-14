@@ -4,8 +4,6 @@ import CompanyTab from "@components/jobs/detailsTabs/CompanyTab";
 import ReviewTab from "@components/jobs/detailsTabs/ReviewTab";
 import { AppButton, AppIcon, AppText, NavigationHeader } from "@components/ui";
 import { useTheme } from "@contexts/ThemeContext";
-import { Ionicons } from "@expo/vector-icons";
-import { useSafeArea } from "@hooks/useSafeArea";
 import { useWithAuth } from "@hooks/useWithAuth";
 import { useJobById, useSaveJob, useUnsaveJob } from "@queries/jobQueries";
 import { useSavedJobs } from "@queries/userQueries";
@@ -15,6 +13,9 @@ import { formatSalary, getSeniorityLevel } from "@utils";
 import { useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
 import { ScrollView, TouchableOpacity, View } from "react-native";
+import LottieView from "lottie-react-native";
+import BriefCaseAnimation from "@assets/lottie/brief-case.json";
+import Loading from "@assets/lottie/loading.json";
 
 const JobDetails = () => {
   const { id } = useLocalSearchParams();
@@ -22,7 +23,7 @@ const JobDetails = () => {
   const [activeTab, setActiveTab] = useState<"about" | "company" | "review">(
     "about"
   );
-  const { data: job, isPending, error } = useJobById(Number(id));
+  const { data: job, isPending, isError } = useJobById(Number(id));
   const { data: savedJobs } = useSavedJobs();
   const { mutate: unsaveJob } = useUnsaveJob();
   const { mutate: saveJob } = useSaveJob();
@@ -68,13 +69,33 @@ const JobDetails = () => {
 
   if (isPending) {
     return (
-      <View className="flex-1 items-center justify-center">
-        <AppText>Loading...</AppText>
+      <View className="flex-1 items-center justify-center bg-[--bg-color]">
+        <LottieView
+          source={Loading}
+          autoPlay
+          loop
+          duration={1.5 * 1000}
+          style={{ width: 250, height: 250 }}
+          colorFilters={[
+            {
+              keypath: "Case - 23",
+              color: colors["--bg-color"],
+            },
+            {
+              keypath: "Case - 18",
+              color: colors["--bg-color"],
+            },
+            {
+              keypath: "Case - 17",
+              color: colors["--bg-color"],
+            },
+          ]}
+        />
       </View>
     );
   }
 
-  if (error) {
+  if (isError) {
     return (
       <View className="flex-1 items-center justify-center">
         <AppText>Oops..error occured please try again</AppText>
@@ -160,8 +181,8 @@ const JobDetails = () => {
           />
         </View>
         {/* Tabs */}
-        <View className="flex-row border-b border-[--border-color] justify-center">
-          {["about", "company", "review"].map((tab) => (
+        <View className="flex-row justify-center">
+          {["about", "company"].map((tab) => (
             <TouchableOpacity
               key={tab}
               onPress={() => setActiveTab(tab as typeof activeTab)}
