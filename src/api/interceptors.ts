@@ -1,45 +1,37 @@
-import { secureStorage } from "lib/storage/secureStorage";
 import apiClient from "./apiClient";
+import { secureStorage } from "lib/storage/secureStorage";
 import { endpoints, publicEndpoints } from "./endpoints";
 import authService from "./services/authService";
 import useAuthStore from "@store/authStore";
 
+let isRefreshing = false;
+let failedQueue: {
+  resolve: (token: string) => void;
+  reject: (err: any) => void;
+}[] = [];
+
+const processQueue = (error: any, token: string | null) => {
+  failedQueue.forEach((prom) => {
+    if (error) prom.reject(error);
+    else prom.resolve(token!);
+  });
+  failedQueue = [];
+};
+
 apiClient.interceptors.request.use(
   async (config) => {
-    try {
-      const isPublic = publicEndpoints.some((path) =>
-        config?.url?.includes(path)
-      );
-      const token = await secureStorage.getToken("auth_token");
-      const refreshToken = await secureStorage.getToken("refresh_token");
+    const isPublic = publicEndpoints.some((path) => config?.url?.includes(path));
+    const token = await secureStorage.getToken("auth_token");
 
-      if ((!token || !refreshToken) && !isPublic) {
-        useAuthStore.getState().logout();
-        throw new Error("No tokens found");
-      }
+    console.log('endpoint called: ', config?.url)
 
-      console.log(`Request to ${config}`);
-      // console.log(`Is public endpoint: ${isPublic}`);
-      console.log(`----> Token exists: ${!!token} with value ${token}`);
-      console.log(
-        `Refresh exists: ${!!refreshToken} with value ${refreshToken}`
-      );
-
-      if (!isPublic && token) {
-        config.headers.Authorization = `Bearer ${token}`;
-        console.log("Added auth header");
-      }
-
-      return config;
-    } catch (error) {
-      console.error("Error in request interceptor:", error);
-      return Promise.reject(error);
+    if (!isPublic && token) {
+      config.headers.Authorization = `Bearer ${token}`;
     }
+
+    return config;
   },
-  (error) => {
-    console.error("Request interceptor error:", error);
-    return Promise.reject(error);
-  }
+  (error) => Promise.reject(error)
 );
 
 apiClient.interceptors.response.use(
@@ -47,37 +39,58 @@ apiClient.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    if (originalRequest.url.includes(endpoints.accounts.refreshToken)) {
+    const isRefreshCall = originalRequest.url?.includes(endpoints.accounts.refreshToken);
+    const isUnauthorized = error.response?.status === 401;
+    
+    console.log('response here: ', isRefreshCall, isUnauthorized);
+    // Already retried, or it's the refresh call itself → logout
+    if (isUnauthorized && isRefreshCall && originalRequest._retry) {
       useAuthStore.getState().logout();
       return Promise.reject(error);
     }
 
-    if (error.response?.status === 401 && !originalRequest._retry) {
+    if (isUnauthorized && !originalRequest._retry && !isRefreshCall) {
       originalRequest._retry = true;
-      console.log("request retry happened: ", originalRequest._retry);
+
+      // Queue requests during refresh
+      if (isRefreshing) {
+        return new Promise((resolve, reject) => {
+          failedQueue.push({
+            resolve: (token: string) => {
+              originalRequest.headers.Authorization = `Bearer ${token}`;
+              resolve(apiClient(originalRequest));
+            },
+            reject,
+          });
+        });
+      }
+
+      isRefreshing = true;
 
       try {
-        const token = await secureStorage.getToken("auth_token");
         const refreshToken = await secureStorage.getToken("refresh_token");
-        console.log("tokens: ", !!token, !!refreshToken);
+        const oldToken = await secureStorage.getToken("auth_token");
+        console.log('tokens old: ', oldToken, refreshToken)
 
-        if (!token || !refreshToken) {
+        if (!refreshToken || !oldToken) {
           useAuthStore.getState().logout();
           return Promise.reject(error);
         }
 
-        const Tokens = await authService.refreshToken(token, refreshToken);
-        await secureStorage.setToken("auth_token", Tokens.accessToken);
-        await secureStorage.setToken("refresh_token", Tokens.refreshToken);
+        const {tokens} = await authService.refreshToken(oldToken, refreshToken);
+        await secureStorage.setToken("auth_token", tokens.accessToken);
+        await secureStorage.setToken("refresh_token", tokens.refreshToken);
 
-        console.log("new token: ", Tokens.accessToken);
-        console.log("refresh token: ", Tokens.refreshToken);
+        processQueue(null, tokens.accessToken);
 
-        originalRequest.headers.Authorization = `Bearer ${Tokens.accessToken}`;
+        originalRequest.headers.Authorization = `Bearer ${tokens.accessToken}`;
         return apiClient(originalRequest);
       } catch (refreshError) {
+        processQueue(refreshError, null);
         useAuthStore.getState().logout();
         return Promise.reject(refreshError);
+      } finally {
+        isRefreshing = false;
       }
     }
 
