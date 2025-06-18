@@ -12,7 +12,7 @@ import useAuthStore from "@store/authStore";
 import { useSearchStore } from "@store/searchStore";
 import { useRouter } from "expo-router";
 import { useRef } from "react";
-import { TextInput, View } from "react-native";
+import { Keyboard, TextInput, View } from "react-native";
 
 const Explore = () => {
   const router = useRouter();
@@ -20,10 +20,16 @@ const Explore = () => {
   const { barState, setBarState, clearSearchText } = useSearchStore();
   const inputRef = useRef<TextInput>(null);
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const user = useAuthStore((state) => state.user);
+  console.log('user id here: ', user?.id)
   const filterSheetRef = useRef<BottomSheetModal>(null);
 
   const openFilters = () => {
-    filterSheetRef.current?.present();
+    if (filterSheetRef.current) {
+      filterSheetRef.current.present();
+    } else {
+      console.warn('Filter sheet ref is not set yet');
+    }
   };
 
 
@@ -32,13 +38,13 @@ const Explore = () => {
   };
 
   const handleBackButton = () => {
-    clearSearchText();
     setBarState("idle");
-    inputRef.current?.blur();
+    Keyboard.dismiss();
+    clearSearchText();
   };
 
   const blurSearchInput = () => {
-    inputRef.current?.blur();
+    Keyboard.dismiss();
   };
 
   const renderScreenContent = () => {

@@ -23,8 +23,9 @@ const SearchBar = forwardRef<TextInput, TextInputProps>(
       setSearchHistory,
       clearSearchText,
     } = useSearchStore();
-    const internalRef =
-      (ref as RefObject<TextInput>) ?? useRef<TextInput>(null);
+    const internalRef = useRef<TextInput>(null);
+    const mergedRef = ref ?? internalRef;
+    
 
     const handleFocus = (e: NativeSyntheticEvent<TextInputFocusEventData>) => {
       setBarState("focused");
@@ -32,7 +33,6 @@ const SearchBar = forwardRef<TextInput, TextInputProps>(
     };
 
     const handleBlur = (e: NativeSyntheticEvent<TextInputFocusEventData>) => {
-      console.log("bar state on blur: ", barState);
       onBlur?.(e);
     };
 
@@ -67,7 +67,7 @@ const SearchBar = forwardRef<TextInput, TextInputProps>(
       >
         <AppIcon name="magnifier" size={25} color={colors["--accent-color"]} />
         <TextInput
-          ref={internalRef}
+          ref={mergedRef}
           placeholderTextColor={colors["--text-secondary"]}
           value={searchText}
           onChangeText={handleTextChange}

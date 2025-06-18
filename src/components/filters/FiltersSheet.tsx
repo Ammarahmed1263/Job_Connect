@@ -1,9 +1,9 @@
 import { AppButton, AppText } from "@components/ui";
 import {
+  educationLevelOptions,
   experienceLevelOptions,
   jobTypeOptions,
   workingModelOptions,
-  educationLevelOptions,
 } from "@constants/filterOptions";
 import { useTheme } from "@contexts/ThemeContext";
 import {
@@ -13,7 +13,9 @@ import {
 } from "@gorhom/bottom-sheet";
 import { useFilterStore } from "@store/filterStore";
 import { Filters } from "@type/filterTypes";
-import React, { forwardRef, useCallback, useEffect, useMemo } from "react";
+import { applyAndDismissFilters } from "@utils";
+import clsx from "clsx";
+import React, { forwardRef, RefObject, useCallback, useEffect, useMemo, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -23,8 +25,6 @@ import {
   SalaryRangeFilter,
   SegmentedControlFilter,
 } from "./filter-inputs";
-import clsx from "clsx";
-import { applyAndDismissFilters } from "@utils";
 
 interface FiltersSheetProps {}
 
@@ -46,6 +46,8 @@ export const FiltersSheet = forwardRef<BottomSheetModal, FiltersSheetProps>(
       mode: "onChange",
       reValidateMode: "onChange",
     });
+    const internalRef =
+      (ref as RefObject<BottomSheetModal>) ?? useRef<BottomSheetModal>(null);
     const insets = useSafeAreaInsets();
     const { colors } = useTheme();
 
@@ -77,7 +79,7 @@ export const FiltersSheet = forwardRef<BottomSheetModal, FiltersSheetProps>(
 
     return (
       <BottomSheetModal
-        ref={ref}
+        ref={internalRef}
         index={0}
         snapPoints={snapPoints}
         backdropComponent={renderBackdrop}
