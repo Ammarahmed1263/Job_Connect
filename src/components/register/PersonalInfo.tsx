@@ -1,4 +1,9 @@
-import { AppButton, AppText, ControlledLabelInput } from "@components/ui";
+import {
+  AppButton,
+  AppIcon,
+  AppText,
+  ControlledLabelInput,
+} from "@components/ui";
 import { useTheme } from "@contexts/ThemeContext";
 import Icon from "@expo/vector-icons/Ionicons";
 import { RegisterFormData } from "@type/authTypes";
@@ -37,7 +42,7 @@ const PersonalInfo: FC<Props> = ({ setStep }) => {
         autoFocus={true}
         onSubmitEditing={() => focusRef(lastNameRef)}
         leftComponent={() => (
-          <Icon
+          <AppIcon
             name="person-outline"
             size={22}
             color={colors["--text-primary"]}
@@ -54,7 +59,7 @@ const PersonalInfo: FC<Props> = ({ setStep }) => {
         placeholder="Doe"
         autoComplete="family-name"
         leftComponent={() => (
-          <Icon
+          <AppIcon
             name="person-outline"
             size={22}
             color={colors["--text-primary"]}

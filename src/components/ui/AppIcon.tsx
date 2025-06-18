@@ -103,7 +103,7 @@ const icons = {
   ring: ring
 } as const;
 
-type IconName = keyof typeof icons;
+export type IconName = keyof typeof icons;
 
 interface IconProps extends SvgProps {
   name: IconName;

@@ -83,9 +83,9 @@ const useAuthStore = create<authStore>()(
           const token = await secureStorage.getToken("auth_token");
           const refreshToken = await secureStorage.getToken("refresh_token");
 
-          console.log("token and refresh token before logout: ", token, refreshToken);
+          console.log(`token value ${token} and refresh value ${refreshToken}`);
           if (token && refreshToken) {
-            await authService.logout(token, refreshToken);
+            // await authService.logout(token, refreshToken);
 
             await secureStorage.removeToken("auth_token");
             await secureStorage.removeToken("refresh_token");
@@ -98,7 +98,6 @@ const useAuthStore = create<authStore>()(
             });
           }
         } catch (error) {
-          console.log("Error logging out: ", error);
           throw new Error(`error logging out: ${error}`);
         }
       },

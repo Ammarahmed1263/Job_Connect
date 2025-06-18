@@ -18,7 +18,7 @@ const OnboardingSlide: FC<OnboardingSlideProps> = ({ item }) => {
       />
       <AppText
         variant="semiBold"
-        className="text-center mt-5 !text-[--primary-100]"
+        className="text-center mt-5 mx-3 !text-[--primary-100]"
       >
         {item.title}
       </AppText>

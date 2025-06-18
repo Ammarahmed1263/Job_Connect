@@ -1,3 +1,4 @@
+import BriefCaseAnimation from "@assets/lottie/brief-case.json";
 import DetailsBlock from "@components/jobs/DetailsBlock";
 import AboutTab from "@components/jobs/detailsTabs/AboutTab";
 import CompanyTab from "@components/jobs/detailsTabs/CompanyTab";
@@ -11,11 +12,9 @@ import { useRecentJobsStore } from "@store/recentJobsStore";
 import { JobDetails as JobDetailsType } from "@type/jobTypes";
 import { formatSalary, getSeniorityLevel } from "@utils";
 import { useLocalSearchParams } from "expo-router";
+import LottieView from "lottie-react-native";
 import { useEffect, useState } from "react";
 import { ScrollView, TouchableOpacity, View } from "react-native";
-import LottieView from "lottie-react-native";
-import BriefCaseAnimation from "@assets/lottie/brief-case.json";
-import Loading from "@assets/lottie/loading.json";
 
 const JobDetails = () => {
   const { id } = useLocalSearchParams();
@@ -71,7 +70,7 @@ const JobDetails = () => {
     return (
       <View className="flex-1 items-center justify-center bg-[--bg-color]">
         <LottieView
-          source={Loading}
+          source={BriefCaseAnimation}
           autoPlay
           loop
           duration={1.5 * 1000}
@@ -211,7 +210,7 @@ const JobDetails = () => {
       </ScrollView>
 
       {/* Apply Button */}
-      <View className="pb-8 pt-4 p-4 bg-[--card-color] rounded-t-xl border-t-hairline border-t-[--text-muted]">
+      <View className="pb-8 pt-4 p-4 bg-[--card-color] rounded-t-xl">
         <AppButton
           title="Apply for Job"
           variant="primary"

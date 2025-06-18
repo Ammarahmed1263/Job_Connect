@@ -7,6 +7,7 @@ import { useSafeArea } from "@hooks/useSafeArea";
 import { useOnboardingStore } from "@store/onboardingStore";
 import clsx from "clsx";
 import { useRouter } from "expo-router";
+import { StatusBar } from "expo-status-bar";
 import React, { useRef } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 import Animated, {
@@ -57,64 +58,67 @@ const OnboardingScreen = () => {
   };
 
   return (
-    <View
-      className="flex-1 bg-[--bg-color] justify-center"
-      style={{ paddingTop: top }}
-    >
-      <Animated.FlatList
-        ref={flatListRef}
-        horizontal
-        pagingEnabled
-        showsHorizontalScrollIndicator={false}
-        data={ONBOARDING_SLIDES}
-        renderItem={({ item }) => <OnboardingSlide item={item} />}
-        keyExtractor={(item) => item.key}
-        onScroll={scrollHandler}
-        scrollEventThrottle={16}
-        style={{ flexGrow: 0 }}
-      />
-
-      {/* Button */}
-      <View className="flex-row justify-between items-center gap-4 m-4">
-        <AppButton
-          title={''}
-          onPress={handlePrev}
-          wrapperClassName="!rounded-full ms-4 justify-center items-center w-16 h-16 bg-transparent border border-[--primary-100]"
-          className="w-full h-full"
-          wrapperStyle={{
-            opacity: currentSlide > 0 ? 1 : 0,
-            elevation: 0,
-          }}
-          disabled={currentSlide === 0}
-          pointerEvents={currentSlide === 0 ? "none" : "auto"}
-        >
-          <AppIcon
-            name="arrow-left"
-            size={30}
-            color={colors["--primary-100"]}
-          />
-        </AppButton>
-        <Pagination
-          scrollProgress={scrollProgress}
-          dotsLength={ONBOARDING_SLIDES.length}
-          activeDotIndex={currentSlide}
-          inactiveDotScale={0.7}
-          setActiveIndex={handleDotPress}
-          dotStyle={styles.paginationDot}
-          containerStyle={styles.paginationContainer}
+    <>
+      <StatusBar backgroundColor={colors["--bg-color"]} />
+      <View
+        className="flex-1 bg-[--bg-color] justify-center"
+        style={{ paddingTop: top }}
+      >
+        <Animated.FlatList
+          ref={flatListRef}
+          horizontal
+          pagingEnabled
+          showsHorizontalScrollIndicator={false}
+          data={ONBOARDING_SLIDES}
+          renderItem={({ item }) => <OnboardingSlide item={item} />}
+          keyExtractor={(item) => item.key}
+          onScroll={scrollHandler}
+          scrollEventThrottle={16}
+          style={{ flexGrow: 0 }}
         />
-        <AppButton
-          title={''}
-          onPress={handleNext}
-          wrapperClassName={clsx(
-            "!rounded-full ms-4 justify-center items-center w-16 h-16",
-          )}
-          className="w-full h-full"
-        >
-          <AppIcon name="arrow-right" size={30} color="white" />
-        </AppButton>
+
+        {/* Button */}
+        <View className="flex-row justify-between items-center gap-4 m-4">
+          <AppButton
+            title={""}
+            onPress={handlePrev}
+            wrapperClassName="!rounded-full ms-4 justify-center items-center w-16 h-16 bg-transparent border border-[--primary-100]"
+            className="w-full h-full"
+            wrapperStyle={{
+              opacity: currentSlide > 0 ? 1 : 0,
+              elevation: 0,
+            }}
+            disabled={currentSlide === 0}
+            pointerEvents={currentSlide === 0 ? "none" : "auto"}
+          >
+            <AppIcon
+              name="arrow-left"
+              size={30}
+              color={colors["--primary-100"]}
+            />
+          </AppButton>
+          <Pagination
+            scrollProgress={scrollProgress}
+            dotsLength={ONBOARDING_SLIDES.length}
+            activeDotIndex={currentSlide}
+            inactiveDotScale={0.7}
+            setActiveIndex={handleDotPress}
+            dotStyle={styles.paginationDot}
+            containerStyle={styles.paginationContainer}
+          />
+          <AppButton
+            title={""}
+            onPress={handleNext}
+            wrapperClassName={clsx(
+              "!rounded-full ms-4 justify-center items-center w-16 h-16"
+            )}
+            className="w-full h-full"
+          >
+            <AppIcon name="arrow-right" size={30} color="white" />
+          </AppButton>
+        </View>
       </View>
-    </View>
+    </>
   );
 };
 
@@ -127,6 +131,6 @@ const styles = StyleSheet.create({
     borderRadius: hs(9),
   },
   paginationContainer: {
-    gap:hs(10)
-  }
+    gap: hs(10),
+  },
 });
