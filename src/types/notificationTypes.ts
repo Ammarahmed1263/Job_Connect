@@ -1,14 +1,14 @@
 export type NotificationType =
-  | "message"
-  | "job_added"
-  | "job_applied"
-  | "profile_completed";
+  | "Message"
+  | "ApplicationStatus"
+  | "CompleteProfile"
+  | "Recommendation";
 
 export const iconMap: Record<NotificationType, string> = {
-  message: "bell-outline",
-  job_added: "case-outline",
-  job_applied: "case",
-  profile_completed: "person-outline",
+  Message: "bell-outline",
+  ApplicationStatus: "case-outline",
+  CompleteProfile: "person-outline",
+  Recommendation: "eye-outline",
 };
 
 export interface Notification {

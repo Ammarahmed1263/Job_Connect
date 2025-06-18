@@ -48,4 +48,13 @@ export const endpoints = {
     getAllTags: "Home/GetAllTags",
     contactUs: "Home/ContactUs",
   },
+  notifications: {
+    getNotifications: "Notification/user-notifications",
+    markNotificationAsRead: (notificationId: string) =>
+      `Notification/mark-read/${notificationId}`,
+    sendPushToken: "Notification/push-token",
+  },
+  machine: {
+    getRecomendedJobs: "https://jobconnectrecommendationsystem.onrender.com/recommend"
+  }
 };

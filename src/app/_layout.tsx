@@ -1,30 +1,42 @@
 import ThemeProvider from "@contexts/ThemeContext";
-import { QueryClientProvider } from "@tanstack/react-query";
-import { Slot, SplashScreen } from "expo-router";
-import { StatusBar } from "expo-status-bar";
-import * as SystemUI from "expo-system-ui";
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import queryClient from "@queries/queryClient";
+import { QueryClientProvider } from "@tanstack/react-query";
+import * as Notifications from "expo-notifications";
+import { Slot, SplashScreen } from "expo-router";
+import * as SystemUI from "expo-system-ui";
+import { StyleSheet } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import "../../global.css";
-import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { StyleSheet } from "react-native";
+import { NotificationProvider } from "../contexts/NotificationContext";
 
 // to solve white background flash issue
 SystemUI.setBackgroundColorAsync("transparent");
 SplashScreen.preventAutoHideAsync();
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldPlaySound: true,
+    shouldSetBadge: true,
+    shouldShowBanner: true,
+    shouldShowList: true,
+    shouldShowAlert: true,
+  }),
+});
 
 export default function RootLayout() {
   return (
     <GestureHandlerRootView style={styles.container}>
       <QueryClientProvider client={queryClient}>
         <ThemeProvider>
-          <BottomSheetModalProvider>
-            <SafeAreaProvider>
-              <StatusBar style="auto" />
-              <Slot />
-            </SafeAreaProvider>
-          </BottomSheetModalProvider>
+          <NotificationProvider>
+            <BottomSheetModalProvider>
+              <SafeAreaProvider>
+                <Slot />
+              </SafeAreaProvider>
+            </BottomSheetModalProvider>
+          </NotificationProvider>
         </ThemeProvider>
       </QueryClientProvider>
     </GestureHandlerRootView>

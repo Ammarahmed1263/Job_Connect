@@ -1,4 +1,5 @@
 import { AppIcon, AppText } from "@components/ui";
+import { IconName } from "@components/ui/AppIcon";
 import { useTheme } from "@contexts/ThemeContext";
 import { iconMap, NotificationType } from "@type/notificationTypes";
 import clsx from "clsx";
@@ -25,32 +26,26 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
   onPress,
 }) => {
   const { colors } = useTheme();
-
-  const handlePress = () => {
-    if (onPress) {
-      onPress();
-    } else {
-      // Default navigation or action based on type
-      // router.push(`/notification-detail/${id}`);
-      console.log(`Notification ${id} pressed`);
-    }
-  };
+  const iconName = iconMap[type] ?? "bell-outline"; // Fallback for unknown types
 
   return (
     <TouchableOpacity
-      onPress={handlePress}
+      onPress={onPress}
       className={clsx(
         "flex-row items-center p-4",
-        !read ? "bg-[--primary-400]" : ""
+        !read && "bg-[--primary-400]"
       )}
+      accessibilityRole="button"
+      accessibilityLabel={`Notification: ${title}`}
     >
       <View className="w-12 h-12 rounded-full bg-[--card-color] items-center justify-center mr-4">
         <AppIcon
-          name={iconMap[type]}
+          name={iconName as IconName}
           size={24}
           color={colors["--accent-color"]}
         />
       </View>
+
       <View className="flex-1">
         <AppText variant="bold" className="!text-xl text-[--text-primary]">
           {title}
@@ -63,7 +58,11 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
           {message}
         </AppText>
       </View>
-      <AppText variant="light" className="text-[--text-muted] ms-2 self-start">
+
+      <AppText
+        variant="light"
+        className="text-[--text-muted] ms-2 self-start"
+      >
         {time}
       </AppText>
     </TouchableOpacity>

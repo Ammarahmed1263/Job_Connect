@@ -18,3 +18,4 @@ export {default as handlePickDocument} from './handlePickDocument';
 export {default as downloadResume } from './downloadResume';
 export { default as shareResume } from './shareResume';
 export { default as handleDownloadResume } from './handleDownloadResume';
+export { default as handleAppRedirection } from './handleAppRedirection';

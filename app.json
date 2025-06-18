@@ -10,7 +10,8 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "userInterfaceStyle": "automatic"
+      "userInterfaceStyle": "automatic",
+      "bundleIdentifier": "com.ammar_001.job_connect_app"
     },
     "android": {
       "adaptiveIcon": {
@@ -18,7 +19,8 @@
         "backgroundColor": "#ffffff"
       },
       "userInterfaceStyle": "automatic",
-      "package": "com.ammar_001.job_connect_app"
+      "package": "com.ammar_001.job_connect_app",
+      "googleServicesFile": "./google-services.json"
     },
     "web": {
       "bundler": "metro",
