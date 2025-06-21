@@ -1,5 +1,7 @@
 import JobCard from "@components/jobs/JobCard";
 import { AppText, NavigationHeader } from "@components/ui";
+import { vs } from "@constants/metrics";
+import { TAB_HEIGHT } from "@constants/tabBar";
 import { useSavedJobs } from "@queries/userQueries";
 import useAuthStore from "@store/authStore";
 import React from "react";
@@ -38,6 +40,11 @@ const Saved = () => {
           </View>
         )}
         contentContainerClassName="pt-2 pb-4 gap-4 px-4 grow"
+        contentContainerStyle={{
+          flexGrow: 1,
+          paddingBottom: TAB_HEIGHT + vs(20),
+          paddingTop: vs(20),
+        }}
       />
     </View>
   );

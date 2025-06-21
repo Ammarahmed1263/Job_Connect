@@ -1,5 +1,7 @@
 import JobCard from "@components/jobs/JobCard";
 import { AppText, NavigationHeader } from "@components/ui";
+import { vs } from "@constants/metrics";
+import { TAB_HEIGHT } from "@constants/tabBar";
 import { useTheme } from "@contexts/ThemeContext";
 import { useAppliedJobs } from "@queries/userQueries";
 import useAuthStore from "@store/authStore";
@@ -33,7 +35,7 @@ const Applied = () => {
         data={data?.data}
         keyExtractor={(item, index) => item.id.toString() + index.toString()}
         renderItem={({ item }) => {
-          const { backgroundColorClass, textColorClass } = statusColorSelector(
+          const color = statusColorSelector(
             item?.applicants[0]?.status
           );
           return (
@@ -44,7 +46,7 @@ const Applied = () => {
                   className={"p-2 ms-2 rounded-lg"}
                   style={{
                     backgroundColor: applyOpacity(
-                      colors[backgroundColorClass],
+                      colors[color],
                       0.2
                     ),
                   }}
@@ -52,7 +54,7 @@ const Applied = () => {
                   <AppText
                     variant="bold"
                     className={"!leading-tight !text-lg"}
-                    style={{ color: colors[textColorClass] }}
+                    style={{ color: colors[color] }}
                   >
                     {item?.applicants[0]?.status}
                   </AppText>
@@ -68,6 +70,11 @@ const Applied = () => {
           </View>
         )}
         contentContainerClassName="pt-2 pb-4 gap-4 px-4 grow"
+        contentContainerStyle={{
+          flexGrow: 1,
+          paddingBottom: TAB_HEIGHT + vs(20),
+          paddingTop: vs(20),
+        }}
       />
     </View>
   );

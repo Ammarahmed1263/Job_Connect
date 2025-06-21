@@ -1,5 +1,7 @@
 import JobCard from "@components/jobs/JobCard";
 import { AppText } from "@components/ui";
+import { vs } from "@constants/metrics";
+import { TAB_HEIGHT } from "@constants/tabBar";
 import { useSearchJobs } from "@queries/homeQueries";
 import { useFilterStore } from "@store/filterStore";
 import { useSearchStore } from "@store/searchStore";
@@ -64,8 +66,8 @@ const SearchResults = () => {
 
   if (jobs.length === 0) {
     return (
-      <View className="flex-1 items-center justify-center">
-        <AppText>No jobs found matching your criteria.</AppText>
+      <View className="flex-1 items-center justify-center mx-4">
+        <AppText className="text-center">No jobs found matching your criteria.</AppText>
       </View>
     );
   }
@@ -79,7 +81,8 @@ const SearchResults = () => {
         data={jobs}
         keyExtractor={(item, index) => `${item.id.toString()}-${index}`}
         renderItem={({ item }) => <JobCard item={item} />}
-        contentContainerClassName="py-4 gap-4 px-4"
+        contentContainerClassName="pt-4 gap-4 px-4"
+        contentContainerStyle={{ paddingBottom: vs(TAB_HEIGHT) }}
         onEndReached={() => {
           if (hasNextPage && !isFetchingNextPage) {
             fetchNextPage();

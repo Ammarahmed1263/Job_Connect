@@ -1,4 +1,6 @@
 import { RecentJobsSection, RecentSearchSection } from "@components/search";
+import { vs } from "@constants/metrics";
+import { TAB_HEIGHT } from "@constants/tabBar";
 import { useSearchStore } from "@store/searchStore";
 import React, { FC } from "react";
 import { ScrollView } from "react-native";
@@ -19,7 +21,8 @@ const EmptySearch: FC<EmptySearchProps> = ({onSearchItemPress}) => {
   return (
     <ScrollView
       className="flex-1 px-4"
-      contentContainerClassName="py-6"
+      contentContainerClassName="pt-6"
+      contentContainerStyle={{ paddingBottom: vs(TAB_HEIGHT) }}
       showsVerticalScrollIndicator={false}
       keyboardShouldPersistTaps="handled"
     >

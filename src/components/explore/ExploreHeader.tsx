@@ -11,7 +11,7 @@ interface ExploreHeaderProps {
   onBackButtonPress?: () => void;
   onNotificationPress?: () => void;
   onFilterPress?: () => void;
-  inputRef: RefObject<TextInput>;
+  inputRef: RefObject<TextInput | null>;
 }
 
 const ExploreHeader: FC<ExploreHeaderProps> = ({

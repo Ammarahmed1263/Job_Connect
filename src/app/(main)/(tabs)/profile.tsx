@@ -3,6 +3,7 @@ import ProfileMenuSection from "@components/profile/ProfileMenuSection";
 import { AppButton, AppDropdown, AppIcon, AppText } from "@components/ui";
 import { hs, vs } from "@constants/metrics";
 import { PROFILE_MENU_ITEMS } from "@constants/profileMenuItems";
+import { TAB_HEIGHT } from "@constants/tabBar";
 import { useTheme } from "@contexts/ThemeContext";
 import { useSafeArea } from "@hooks/useSafeArea";
 import { useSeekerProfile } from "@queries/userQueries";
@@ -10,7 +11,6 @@ import useAuthStore from "@store/authStore";
 import { useOnboardingStore } from "@store/onboardingStore";
 import { useProfileStore } from "@store/profileStore";
 import { Theme } from "@type/theme";
-import { countNonEmptyFields } from "@utils";
 import { useRouter } from "expo-router";
 import React, { useEffect } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
@@ -21,16 +21,15 @@ const Profile = () => {
   const router = useRouter();
   const { logout, isAuthenticated, user } = useAuthStore();
   const testOnboarding = useOnboardingStore((state) => state.testOnboarding);
+  const {setProfile, totalFields, completedFields, profile} = useProfileStore((state) => state);
   const { data, isPending } = useSeekerProfile();
-  const { setProfile } = useProfileStore();
+  console.log("user profile: ", profile, "count: ", totalFields, completedFields);
 
-  const progress =
-    data && data.data
-      ? Math.round((countNonEmptyFields(data.data) / Object.keys(data.data).length) * 100)
-      : 0;
 
   useEffect(() => {
+    console.log("profile data: ", data?.data, data && data.data);
     if (data && data.data) {
+      console.log('profile data set')
       setProfile(data.data);
     }
   }, [data, setProfile]);
@@ -60,14 +59,14 @@ const Profile = () => {
     <ScrollView
       className="flex-1 bg-[--bg-color]"
       style={{ marginTop: top }}
-      contentContainerStyle={{ paddingVertical: vs(12) }}
+      contentContainerStyle={{ paddingTop: vs(12), paddingBottom: vs(TAB_HEIGHT + 12) }}
       showsVerticalScrollIndicator={false}
     >
       {/* Profile Header */}
       {isAuthenticated && (
         <ProfileHeader
           name={user?.name || "unavailable"}
-          progress={progress}
+          progress={Math.round((completedFields / totalFields) * 100)}
           onPress={() => router.push("/complete-profile")}
         />
       )}

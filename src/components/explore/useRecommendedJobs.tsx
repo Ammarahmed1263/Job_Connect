@@ -30,7 +30,6 @@ const useRecommendedJobs = (jobsCount?: number) => {
           id: item.Id,
         }));
         setJobs(normalizedData);
-        console.log("recomended jobs here: ", JSON.stringify(data, null, 2));
       } catch (error) {
         console.log("ML error: ", error);
         setError(error);

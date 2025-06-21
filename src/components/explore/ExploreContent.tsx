@@ -7,6 +7,7 @@ import { useRouter } from "expo-router";
 import React from "react";
 import { ActivityIndicator, ScrollView, View } from "react-native";
 import useRecommendedJobs from "./useRecommendedJobs";
+import { TAB_HEIGHT } from "@constants/tabBar";
 
 const ExploreContent = () => {
   const router = useRouter();
@@ -63,7 +64,7 @@ const ExploreContent = () => {
   return (
     <ScrollView
       className="flex-1"
-      contentContainerStyle={{ flexGrow: 1 }}
+      contentContainerStyle={{ flexGrow: 1, paddingBottom: TAB_HEIGHT }}
       showsVerticalScrollIndicator={false}
     >
       {recentJobs.length > 0 && (

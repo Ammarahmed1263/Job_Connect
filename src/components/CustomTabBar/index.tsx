@@ -1,4 +1,4 @@
-import { width } from "@constants/metrics";
+import { ms, vs, width } from "@constants/metrics";
 import {
   ANIMATION_DURATION,
   INDICATOR_OFFSET,
@@ -6,13 +6,14 @@ import {
   PATH_CONTROL_POINT_OFFSET,
   PATH_CONTROL_POINT_Y,
   PATH_CURVE_OFFSET,
+  TAB_BORDER_RADIUS,
+  TAB_HEIGHT,
   WHOLE_DEPTH,
 } from "@constants/tabBar";
 import { useTheme } from "@contexts/ThemeContext";
-import { useSafeArea } from "@hooks/useSafeArea";
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
-import React, { useCallback, useEffect, useState } from "react";
-import { BackHandler, LayoutChangeEvent, View } from "react-native";
+import React, { useCallback, useEffect, useMemo } from "react";
+import { BackHandler, View } from "react-native";
 import {
   useAnimatedStyle,
   useSharedValue,
@@ -21,7 +22,7 @@ import {
 } from "react-native-reanimated";
 import { AnimatedIndicator } from "./AnimatedIndicator";
 import { AnimatedTabBackground } from "./AnimatedTabBackground";
-import { TabButton } from "./TabButton";
+import { MemoizedTabButton as TabButton } from "./TabButton";
 
 const CustomTabBar: React.FC<BottomTabBarProps> = ({
   state,
@@ -30,15 +31,13 @@ const CustomTabBar: React.FC<BottomTabBarProps> = ({
 }) => {
   const { colors } = useTheme();
   const numTabs = state.routes.length;
-  const tabWidth = width / numTabs;
+  const tabWidth = useMemo(() => width / numTabs, [numTabs]);
   const activeTabIndex = useSharedValue(state.index);
   const curveY = useSharedValue(PATH_CONTROL_POINT_Y);
   const indicatorPosition = useSharedValue(
     state.index * tabWidth + tabWidth / 2
   );
   const indicatorY = useSharedValue(WHOLE_DEPTH);
-  const [tabHeight, setTabHeight] = useState<number>(0);
-  const { bottom } = useSafeArea();
 
   const indicatorAnimatedStyle = useAnimatedStyle(() => ({
     transform: [
@@ -47,10 +46,6 @@ const CustomTabBar: React.FC<BottomTabBarProps> = ({
     ],
   }));
 
-  const handleLayout = useCallback((event: LayoutChangeEvent) => {
-    const { height } = event.nativeEvent.layout;
-    setTabHeight(height);
-  }, []);
 
   const animateTab = useCallback((index: number) => {
     curveY.value = withTiming(0, { duration: ANIMATION_DURATION / 2 }, () => {
@@ -108,9 +103,14 @@ const CustomTabBar: React.FC<BottomTabBarProps> = ({
 
   return (
     <View
-      className="w-full bg-[--card-color] flex-row rounded-t-3xl py-4"
-      style={{ bottom }}
-      onLayout={handleLayout}
+      className="w-full flex-row py-4"
+      style={{
+        position: "absolute",
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundColor: "transparent",
+      }}
     >
       <AnimatedTabBackground
         activeTabIndex={activeTabIndex}
@@ -118,8 +118,9 @@ const CustomTabBar: React.FC<BottomTabBarProps> = ({
         tabWidth={tabWidth}
         curveOffset={PATH_CURVE_OFFSET}
         controlOffset={PATH_CONTROL_POINT_OFFSET}
-        fill={colors["--bg-color"]}
-        barHeight={tabHeight}
+        borderRadius={ms(TAB_BORDER_RADIUS)}
+        fill={colors["--card-color"]}
+        barHeight={vs(TAB_HEIGHT)}
       />
 
       <AnimatedIndicator animatedStyle={indicatorAnimatedStyle} />

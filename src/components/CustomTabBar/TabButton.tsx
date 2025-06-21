@@ -15,7 +15,7 @@ interface TabButtonProps extends TouchableOpacityProps{
   colorUnfocused: string;
 }
 
-export const TabButton: FC<TabButtonProps> = ({
+const TabButton: FC<TabButtonProps> = ({
   label,
   isFocused,
   onPress,
@@ -48,3 +48,5 @@ export const TabButton: FC<TabButtonProps> = ({
     </AppText>
   </TouchableOpacity>
 );
+
+export const MemoizedTabButton = React.memo(TabButton);
