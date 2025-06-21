@@ -46,3 +46,4 @@ export {default as family} from './family.svg';
 export {default as letter} from './letter.svg';
 export {default as home_person} from './home-person.svg';
 export {default as ring} from './ring.svg';
+export {default as phone} from './phone.svg';

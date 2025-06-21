@@ -48,7 +48,8 @@ import {
   family,
   home_person,
   letter,
-  ring
+  ring,
+  phone
 } from "@assets/icons";
 import AppText from "./AppText";
 
@@ -100,7 +101,8 @@ const icons = {
   family: family,
   "home-person": home_person,
   letter: letter,
-  ring: ring
+  ring: ring,
+  phone: phone
 } as const;
 
 export type IconName = keyof typeof icons;
