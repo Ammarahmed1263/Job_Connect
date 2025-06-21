@@ -5,27 +5,27 @@ import {
   NavigationHeader,
 } from "@components/ui";
 import { vs } from "@constants/metrics";
-import { useProfileForm } from "@contexts/formContext";
 import { useTheme } from "@contexts/ThemeContext";
 import { useSafeArea } from "@hooks/useSafeArea";
 import { useUpdateSeekerProfile } from "@queries/userQueries";
-import { ProfileFormData } from "@type/userTypes";
 import { useRouter } from "expo-router";
 import React from "react";
 import { StyleSheet, View } from "react-native";
+import { SkillsForm } from "@type/profileFormTypes";
+import useProfileSectionForm from "@hooks/useProfileSectionForm";
 
 const Skills = () => {
-  const { control, handleSubmit } = useProfileForm();
+  const { control, handleSubmit } = useProfileSectionForm("skills");
   const { mutateAsync } = useUpdateSeekerProfile();
   const { colors } = useTheme();
   const router = useRouter();
   const { bottom } = useSafeArea();
 
-  const updateUserSkills = async (data: ProfileFormData) => {
-    console.log("data: ", data.contactInfo);
-    await mutateAsync({
-      ...data.contactInfo,
-    });
+  const updateUserSkills = async (data: SkillsForm) => {
+    console.log("data: ", data);
+    // await mutateAsync({
+    //   ...data,
+    // });
     router.back();
   };
 
@@ -35,7 +35,7 @@ const Skills = () => {
       <ControlledLabelInput
         title="Skills"
         control={control}
-        name="skills"
+        name="skillName"
         leftComponent={() => (
           <AppIcon name="chart" size={24} color={colors["--text-primary"]} />
         )}

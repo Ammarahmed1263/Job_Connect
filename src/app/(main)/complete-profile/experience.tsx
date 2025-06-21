@@ -1,27 +1,31 @@
-import { View, Text, ScrollView, StyleSheet } from "react-native";
-import React from "react";
 import {
   AppButton,
+  AppIcon,
   ControlledLabelInput,
   NavigationHeader,
 } from "@components/ui";
-import { useProfileForm } from "@contexts/formContext";
-import { ProfileFormData } from "@type/userTypes";
-import { useUpdateSeekerProfile } from "@queries/userQueries";
-import { useRouter } from "expo-router";
-import { useSafeArea } from "@hooks/useSafeArea";
 import { vs } from "@constants/metrics";
+import { useTheme } from "@contexts/ThemeContext";
+import useProfileSectionForm from "@hooks/useProfileSectionForm";
+import { useSafeArea } from "@hooks/useSafeArea";
+import { useUpdateSeekerProfile } from "@queries/userQueries";
+import { ExperienceForm } from "@type/profileFormTypes";
+import { useRouter } from "expo-router";
+import React from "react";
+import { ScrollView, StyleSheet, View } from "react-native";
 
 const Experience = () => {
-  const { control, handleSubmit } = useProfileForm();
+  const { control, handleSubmit } = useProfileSectionForm("experience");
   const { mutateAsync } = useUpdateSeekerProfile();
   const router = useRouter();
   const { bottom } = useSafeArea();
+  const { colors } = useTheme();
 
-  const updateUserExperience = async (data: ProfileFormData) => {
-    console.log("data: ", data.contactInfo);
+  const updateUserExperience = async (data: ExperienceForm) => {
+    console.log("data: ", data);
     await mutateAsync({
-      ...data.contactInfo,
+      ...data,
+      yearsOfExperience: parseInt(data.yearsOfExperience || "0", 10),
     });
     router.back();
   };
@@ -37,22 +41,51 @@ const Experience = () => {
         <ControlledLabelInput
           title="Years Of Experience"
           control={control}
-          name="experience.yearsOfExperience"
+          name="yearsOfExperience"
+          leftComponent={() => (
+            <AppIcon
+              name="calendar"
+              size={24}
+              color={colors["--text-primary"]}
+            />
+          )}
+          
         />
         <ControlledLabelInput
           title="Current or Desired"
           control={control}
-          name="experience.currentOrDesiredJob"
+          name="currentOrDesiredJob"
+          leftComponent={() => (
+            <AppIcon
+              name="case-outline"
+              size={24}
+              color={colors["--text-primary"]}
+            />
+          )}
         />
         <ControlledLabelInput
           title="Company"
           control={control}
-          name="experience.companyWorkedAt"
+          name="companyWorkedAt"
+          leftComponent={() => (
+            <AppIcon
+              name="city"
+              size={24}
+              color={colors["--text-primary"]}
+            />
+          )}
         />
         <ControlledLabelInput
           title="Title"
           control={control}
-          name="experience.workedAs"
+          name="workedAs"
+          leftComponent={() => (
+            <AppIcon
+              name="case-outline"
+              size={24}
+              color={colors["--text-primary"]}
+            />
+          )}
         />
       </ScrollView>
       <View

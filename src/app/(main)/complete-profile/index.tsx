@@ -6,14 +6,14 @@ import { NavigationHeader } from "@components/ui";
 import { vs } from "@constants/metrics";
 import profileSectionsData from "@constants/profileSections";
 import { useProfileStore } from "@store/profileStore";
-import { ProfileSection } from "@type/profileSections";
+import { ProfileSection } from "@type/profileSectionTypes";
 import { useRouter } from "expo-router";
 import React from "react";
 import { ScrollView, View } from "react-native";
 
 const CompleteProfileScreen = () => {
   const router = useRouter();
-  const { totalFields, completedFields, getSectionProgress, profile } =
+  const { totalFields, completedFields, getSectionProgress } =
     useProfileStore();
 
   console.log("profile data here: ", totalFields, completedFields);
@@ -23,7 +23,7 @@ const CompleteProfileScreen = () => {
       console.log("item pressed: ", item.screen);
       router.push(`/complete-profile/${item.screen}`);
     } else {
-      console.log(`Pressed: ${item.sectionName}`);
+      console.log(`section with name ${item.sectionName} has no screen`);
     }
   };
 

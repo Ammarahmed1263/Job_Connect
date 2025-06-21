@@ -1,6 +1,6 @@
 import { AppIcon, AppText } from "@components/ui";
 import { useTheme } from "@contexts/ThemeContext";
-import { ProfileSection } from "@type/profileSections";
+import { ProfileSection } from "@type/profileSectionTypes";
 import React, { FC } from "react";
 import { TouchableOpacity, View } from "react-native";
 

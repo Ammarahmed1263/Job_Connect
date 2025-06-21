@@ -13,24 +13,25 @@ export interface Resume {
   resumeName: string;
 }
 
-interface Certifications {
+export interface Certifications {
   certificationName: string;
   issueDate: string;
   issuingOrganization: string;
   expiryDate?: string;
 }
 
-interface CompanyWorkedAt {
+export interface CompanyWorkedAt {
   companyName: string;
 }
 
-interface Skills {
+export interface Skills {
   skillName: string;
 }
 
-interface WorkedAs {
+export interface WorkedAs {
   jobTitle: string;
 }
+
 export interface UserProfile {
   id: string;
   firstName: string;
@@ -59,43 +60,5 @@ export interface UserProfile {
   companyWorkedAt?: CompanyWorkedAt[];
   skills?: Skills[];
   workedAs?: WorkedAs[];
-  resumes?: Resume[];
-}
-
-export interface ProfileFormData {
-  contactInfo: {
-    firstName: string;
-    lastName: string;
-    email: string;
-    phoneNumber?: string;
-    address: string;
-    facebookLink?: string;
-    twitterLink?: string;
-    instagramLink?: string;
-    linkedInLink?: string;
-    portfolio?: string;
-  };
-  experience: {
-    yearsOfExperience?: number;
-    currentOrDesiredJob?: string;
-    companyWorkedAt?: CompanyWorkedAt[];
-    workedAs?: WorkedAs[];
-  };
-  about: {
-    bio?: string;
-    coverLetter?: string;
-    dateOfBirth?: string;
-    nationality?: string;
-    maritalStatus?: string;
-    gender?: string;
-  };
-  education: {
-    education?: string;
-    degree?: string;
-    university?: string;
-    collegeName?: string;
-  };
-  certifications?: Certifications[];
-  skills?: Skills[];
   resumes?: Resume[];
 }

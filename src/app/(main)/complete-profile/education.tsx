@@ -5,27 +5,27 @@ import {
   NavigationHeader,
 } from "@components/ui";
 import { vs } from "@constants/metrics";
-import { useProfileForm } from "@contexts/formContext";
 import { useTheme } from "@contexts/ThemeContext";
+import useProfileSectionForm from "@hooks/useProfileSectionForm";
 import { useSafeArea } from "@hooks/useSafeArea";
 import { useUpdateSeekerProfile } from "@queries/userQueries";
-import { ProfileFormData } from "@type/userTypes";
+import { EducationForm } from "@type/profileFormTypes";
 import { useRouter } from "expo-router";
 import React from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 
 const Education = () => {
-  const { control, handleSubmit } = useProfileForm();
+  const { control, handleSubmit } = useProfileSectionForm("education");
   const { mutateAsync } = useUpdateSeekerProfile();
   const { colors } = useTheme();
   const { bottom } = useSafeArea();
   const router = useRouter();
 
-  const updateUserEducation = async (data: ProfileFormData) => {
-    console.log("data: ", data.contactInfo);
-    await mutateAsync({
-      ...data.contactInfo,
-    });
+  const updateUserEducation = async (data: EducationForm) => {
+    console.log("data: ", data);
+    // await mutateAsync({
+    //   ...data,
+    // });
     router.back();
   };
 
@@ -40,10 +40,10 @@ const Education = () => {
         <ControlledLabelInput
           title="Education"
           control={control}
-          name="education.education"
+          name="education"
           leftComponent={() => (
             <AppIcon
-              name="instagram"
+              name="academic-cap"
               size={24}
               color={colors["--text-primary"]}
             />
@@ -52,10 +52,10 @@ const Education = () => {
         <ControlledLabelInput
           title="Degree"
           control={control}
-          name="education.degree"
+          name="degree"
           leftComponent={() => (
             <AppIcon
-              name="instagram"
+              name="diploma"
               size={24}
               color={colors["--text-primary"]}
             />
@@ -64,10 +64,10 @@ const Education = () => {
         <ControlledLabelInput
           title="University"
           control={control}
-          name="education.university"
+          name="university"
           leftComponent={() => (
             <AppIcon
-              name="instagram"
+              name="city"
               size={24}
               color={colors["--text-primary"]}
             />
@@ -76,10 +76,10 @@ const Education = () => {
         <ControlledLabelInput
           title="College Name"
           control={control}
-          name="education.collegeName"
+          name="collegeName"
           leftComponent={() => (
             <AppIcon
-              name="instagram"
+              name="city"
               size={24}
               color={colors["--text-primary"]}
             />

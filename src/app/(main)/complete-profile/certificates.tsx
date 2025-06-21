@@ -1,34 +1,37 @@
 import {
   AppButton,
+  AppIcon,
   ControlledLabelInput,
   NavigationHeader,
 } from "@components/ui";
 import { vs } from "@constants/metrics";
-import { useProfileForm } from "@contexts/formContext";
+import { useTheme } from "@contexts/ThemeContext";
+import useProfileSectionForm from "@hooks/useProfileSectionForm";
 import { useSafeArea } from "@hooks/useSafeArea";
 import { useUpdateSeekerProfile } from "@queries/userQueries";
-import { ProfileFormData } from "@type/userTypes";
+import { CertificationsForm } from "@type/profileFormTypes";
 import { useRouter } from "expo-router";
 import React from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 
 const Certificates = () => {
-  const { control, handleSubmit } = useProfileForm();
+  const { control, handleSubmit } = useProfileSectionForm('certifications');
   const { mutateAsync } = useUpdateSeekerProfile();
   const { bottom } = useSafeArea();
   const router = useRouter();
+  const { colors } = useTheme();
 
-  const updateUserCerts = async (data: ProfileFormData) => {
-    console.log("data: ", data.contactInfo);
-    await mutateAsync({
-      ...data.contactInfo,
-    });
+  const updateUserCerts = async (data: CertificationsForm) => {
+    console.log("data: ", data);
+    // await mutateAsync({
+    //   ...data,
+    // });
     router.back();
   };
 
   return (
     <View className="flex-1">
-      <NavigationHeader title="Certs." />
+      <NavigationHeader title="Certificates" />
       <ScrollView
         contentContainerClassName="gap-4 px-4 py-4"
         className="flex-1"
@@ -37,23 +40,51 @@ const Certificates = () => {
         <ControlledLabelInput
           title="Certification Name"
           control={control}
-          name="certifications"
+          name="certificationName"
+          leftComponent={() => (
+            <AppIcon
+              name="diploma"
+              size={24}
+              color={colors["--text-primary"]}
+            />
+          )}
         />
         <ControlledLabelInput
           title="Issue Date"
           control={control}
-          name="certifications"
-        />
+          name="issueDate"
+          leftComponent={() => (
+            <AppIcon
+              name="calendar"
+              size={24}
+              color={colors["--text-primary"]}
+            />
+          )}
+          />
         <ControlledLabelInput
           title="Issuing Organization"
           control={control}
-          name="certifications"
-        />
+          name="issuingOrganization"
+          leftComponent={() => (
+            <AppIcon
+            name="city"
+            size={24}
+            color={colors["--text-primary"]}
+            />
+          )}
+          />
         <ControlledLabelInput
           title="Expiry Date (Optional)"
           control={control}
-          name="certifications"
-        />
+          name="expiryDate"
+          leftComponent={() => (
+            <AppIcon
+              name="calendar"
+              size={24}
+              color={colors["--text-primary"]}
+            />
+          )}
+          />
       </ScrollView>
 
       <View

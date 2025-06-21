@@ -2,32 +2,31 @@ import {
   AppButton,
   AppIcon,
   ControlledLabelInput,
-  NavigationHeader
+  NavigationHeader,
 } from "@components/ui";
 import { vs } from "@constants/metrics";
-import { useProfileForm } from "@contexts/formContext";
 import { useTheme } from "@contexts/ThemeContext";
-import Icon from "@expo/vector-icons/Ionicons";
+import useProfileSectionForm from "@hooks/useProfileSectionForm";
 import { useSafeArea } from "@hooks/useSafeArea";
 import { useUpdateSeekerProfile } from "@queries/userQueries";
-import { ProfileFormData } from "@type/userTypes";
+import { ContactInfoForm } from "@type/profileFormTypes";
 import { useRouter } from "expo-router";
 import React from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 
 const ContactInfo = () => {
-  // first name, last name, email, phone number, address, facebookLink, twitterLink, instagramLink, linkedinLink
-  const { control, handleSubmit, formState } = useProfileForm();
+  const { control, handleSubmit, formState } =
+    useProfileSectionForm("contactInfo");
   const { colors } = useTheme();
   const { bottom } = useSafeArea();
   const { mutateAsync } = useUpdateSeekerProfile();
-  console.log("form state: ", formState.defaultValues);
+  console.log("form state: ", JSON.stringify(formState.defaultValues, null, 2));
   const router = useRouter();
 
-  const updateUserContact = async (data: ProfileFormData) => {
-    console.log("data: ", data.contactInfo);
+  const updateUserContact = async (data: ContactInfoForm) => {
+    console.log("data: ", data);
     await mutateAsync({
-      ...data.contactInfo,
+      ...data,
     });
     router.back();
   };
@@ -37,14 +36,16 @@ const ContactInfo = () => {
       <NavigationHeader title="Contact Info" />
 
       <ScrollView
-        contentContainerClassName="gap-4 px-4 py-4"
-        className="flex-1"
+        contentContainerClassName="gap-4 px-2 pt-4"
+        contentContainerStyle={{
+          paddingBottom: bottom + vs(112),
+        }}
         keyboardShouldPersistTaps="handled"
       >
         <ControlledLabelInput
           title="First Name (Read-only)"
           control={control}
-          name="contactInfo.firstName"
+          name="firstName"
           editable={false}
           leftComponent={() => (
             <AppIcon
@@ -57,7 +58,7 @@ const ContactInfo = () => {
         <ControlledLabelInput
           title="Last Name (Read-only)"
           control={control}
-          name="contactInfo.lastName"
+          name="lastName"
           editable={false}
           leftComponent={() => (
             <AppIcon
@@ -70,7 +71,7 @@ const ContactInfo = () => {
         <ControlledLabelInput
           title="Email (Read-only)"
           control={control}
-          name="contactInfo.email"
+          name="email"
           placeholder="example@domain.com"
           inputMode="email"
           autoComplete="email"
@@ -78,42 +79,34 @@ const ContactInfo = () => {
           autoCorrect={false}
           autoFocus={true}
           leftComponent={() => (
-            <Icon
-              name="mail-outline"
-              size={22}
-              color={colors["--text-primary"]}
-            />
+            <AppIcon name="letter" size={24} color={colors["--text-primary"]} />
           )}
           editable={false}
         />
         <ControlledLabelInput
           title="Phone Number"
           control={control}
-          name="contactInfo.phoneNumber"
+          name="phoneNumber"
+          leftComponent={() => (
+            <AppIcon name="phone" size={24} color={colors["--text-primary"]} />
+          )}
+        />
+        <ControlledLabelInput
+          title="Address"
+          control={control}
+          name="address"
           leftComponent={() => (
             <AppIcon
-              name="person-outline"
+              name="home-person"
               size={24}
               color={colors["--text-primary"]}
             />
           )}
         />
         <ControlledLabelInput
-          title="Address"
-          control={control}
-          name="contactInfo.address"
-          // leftComponent={() => (
-          //   <AppIcon
-          //     name="home-person"
-          //     size={24}
-          //     color={colors["--text-primary"]}
-          //   />
-          // )}
-        />
-        <ControlledLabelInput
           title="LinkedIn Link"
           control={control}
-          name="contactInfo.linkedInLink"
+          name="linkedInLink"
           leftComponent={() => (
             <AppIcon
               name="linkedin"
@@ -125,7 +118,7 @@ const ContactInfo = () => {
         <ControlledLabelInput
           title="Portfolio"
           control={control}
-          name="contactInfo.portfolio"
+          name="portfolio"
           leftComponent={() => (
             <AppIcon
               name="linkedin"
@@ -137,7 +130,7 @@ const ContactInfo = () => {
         <ControlledLabelInput
           title="Twitter Link"
           control={control}
-          name="contactInfo.twitterLink"
+          name="twitterLink"
           leftComponent={() => (
             <AppIcon
               name="twitter"
@@ -149,7 +142,7 @@ const ContactInfo = () => {
         <ControlledLabelInput
           title="Instagram Link"
           control={control}
-          name="contactInfo.instagramLink"
+          name="instagramLink"
           leftComponent={() => (
             <AppIcon
               name="instagram"
@@ -161,7 +154,7 @@ const ContactInfo = () => {
         <ControlledLabelInput
           title="Facebook Link"
           control={control}
-          name="contactInfo.facebookLink"
+          name="facebookLink"
           leftComponent={() => (
             <AppIcon
               name="facebook"
@@ -170,7 +163,6 @@ const ContactInfo = () => {
             />
           )}
         />
-        <View style={styles.placeholder} />
       </ScrollView>
 
       <View
@@ -200,8 +192,5 @@ const styles = StyleSheet.create({
     right: 0,
     paddingTop: vs(14),
     borderRadius: vs(14),
-  },
-  placeholder: {
-    height: vs(80),
   },
 });

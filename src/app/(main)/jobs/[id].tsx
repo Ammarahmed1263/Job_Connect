@@ -4,7 +4,9 @@ import AboutTab from "@components/jobs/detailsTabs/AboutTab";
 import CompanyTab from "@components/jobs/detailsTabs/CompanyTab";
 import ReviewTab from "@components/jobs/detailsTabs/ReviewTab";
 import { AppButton, AppIcon, AppText, NavigationHeader } from "@components/ui";
+import { vs } from "@constants/metrics";
 import { useTheme } from "@contexts/ThemeContext";
+import { useSafeArea } from "@hooks/useSafeArea";
 import { useWithAuth } from "@hooks/useWithAuth";
 import { useJobById, useSaveJob, useUnsaveJob } from "@queries/jobQueries";
 import { useSavedJobs } from "@queries/userQueries";
@@ -14,11 +16,12 @@ import { formatSalary, getSeniorityLevel } from "@utils";
 import { useLocalSearchParams } from "expo-router";
 import LottieView from "lottie-react-native";
 import { useEffect, useState } from "react";
-import { ScrollView, TouchableOpacity, View } from "react-native";
+import { ScrollView, TouchableOpacity, View, StyleSheet } from "react-native";
 
 const JobDetails = () => {
   const { id } = useLocalSearchParams();
   const { colors } = useTheme();
+  const { bottom } = useSafeArea();
   const [activeTab, setActiveTab] = useState<"about" | "company" | "review">(
     "about"
   );
@@ -110,7 +113,7 @@ const JobDetails = () => {
             <AppIcon
               name={isSaved ? "bookmark" : "bookmark-outline"}
               color={colors["--text-primary"]}
-              size={28}
+              size={26}
             />
           </TouchableOpacity>
           <AppIcon name="share" color={colors["--text-primary"]} size={28} />
@@ -217,11 +220,33 @@ const JobDetails = () => {
           className="bg-[--accent-color]"
         />
       </View>
+      <View
+        className="absolute px-4 bg-[--card-color] shadow-lg"
+        style={{
+          ...styles.saveButton,
+          paddingBottom: bottom + vs(20),
+        }}
+      >
+        <AppButton
+          title="Save"
+          // onPress={handleSubmit(updateUserAbout)}
+          className="py-2"
+          wrapperClassName="!rounded-full mx-2"
+        />
+      </View>
     </View>
   );
 };
 
 export default JobDetails;
-function addRecentJob(job: JobDetailsType) {
-  throw new Error("Function not implemented.");
-}
+
+const styles = StyleSheet.create({
+  saveButton: {
+    bottom: 0,
+    left: 0,
+    right: 0,
+    paddingTop: vs(14),
+    borderRadius: vs(14),
+  },
+});
+

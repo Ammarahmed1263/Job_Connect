@@ -5,8 +5,7 @@ export interface ProfileSection {
   id: string;
   sectionName: string;
   iconName: React.ComponentProps<typeof AppIcon>["name"];
-  status: "Completed" | "Not Completed";
-  screen?:
+  screen:
     | "contact-info"
     | "about-me"
     | "experience"

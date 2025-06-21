@@ -1,6 +1,7 @@
-import { ProfileFormData, UserProfile } from "@type/userTypes";
+import { SectionFormTypes } from "@type/profileFormTypes";
+import { UserProfile } from "@type/userTypes";
 
-const convertProfileToFormData = (profile: Omit<UserProfile, 'id'>): ProfileFormData => {
+const convertProfileToFormData = (profile: Omit<UserProfile, 'id'>): SectionFormTypes => {
   return {
     contactInfo: {
       firstName: profile.firstName,
@@ -12,9 +13,10 @@ const convertProfileToFormData = (profile: Omit<UserProfile, 'id'>): ProfileForm
       twitterLink: profile.twitterLink,
       instagramLink: profile.instagramLink,
       linkedInLink: profile.linkedInLink,
+      portfolio: profile.portfolio,
     },
     experience: {
-      yearsOfExperience: profile.yearsOfExperience,
+      yearsOfExperience: profile.yearsOfExperience?.toString() || "",
       companyWorkedAt: profile.companyWorkedAt,
       currentOrDesiredJob: profile.currentOrDesiredJob,
       workedAs: profile.workedAs,
@@ -33,9 +35,20 @@ const convertProfileToFormData = (profile: Omit<UserProfile, 'id'>): ProfileForm
       university: profile.university,
       degree: profile.degree,
     },
-    certifications: profile.certifications,
-    skills: profile.skills,
-    resumes: profile.resumes,
+    certifications: {
+      certificationName: '',
+      issueDate: '',
+      issuingOrganization: '',
+      expiryDate: '',
+    },
+    skills: {
+      skillName: '',
+    },
+    resumes: {
+      id: 1,
+      resumePath: '',
+      resumeName: '',
+    },
   };
 };
 
