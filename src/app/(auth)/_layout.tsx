@@ -1,6 +1,5 @@
 import { useTheme } from "@contexts/ThemeContext";
 import { Stack } from "expo-router";
-import { StatusBar } from "expo-status-bar";
 import React from "react";
 
 export default function AuthLayout() {
@@ -8,7 +7,6 @@ export default function AuthLayout() {
 
   return (
     <>
-      <StatusBar backgroundColor={colors["--bg-color"]} />
       <Stack
         screenOptions={{
           headerShown: false,

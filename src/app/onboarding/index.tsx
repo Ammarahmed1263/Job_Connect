@@ -59,7 +59,7 @@ const OnboardingScreen = () => {
 
   return (
     <>
-      <StatusBar backgroundColor={colors["--bg-color"]} />
+      {/* <StatusBar backgroundColor={colors["--bg-color"]} /> */}
       <View
         className="flex-1 bg-[--bg-color] justify-center"
         style={{ paddingTop: top }}

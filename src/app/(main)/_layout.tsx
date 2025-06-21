@@ -15,7 +15,7 @@ const MainLayout = () => {
 
   return (
     <>
-      <StatusBar backgroundColor={colors["--bg-color"]} />
+      {/* <StatusBar backgroundColor={colors["--bg-color"]} /> */}
       <Stack
         screenOptions={{
           headerShown: false,
