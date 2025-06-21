@@ -13,8 +13,8 @@ import { RegisterFormData } from "@type/authTypes";
 import { useRouter } from "expo-router";
 import { useSearchParams } from "expo-router/build/hooks";
 import React, { useState } from "react";
-import { FormProvider, useForm } from "react-hook-form";
-import { Keyboard, ScrollView, StatusBar, View, Image } from "react-native";
+import { FieldErrors, FormProvider, useForm } from "react-hook-form";
+import { Keyboard, ScrollView, View, StatusBar } from "react-native";
 
 const Register = () => {
   const [step, setStep] = useState(1);
@@ -83,7 +83,7 @@ const Register = () => {
             {step === 4 && (
               <AccountSecurity
                 setStep={setStep}
-                onSubmit={handleSubmit(onSubmit, (e) => {
+                onSubmit={handleSubmit(onSubmit, (e: FieldErrors<RegisterFormData>) => {
                   console.log("Form has errors - aborting submission", e);
                 })}
               />

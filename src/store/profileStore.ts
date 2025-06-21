@@ -71,11 +71,18 @@ export const useProfileStore = create<ProfileStore>((set, get) => ({
         value !== "" &&
         value !== null &&
         (!Array.isArray(value) || value.length > 0) &&
-        (typeof value !== 'object' || value === null || Array.isArray(value) || Object.keys(value).length > 0)
+        (typeof value !== "object" ||
+          value === null ||
+          Array.isArray(value) ||
+          Object.keys(value).length > 0)
       );
     };
 
-    if (section === "certifications" || section === "skills" || section === "experience" || section === "resumes") {
+    if (
+      section === "certifications" ||
+      section === "skills" ||
+      section === "resumes"
+    ) {
       const sectionArray = profile[section as keyof Omit<UserProfile, "id">];
       if (isFilled(sectionArray)) {
         completedCount = sectionFields.length;

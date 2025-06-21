@@ -90,7 +90,6 @@ const notificationService = {
   fetchUserNotifications: async () => {
     try {
       const response = await apiClient.get(notificationBase.getNotifications);
-      console.log('user messages: ', response);
       return response;
     } catch (error) {
       console.log('failed to get user notifications: ', error)

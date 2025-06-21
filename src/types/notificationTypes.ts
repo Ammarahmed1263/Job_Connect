@@ -13,7 +13,7 @@ export const iconMap: Record<NotificationType, string> = {
 
 export interface Notification {
   id: string;
-  type: NotificationType;
+  type: number;
   title: string;
   message: string;
   time: string;

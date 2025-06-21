@@ -3,11 +3,8 @@ import React from "react";
 import CustomTabBar from "@components/customTabBar";
 import { AppIcon } from "@components/ui";
 import { View } from "react-native";
-import { useSafeArea } from "@hooks/useSafeArea";
 
 export default function TabLayout() {
-  // const { colors, theme } = useTheme();
-  const { top, bottom } = useSafeArea();
 
   return (
     <View className="flex-1">

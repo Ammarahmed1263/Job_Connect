@@ -18,7 +18,7 @@ const NotificationSection: React.FC<NotificationSectionProps> = ({ title, onMark
         <AppText variant='semiBold' className="!text-2xl uppercase !text-[--text-muted]">{title}</AppText>
         {onMarkAllAsRead && (
           <TouchableOpacity onPress={onMarkAllAsRead}>
-            <AppText className="!text-[--accent-color]">Mark all as read</AppText>
+            <AppText className="!text-[--accent-color] !text-xl">Mark all as read</AppText>
           </TouchableOpacity>
         )}
       </View>

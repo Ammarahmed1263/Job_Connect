@@ -4,6 +4,10 @@ import authService from "api/services/authService";
 import { secureStorage } from "lib/storage/secureStorage";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
+import { useProfileStore } from "./profileStore";
+import { useRecentJobsStore } from "./recentJobsStore";
+import { useSearchStore } from "./searchStore";
+import queryClient from "@queries/queryClient";
 
 const useAuthStore = create<authStore>()(
   persist(
@@ -90,6 +94,12 @@ const useAuthStore = create<authStore>()(
             await secureStorage.removeToken("auth_token");
             await secureStorage.removeToken("refresh_token");
 
+            queryClient.clear();
+            
+            useProfileStore.getState().clearProfile();
+            useRecentJobsStore.getState().clearRecentJobs();
+            useSearchStore.getState().clearSearchHistory();
+            
             set({
               user: null,
               isAuthenticated: false,

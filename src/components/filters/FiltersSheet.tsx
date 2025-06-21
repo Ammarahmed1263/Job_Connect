@@ -174,7 +174,7 @@ export const FiltersSheet = forwardRef<BottomSheetModal, FiltersSheetProps>(
                   applyAndDismissFilters(data, ref, setFilters)
                 )}
                 wrapperClassName={clsx(
-                  "flex-1 w-full",
+                  "w-full !rounded-full mx-2",
                   !isValid && "bg-[--text-muted] opacity-0.5"
                 )}
                 disableShadow={!isValid}

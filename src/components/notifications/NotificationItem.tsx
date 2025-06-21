@@ -8,7 +8,7 @@ import { TouchableOpacity, View } from "react-native";
 
 interface NotificationItemProps {
   id: string;
-  type: NotificationType;
+  type: number;
   title: string;
   message: string;
   time: string;
@@ -26,7 +26,9 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
   onPress,
 }) => {
   const { colors } = useTheme();
-  const iconName = iconMap[type] ?? "bell-outline"; // Fallback for unknown types
+  const iconKeys = Object.keys(iconMap) as NotificationType[];
+
+  const iconName = iconMap[iconKeys[type]] ?? "bell-outline";
 
   return (
     <TouchableOpacity

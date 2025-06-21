@@ -2,40 +2,21 @@ import { ThemeData } from "@type/theme";
 
 type ThemeColorKey = keyof ThemeData;
 
-interface StatusColorKeys {
-  backgroundColorClass: ThemeColorKey;
-  textColorClass: ThemeColorKey;
-}
 
-const statusColorSelector = (status: string | undefined): StatusColorKeys => {
+const statusColorSelector = (status: string | undefined): ThemeColorKey => {
   if (!status) {
-    return {
-      backgroundColorClass: "--card-color",
-      textColorClass: "--text-muted",
-    };
+    return "--text-muted";
   }
 
   switch (status.toLowerCase()) {
-    case "accepted":
-      return {
-        backgroundColorClass: "--success-color",
-        textColorClass: "--success-color",
-      };
+    case "hired":
+      return "--success-color";
     case "pending":
-      return {
-        backgroundColorClass: "--warning-color",
-        textColorClass: "--warning-color",
-      };
+      return "--warning-color";
     case "rejected":
-      return {
-        backgroundColorClass: "--error-color",
-        textColorClass: "--error-color",
-      };
+      return "--error-color";
     default:
-      return {
-        backgroundColorClass: "--accent-color",
-        textColorClass: "--accent-color",
-      };
+      return "--accent-color";
   }
 };
 

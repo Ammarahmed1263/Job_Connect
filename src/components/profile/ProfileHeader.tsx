@@ -28,14 +28,14 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
       onPress={onPress}
       activeOpacity={0.8}
     >
-      <View className="me-2">
+      <View className="me-4">
         {imageUri ? (
           <Image
             source={{ uri: imageUri }}
             className="w-20 h-20 rounded-full"
           />
         ) : (
-          <View className="w-20 h-20 rounded-full bg-white/20 justify-center items-center">
+          <View className="w-16 h-16 rounded-full bg-white/20 justify-center items-center">
             <AppText className="text-[--text-primary] font-bold text-lg">
               {getStringInitials(name)}
             </AppText>
@@ -52,7 +52,7 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
 
       <CircularProgress
         progress={progress}
-        size={65}
+        size={60}
         labelStyle={{
           fontFamily: "Montserrat-Bold",
         }}

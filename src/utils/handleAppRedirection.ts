@@ -1,5 +1,5 @@
 
-export const handleAppRedirection = (data: { type: string; dataJson?: string }) => {
+export const handleAppRedirection = (data: { type: unknown; dataJson?: string }) => {
   const json = JSON.parse(data.dataJson || '{}');
 
   switch (data.type) {

@@ -19,6 +19,7 @@ import AppText from "./AppText";
 export interface LabelInputProps extends TextInputProps {
   containerStyle?: StyleProp<ViewStyle>;
   containerClassName?: ViewProps["className"];
+  pressableClassName?: ViewProps["className"];
   rightComponent?: (passwordVisible: boolean) => ReactNode;
   leftComponent?: () => ReactNode;
   title: string;
@@ -30,6 +31,7 @@ const LabelInput = forwardRef<TextInput, LabelInputProps>(
     {
       containerStyle,
       containerClassName,
+      pressableClassName,
       rightComponent,
       leftComponent,
       title,
@@ -77,12 +79,13 @@ const LabelInput = forwardRef<TextInput, LabelInputProps>(
               ? "border-[--error-color]"
               : isFocused
               ? "border-[--accent-color]"
-              : "border-transparent"
+              : "border-transparent",
+            pressableClassName
           )}
           testID="pressable-container"
         >
           {leftComponent && (
-            <View className="mx-3" testID="left-component-container">
+            <View className="ms-3" testID="left-component-container">
               {leftComponent()}
             </View>
           )}
@@ -94,7 +97,7 @@ const LabelInput = forwardRef<TextInput, LabelInputProps>(
             autoCapitalize="none"
             cursorColor={colors["--accent-color"]}
             secureTextEntry={secureTextEntry && !isPasswordVisible}
-            className="flex-1 text-[--text-primary] min-h-22 font-montserrat-light px-2"
+            className="flex-1 text-[--text-primary] min-h-12 font-montserrat-light px-2"
             onFocus={handleFocus}
             onBlur={handleBlur}
             testID="label-input"
@@ -105,7 +108,7 @@ const LabelInput = forwardRef<TextInput, LabelInputProps>(
             <Pressable
               onPress={togglePasswordVisibility}
               hitSlop={20}
-              className="mx-3"
+              className="me-3"
               testID="toggle-visibility" // Added testID for password toggle
             >
               {rightComponent ? (

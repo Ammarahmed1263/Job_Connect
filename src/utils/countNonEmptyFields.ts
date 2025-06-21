@@ -1,14 +1,20 @@
+import { UserProfile } from "@type/userTypes";
+
 const countNonEmptyFields = (obj: Record<string, unknown>): number => {
   let count = 0;
-  for (const key in obj) {
-    const value = obj[key];
+  const { id, ...formData } = obj;
+  for (const key in formData) {
+    const value = formData[key as keyof Omit<UserProfile, "id">];
     const isFilled =
-      value !== null &&
       value !== undefined &&
       value !== "" &&
-      !(Array.isArray(value) && value.length === 0) &&
-      !(typeof value === "object" && !Array.isArray(value) && Object.keys(value).length === 0);
-  
+      value !== null &&
+      (!Array.isArray(value) || value.length > 0) &&
+      (typeof value !== "object" ||
+        value === null ||
+        Array.isArray(value) ||
+        Object.keys(value).length > 0);
+
     if (isFilled) count++;
   }
   return count;
