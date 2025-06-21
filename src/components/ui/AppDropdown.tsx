@@ -1,20 +1,18 @@
+import { hs, ms, vs } from "@constants/metrics";
 import { useTheme } from "@contexts/ThemeContext";
-import Ionicons from "@expo/vector-icons/Ionicons";
 import React, { ReactElement, useState } from "react";
 import {
   StyleProp,
   StyleSheet,
-  Text,
   TextStyle,
   View,
-  ViewStyle,
+  ViewStyle
 } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 import { DropdownProps } from "react-native-element-dropdown/lib/typescript/components/Dropdown/model";
 import AppText from "./AppText";
-import { hs, ms, vs } from "@constants/metrics";
 
-interface BaseDropdownItem {
+export interface BaseDropdownItem {
   label: string;
   value: string;
 }
