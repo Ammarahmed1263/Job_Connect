@@ -36,22 +36,25 @@ const ContactInfo = () => {
       <NavigationHeader title="Contact Info" />
 
       <ScrollView
-        contentContainerClassName="gap-4 px-2 pt-4"
+        contentContainerClassName="gap-4 px-4 pt-4"
         contentContainerStyle={{
           paddingBottom: bottom + vs(112),
         }}
         keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator={false}
       >
         <ControlledLabelInput
           title="First Name (Read-only)"
           control={control}
           name="firstName"
           editable={false}
-          leftComponent={() => (
+          leftComponent={({ focused }) => (
             <AppIcon
               name="person-outline"
               size={24}
-              color={colors["--text-primary"]}
+              color={
+                focused ? colors["--accent-color"] : colors["--text-primary"]
+              }
             />
           )}
         />
@@ -60,11 +63,13 @@ const ContactInfo = () => {
           control={control}
           name="lastName"
           editable={false}
-          leftComponent={() => (
+          leftComponent={({ focused }) => (
             <AppIcon
               name="person-outline"
               size={24}
-              color={colors["--text-primary"]}
+              color={
+                focused ? colors["--accent-color"] : colors["--text-primary"]
+              }
             />
           )}
         />
@@ -78,8 +83,14 @@ const ContactInfo = () => {
           autoCapitalize="none"
           autoCorrect={false}
           autoFocus={true}
-          leftComponent={() => (
-            <AppIcon name="letter" size={24} color={colors["--text-primary"]} />
+          leftComponent={({ focused }) => (
+            <AppIcon
+              name="letter"
+              size={24}
+              color={
+                focused ? colors["--accent-color"] : colors["--text-primary"]
+              }
+            />
           )}
           editable={false}
         />
@@ -87,31 +98,27 @@ const ContactInfo = () => {
           title="Phone Number"
           control={control}
           name="phoneNumber"
-          leftComponent={() => (
-            <AppIcon name="phone" size={24} color={colors["--text-primary"]} />
+          leftComponent={({ focused }) => (
+            <AppIcon
+              name="phone"
+              size={24}
+              color={
+                focused ? colors["--accent-color"] : colors["--text-primary"]
+              }
+            />
           )}
         />
         <ControlledLabelInput
           title="Address"
           control={control}
           name="address"
-          leftComponent={() => (
+          leftComponent={({ focused }) => (
             <AppIcon
               name="home-person"
               size={24}
-              color={colors["--text-primary"]}
-            />
-          )}
-        />
-        <ControlledLabelInput
-          title="LinkedIn Link"
-          control={control}
-          name="linkedInLink"
-          leftComponent={() => (
-            <AppIcon
-              name="linkedin"
-              size={24}
-              color={colors["--text-primary"]}
+              color={
+                focused ? colors["--accent-color"] : colors["--text-primary"]
+              }
             />
           )}
         />
@@ -119,11 +126,27 @@ const ContactInfo = () => {
           title="Portfolio"
           control={control}
           name="portfolio"
-          leftComponent={() => (
+          leftComponent={({ focused }) => (
+            <AppIcon
+              name="user-circle"
+              size={24}
+              color={
+                focused ? colors["--accent-color"] : colors["--text-primary"]
+              }
+            />
+          )}
+        />
+        <ControlledLabelInput
+          title="LinkedIn Link"
+          control={control}
+          name="linkedInLink"
+          leftComponent={({ focused }) => (
             <AppIcon
               name="linkedin"
               size={24}
-              color={colors["--text-primary"]}
+              color={
+                focused ? colors["--accent-color"] : colors["--text-primary"]
+              }
             />
           )}
         />
@@ -131,11 +154,13 @@ const ContactInfo = () => {
           title="Twitter Link"
           control={control}
           name="twitterLink"
-          leftComponent={() => (
+          leftComponent={({ focused }) => (
             <AppIcon
               name="twitter"
               size={24}
-              color={colors["--text-primary"]}
+              color={
+                focused ? colors["--accent-color"] : colors["--text-primary"]
+              }
             />
           )}
         />
@@ -143,11 +168,13 @@ const ContactInfo = () => {
           title="Instagram Link"
           control={control}
           name="instagramLink"
-          leftComponent={() => (
+          leftComponent={({ focused }) => (
             <AppIcon
               name="instagram"
               size={24}
-              color={colors["--text-primary"]}
+              color={
+                focused ? colors["--accent-color"] : colors["--text-primary"]
+              }
             />
           )}
         />
@@ -155,11 +182,13 @@ const ContactInfo = () => {
           title="Facebook Link"
           control={control}
           name="facebookLink"
-          leftComponent={() => (
+          leftComponent={({ focused }) => (
             <AppIcon
               name="facebook"
               size={24}
-              color={colors["--text-primary"]}
+              color={
+                focused ? colors["--accent-color"] : colors["--text-primary"]
+              }
             />
           )}
         />

@@ -17,15 +17,19 @@ const ContactInfo: FC<Props> = ({ setStep }) => {
   const addressRef = useRef<TextInput>(null);
   const phoneRef = useRef<TextInput>(null);
   const { control, trigger } = useFormContext<RegisterFormData>();
-  console.log('contact info rendered');
+  console.log("contact info rendered");
 
   const handlePrev = () => {
     setStep(1);
   };
 
   const handleNext = async () => {
-    const isValid = await trigger(['contact.email', 'contact.phone', 'contact.address']);
-    console.log('is valid: ', isValid);
+    const isValid = await trigger([
+      "contact.email",
+      "contact.phone",
+      "contact.address",
+    ]);
+    console.log("is valid: ", isValid);
     if (isValid) setStep(3);
   };
 
@@ -44,8 +48,14 @@ const ContactInfo: FC<Props> = ({ setStep }) => {
         autoCorrect={false}
         autoFocus={true}
         onSubmitEditing={() => focusRef(phoneRef)}
-        leftComponent={() => (
-          <Icon name="mail-outline" size={22} color={colors["--text-primary"]} />
+        leftComponent={({ focused }) => (
+          <Icon
+            name="mail-outline"
+            size={22}
+            color={
+              focused ? colors["--accent-color"] : colors["--text-primary"]
+            }
+          />
         )}
         submitBehavior="submit"
       />
@@ -60,8 +70,14 @@ const ContactInfo: FC<Props> = ({ setStep }) => {
         keyboardType="phone-pad"
         autoComplete="tel"
         onSubmitEditing={() => focusRef(addressRef)}
-        leftComponent={() => (
-          <Icon name="call-outline" size={22} color={colors["--text-primary"]} />
+        leftComponent={({ focused }) => (
+          <Icon
+            name="call-outline"
+            size={22}
+            color={
+              focused ? colors["--accent-color"] : colors["--text-primary"]
+            }
+          />
         )}
         submitBehavior="submit"
       />
@@ -74,8 +90,14 @@ const ContactInfo: FC<Props> = ({ setStep }) => {
         title="Address"
         placeholder="Cairo, Egypt"
         autoComplete="street-address"
-        leftComponent={() => (
-          <Icon name="home-outline" size={22} color={colors["--text-primary"]} />
+        leftComponent={({ focused }) => (
+          <Icon
+            name="home-outline"
+            size={22}
+            color={
+              focused ? colors["--accent-color"] : colors["--text-primary"]
+            }
+          />
         )}
       />
 

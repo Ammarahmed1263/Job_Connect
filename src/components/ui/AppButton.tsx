@@ -2,7 +2,7 @@ import { FontVariants } from "@constants/Fonts";
 import { isIos } from "@constants/index";
 import { useTheme } from "@contexts/ThemeContext";
 import clsx from "clsx";
-import React, { ElementRef, forwardRef, useState } from "react";
+import React, { ComponentRef, forwardRef, useState } from "react";
 import {
   GestureResponderEvent,
   Pressable,
@@ -29,7 +29,7 @@ interface Props extends PressableProps {
   children?: React.ReactNode;
 }
 
-const AppButton = forwardRef<ElementRef<typeof Pressable>, Props>(
+const AppButton = forwardRef<ComponentRef<typeof Pressable>, Props>(
   (
     {
       title,
@@ -61,11 +61,15 @@ const AppButton = forwardRef<ElementRef<typeof Pressable>, Props>(
         className={clsx(
           "rounded-xl overflow-hidden",
           variant === "primary" ? "bg-[--primary-100]" : "bg-[--primary-300]",
-          wrapperClassName
+          wrapperClassName,
         )}
         testID="app-button-wrapper"
         style={[
-          !flat && !disableShadow && { ...styles.shadow, shadowColor: colors["--accent-color"] },
+          !flat &&
+            !disableShadow && {
+              ...styles.shadow,
+              shadowColor: colors["--accent-color"],
+            },
           flat && { backgroundColor: "transparent" },
           wrapperStyle,
         ]}
@@ -74,30 +78,35 @@ const AppButton = forwardRef<ElementRef<typeof Pressable>, Props>(
           onPressIn={() => setPressed(true)}
           onPressOut={() => setPressed(false)}
           onPress={handlePress}
-          android_ripple={!flat && !disableRipple ? { color: colors["--accent-color"] } : null}
+          android_ripple={
+            !flat && !disableRipple ? { color: colors["--accent-color"] } : null
+          }
           hitSlop={20}
           {...props}
           className={clsx(
             "items-center justify-center",
             pressed && isIos && "bg-[--accent-color]",
             flat && pressed && "opacity-50",
+            !flat && "px-4 py-3",
             props?.className
           )}
         >
-          {children ? children : (
+          {children ? (
+            children
+          ) : (
             <AppText
               variant={textVariant}
               className={clsx(
                 flat &&
                   (variant === "primary"
-                  ? "text-[--text-primary]"
-                  : "text-[--text-secondary]"),
-              !flat && "px-4 py-2 !text-[--bg-color]",
-              textClassName
-            )}
-          >
-            {title}
-          </AppText>
+                    ? "text-[--text-primary]"
+                    : "text-[--text-secondary]"),
+                !flat && "!text-[--bg-color]",
+                textClassName
+              )}
+            >
+              {title}
+            </AppText>
           )}
         </Pressable>
       </View>

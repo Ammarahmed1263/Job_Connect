@@ -21,15 +21,15 @@ import {
   Keyboard,
   ScrollView,
   TextInput,
-  View
+  View,
 } from "react-native";
 import authRules from "schemas/auth";
 
 const Login = () => {
   const router = useRouter();
   const { colors } = useTheme();
-  const passwordRef = useRef<TextInput>(null);
-  const { control, handleSubmit, setError } = useForm<LoginFormData>({
+  const passwordRef = useRef<TextInput | null>(null);
+  const { control, handleSubmit } = useForm<LoginFormData>({
     mode: "onBlur",
     reValidateMode: "onChange",
     defaultValues: {
@@ -88,13 +88,15 @@ const Login = () => {
             autoFocus={true}
             submitBehavior="submit"
             onSubmitEditing={() => focusRef(passwordRef)}
-            leftComponent={() =>
+            leftComponent={({ focused }) => (
               <Icon
                 name="mail-outline"
                 size={24}
-                color={colors["--text-primary"]}
+                color={
+                  focused ? colors["--accent-color"] : colors["--text-primary"]
+                }
               />
-            }
+            )}
           />
 
           <ControlledLabelInput
@@ -106,22 +108,24 @@ const Login = () => {
             rules={authRules.password}
             autoComplete="password"
             returnKeyType="done"
-            rightComponent={
-              (passwordVisible) => (
-                <AppIcon
-                  name={passwordVisible ? "eye-outline" : "eye-closed"}
-                  size={22}
-                  color={colors["--text-primary"]}
-                />
-              )
-            }
-            leftComponent={() =>
+            rightComponent={({ passwordVisible, focused }) => (
+              <AppIcon
+                name={passwordVisible ? "eye-outline" : "eye-closed"}
+                size={22}
+                color={
+                  focused ? colors["--accent-color"] : colors["--text-primary"]
+                }
+              />
+            )}
+            leftComponent={({ focused }) => (
               <Icon
                 name="lock-closed-outline"
                 size={22}
-                color={colors["--text-primary"]}
+                color={
+                  focused ? colors["--accent-color"] : colors["--text-primary"]
+                }
               />
-            }
+            )}
             secureTextEntry
           />
 
@@ -135,7 +139,7 @@ const Login = () => {
           )}
           <AppButton
             title="Login"
-            wrapperClassName="m-4"
+            wrapperClassName="mt-12 mb-4"
             onPress={handleSubmit(onSubmit, (e) => {
               console.log("Form has errors - aborting submission", e);
             })}
@@ -143,7 +147,7 @@ const Login = () => {
           >
             {isLoading && (
               <View className="items-center justify-center">
-                <AppText className="opacity-0 px-4 py-2">Login</AppText>
+                <AppText className="opacity-0">Login</AppText>
                 <ActivityIndicator
                   size="small"
                   color={colors["--accent-color"]}
@@ -154,7 +158,7 @@ const Login = () => {
           </AppButton>
           <AppButton
             textVariant="light"
-            title="forget password?"
+            title="forgot password?"
             wrapperClassName="ms-4 mt-2 self-center"
             onPress={() => console.log("i was clicked!")}
             flat

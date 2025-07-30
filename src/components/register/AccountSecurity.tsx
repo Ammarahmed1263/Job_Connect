@@ -1,4 +1,9 @@
-import { AppButton, AppIcon, AppText, ControlledLabelInput } from "@components/ui";
+import {
+  AppButton,
+  AppIcon,
+  AppText,
+  ControlledLabelInput,
+} from "@components/ui";
 import { focusRef } from "@utils";
 import React, { Dispatch, FC, SetStateAction, useRef } from "react";
 import { ActivityIndicator, TextInput, View } from "react-native";
@@ -40,24 +45,26 @@ const AccountSecurity: FC<Props> = ({ setStep, onSubmit }) => {
         autoFocus={true}
         submitBehavior="submit"
         onSubmitEditing={() => focusRef(confirmPasswordRef)}
-        leftComponent={() => <Icon
-          name="lock-open-outline"
-          size={22}
-          color={colors["--text-primary"]}
-        />}
-        rightComponent={
-          (passwordVisible) => (
-            <AppIcon
-              name={passwordVisible ? "eye-outline" : "eye-closed"}
-              size={22}
-              color={colors["--text-primary"]}
-            />
-          )
-        }
+        leftComponent={({ focused }) => (
+          <Icon
+            name="lock-open-outline"
+            size={22}
+            color={
+              focused ? colors["--accent-color"] : colors["--text-primary"]
+            }
+          />
+        )}
+        rightComponent={({passwordVisible, focused}) => (
+          <AppIcon
+            name={passwordVisible ? "eye-outline" : "eye-closed"}
+            size={22}
+            color={
+              focused ? colors["--accent-color"] : colors["--text-primary"]
+            }
+          />
+        )}
         secureTextEntry
-      >
-        
-      </ControlledLabelInput>
+      ></ControlledLabelInput>
 
       <ControlledLabelInput
         ref={confirmPasswordRef}
@@ -68,31 +75,46 @@ const AccountSecurity: FC<Props> = ({ setStep, onSubmit }) => {
         placeholder="password"
         autoComplete="password"
         returnKeyType="done"
-        leftComponent={() => <Icon
-          name="lock-closed-outline"
-          size={22}
-          color={colors["--text-primary"]}
-        />}
-        rightComponent={
-          (passwordVisible) => (
-            <AppIcon
-              name={passwordVisible ? "eye-outline" : "eye-closed"}
-              size={22}
-              color={colors["--text-primary"]}
-            />
-          )
-        }
+        leftComponent={({ focused }) => (
+          <Icon
+            name="lock-closed-outline"
+            size={22}
+            color={
+              focused ? colors["--accent-color"] : colors["--text-primary"]
+            }
+          />
+        )}
+        rightComponent={({passwordVisible, focused}) => (
+          <AppIcon
+            name={passwordVisible ? "eye-outline" : "eye-closed"}
+            size={22}
+            color={
+              focused ? colors["--accent-color"] : colors["--text-primary"]
+            }
+          />
+        )}
         secureTextEntry
       />
-        
-      {error && <AppText variant='light' className="pt-4 text-center color-[--error-color]">{error}</AppText>}
+
+      {error && (
+        <AppText
+          variant="light"
+          className="pt-4 text-center color-[--error-color]"
+        >
+          {error}
+        </AppText>
+      )}
       <View className="flex-row justify-between m-4">
         <AppButton title="back" onPress={handlePrev} disabled={isLoading} />
         <AppButton title="Register" onPress={onSubmit} disabled={isLoading}>
           {isLoading && (
             <View className="items-center justify-center">
-              <AppText className="opacity-0 px-4 py-2">Register</AppText>
-              <ActivityIndicator size="small" color={colors['--accent-color']} className="absolute"/>
+              <AppText className="opacity-0">Register</AppText>
+              <ActivityIndicator
+                size="small"
+                color={colors["--accent-color"]}
+                className="absolute"
+              />
             </View>
           )}
         </AppButton>

@@ -6,7 +6,7 @@ export const colors: { light: ThemeData; dark: ThemeData } = {
   light: {
     "--bg-color": "rgb(255, 255, 255)",
     "--card-color": "rgb(239, 239, 239)",
-    "--border-color": "rgb(229, 231, 235)",
+    "--border-color": "rgb(224, 224, 244)",
     "--text-primary": "rgb(47, 42, 119)",
     "--text-secondary": "rgb(67, 56, 202)",
     "--text-muted": "rgb(107, 114, 128)",
@@ -24,8 +24,8 @@ export const colors: { light: ThemeData; dark: ThemeData } = {
   },
   dark: {
     "--bg-color": "rgb(18, 18, 18)",
-    "--card-color": "rgb(42, 42, 42)",
-    "--border-color": "rgb(108, 108, 108)",
+    "--card-color": "rgb(30, 30, 30)",
+    "--border-color": "rgb(58, 58, 58)",
     "--text-primary": "rgb(210, 220, 255)",
     "--text-secondary": "rgb(165, 180, 252)",
     "--text-muted": "rgb(156, 163, 175)",

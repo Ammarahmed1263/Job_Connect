@@ -20,8 +20,22 @@ export interface LabelInputProps extends TextInputProps {
   containerStyle?: StyleProp<ViewStyle>;
   containerClassName?: ViewProps["className"];
   pressableClassName?: ViewProps["className"];
-  rightComponent?: (passwordVisible: boolean) => ReactNode;
-  leftComponent?: () => ReactNode;
+  rightComponent?: ({
+    passwordVisible,
+    focused,
+    error,
+  }: {
+    passwordVisible: boolean;
+    focused: boolean;
+    error?: string;
+  }) => ReactNode;
+  leftComponent?: ({
+    focused,
+    error,
+  }: {
+    focused: boolean;
+    error?: string;
+  }) => ReactNode;
   title: string;
   error?: string;
 }
@@ -66,33 +80,40 @@ const LabelInput = forwardRef<TextInput, LabelInputProps>(
     return (
       <View
         style={containerStyle}
-        className={clsx("mx-2", containerClassName)}
+        className={clsx(containerClassName)}
         testID="container"
       >
-        {title.length > 0 && <AppText className="ms-2 mb-1" testID="label-input-title">{title}</AppText>}
+        {title.length > 0 && (
+          <AppText className="ms-2 mb-1" testID="label-input-title">
+            {title}
+          </AppText>
+        )}
         <Pressable
           onPress={() => inputRef?.current?.focus()}
           hitSlop={20}
           className={clsx(
-            "rounded-xl flex-row items-center justify-between bg-[--primary-400] border-2 min-h-12",
+            "rounded-xl flex-row items-center justify-between bg-[--card-color] border-2 min-h-12",
             error
               ? "border-[--error-color]"
               : isFocused
               ? "border-[--accent-color]"
-              : "border-transparent",
+              : "border-[--border-color]",
             pressableClassName
           )}
           testID="pressable-container"
         >
           {leftComponent && (
             <View className="ms-3" testID="left-component-container">
-              {leftComponent()}
+              {leftComponent({
+                focused: isFocused,
+                error,
+              })}
             </View>
           )}
 
           <TextInput
             ref={inputRef}
-            placeholderTextColor={colors["--text-secondary"]}
+            placeholderTextColor={colors["--text-primary"]}
             returnKeyType="next"
             autoCapitalize="none"
             cursorColor={colors["--accent-color"]}
@@ -112,13 +133,19 @@ const LabelInput = forwardRef<TextInput, LabelInputProps>(
               testID="toggle-visibility" // Added testID for password toggle
             >
               {rightComponent ? (
-                <>{rightComponent(isPasswordVisible)}</>
+                rightComponent({
+                  passwordVisible: isPasswordVisible,
+                  focused: isFocused,
+                  error,
+                })
               ) : (
                 <Ionicons
                   name={!isPasswordVisible ? "eye-off-outline" : "eye-outline"}
                   size={ms(20)}
-                  color={colors["--text-primary"]}
-                  testID={`icon-${!isPasswordVisible ? "eye-off-outline" : "eye-outline"}`} // Added testID for icon
+                  color={isFocused ? colors["--accent-color"] : colors["--text-primary"]}
+                  testID={`icon-${
+                    !isPasswordVisible ? "eye-off-outline" : "eye-outline"
+                  }`}
                 />
               )}
             </Pressable>

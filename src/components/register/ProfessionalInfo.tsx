@@ -46,11 +46,13 @@ const ProfessionalInfo: FC<Props> = ({ setStep }) => {
         autoFocus={true}
         submitBehavior="submit"
         onSubmitEditing={() => focusRef(experienceRef)}
-        leftComponent={() => (
+        leftComponent={({ focused }) => (
           <Icon
             name="briefcase-outline"
             size={22}
-            color={colors["--text-primary"]}
+            color={
+              focused ? colors["--accent-color"] : colors["--text-primary"]
+            }
           />
         )}
       />
@@ -64,11 +66,13 @@ const ProfessionalInfo: FC<Props> = ({ setStep }) => {
         placeholder="0+"
         submitBehavior="submit"
         onSubmitEditing={() => focusRef(degreeRef)}
-        leftComponent={() => (
+        leftComponent={({ focused }) => (
           <Icon
             name="calendar-number-outline"
             size={22}
-            color={colors["--text-primary"]}
+            color={
+              focused ? colors["--accent-color"] : colors["--text-primary"]
+            }
           />
         )}
       />
@@ -80,11 +84,13 @@ const ProfessionalInfo: FC<Props> = ({ setStep }) => {
         name="professional.degree"
         title="Degree"
         placeholder="Computer Science"
-        leftComponent={() => (
+        leftComponent={({ focused }) => (
           <Icon
             name="business-outline"
             size={22}
-            color={colors["--text-primary"]}
+            color={
+              focused ? colors["--accent-color"] : colors["--text-primary"]
+            }
           />
         )}
       />
