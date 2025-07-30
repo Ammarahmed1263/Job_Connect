@@ -20,7 +20,7 @@ const JobHeader: FC<JobHeaderProps> = ({
   const { colors } = useTheme();
 
   return (
-    <View className="flex-row justify-between items-center">
+    <View className="flex-row justify-between items-start">
       <View className="flex-row gap-3 flex-1 ">
         <View className="w-16 aspect-square bg-[--accent-color] rounded-xl items-center justify-center">
           <AppText variant="bold" className="color-[--bg-color] leading-tight">

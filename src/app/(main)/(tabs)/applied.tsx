@@ -43,7 +43,7 @@ const Applied = () => {
               item={item}
               rightComponent={
                 <View
-                  className={"p-2 ms-2 rounded-lg"}
+                  className={"py-1 px-2 rounded-lg"}
                   style={{
                     backgroundColor: applyOpacity(
                       colors[color],
@@ -52,7 +52,7 @@ const Applied = () => {
                   }}
                 >
                   <AppText
-                    variant="bold"
+                    variant="light"
                     className={"!leading-tight !text-lg"}
                     style={{ color: colors[color] }}
                   >

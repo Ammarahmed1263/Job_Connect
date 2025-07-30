@@ -27,10 +27,10 @@ const Profile = () => {
 
 
   useEffect(() => {
-    console.log("profile data: ", data?.data, data && data.data);
-    if (data && data.data) {
-      console.log('profile data set')
-      setProfile(data.data);
+    console.log("profile data: ", data && data?.data.length);
+    if (data && data?.data) {
+      console.log('profile data set', data?.data)
+      setProfile(data?.data);
     }
   }, [data, setProfile]);
 

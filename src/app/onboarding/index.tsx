@@ -58,11 +58,10 @@ const OnboardingScreen = () => {
   };
 
   return (
-    <>
-      {/* <StatusBar backgroundColor={colors["--bg-color"]} /> */}
+    <View className="flex-1 color-[--bg-color]">
+      <StatusBar />
       <View
-        className="flex-1 bg-[--bg-color] justify-center"
-        style={{ paddingTop: top }}
+        className="flex-1 justify-center"
       >
         <Animated.FlatList
           ref={flatListRef}
@@ -118,7 +117,7 @@ const OnboardingScreen = () => {
           </AppButton>
         </View>
       </View>
-    </>
+    </View>
   );
 };
 

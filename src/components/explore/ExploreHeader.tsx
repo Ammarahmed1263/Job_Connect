@@ -45,7 +45,7 @@ const ExploreHeader: FC<ExploreHeaderProps> = ({
         <AppButton
           title=""
           flat
-          className="flex-1 border-2 border-[--accent-color] p-2 rounded-xl"
+          className="flex-1 border-2 border-[--accent-color] !p-2 rounded-xl"
           onPress={onNotificationPress}
         >
           <AppIcon name="bell" color={colors["--accent-color"]} size={30} />
@@ -55,7 +55,7 @@ const ExploreHeader: FC<ExploreHeaderProps> = ({
         <AppButton
           title=""
           flat
-          className="flex-1 border-2 border-[--accent-color] p-2 rounded-xl"
+          className="flex-1 border-2 border-[--accent-color] !p-2 rounded-xl"
           onPress={onFilterPress}
         >
           <AppIcon name="filter" color={colors["--accent-color"]} size={28} />

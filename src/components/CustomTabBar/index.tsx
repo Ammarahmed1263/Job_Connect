@@ -13,16 +13,18 @@ import {
 import { useTheme } from "@contexts/ThemeContext";
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import React, { useCallback, useEffect, useMemo } from "react";
-import { BackHandler, View } from "react-native";
+import { BackHandler, StyleSheet, View } from "react-native";
 import {
+  runOnUI,
   useAnimatedStyle,
   useSharedValue,
+  withSequence,
   withSpring,
   withTiming,
 } from "react-native-reanimated";
 import { AnimatedIndicator } from "./AnimatedIndicator";
 import { AnimatedTabBackground } from "./AnimatedTabBackground";
-import { MemoizedTabButton as TabButton } from "./TabButton";
+import {MemoizedTabButton as TabButton} from "./TabButton";
 
 const CustomTabBar: React.FC<BottomTabBarProps> = ({
   state,
@@ -48,41 +50,46 @@ const CustomTabBar: React.FC<BottomTabBarProps> = ({
 
 
   const animateTab = useCallback((index: number) => {
-    curveY.value = withTiming(0, { duration: ANIMATION_DURATION / 2 }, () => {
-      activeTabIndex.value = index;
-      curveY.value = withSpring(PATH_CONTROL_POINT_Y, {
-        damping: 10,
-        stiffness: 200,
-      });
-    });
+    'worklet';
+    // Batch animations together
+    const animations = {
+      curveY: withSequence(
+        withTiming(0, { duration: ANIMATION_DURATION / 2 }),
+        withSpring(PATH_CONTROL_POINT_Y, { damping: 10, stiffness: 200 })
+      ),
+      indicatorPosition: withTiming(index * tabWidth + tabWidth / 2, {
+        duration: ANIMATION_DURATION,
+      }),
+      indicatorY: withSequence(
+        withTiming(INDICATOR_Y_OFFSET, { duration: ANIMATION_DURATION / 2 }),
+        withSpring(WHOLE_DEPTH, { damping: 10, stiffness: 200 })
+      )
+    };
 
-    indicatorPosition.value = withTiming(index * tabWidth + tabWidth / 2, {
-      duration: ANIMATION_DURATION,
-    });
-
-    indicatorY.value = withTiming(
-      INDICATOR_Y_OFFSET,
-      { duration: ANIMATION_DURATION / 2 },
-      () => {
-        indicatorY.value = withSpring(WHOLE_DEPTH, {
-          damping: 10,
-          stiffness: 200,
-        });
+    activeTabIndex.value = index;
+    Object.entries(animations).forEach(([key, animation]) => {
+      switch(key) {
+        case 'curveY': curveY.value = animation; break;
+        case 'indicatorPosition': indicatorPosition.value = animation; break;
+        case 'indicatorY': indicatorY.value = animation; break;
       }
-    );
-  }, []);
+    });
+  }, [tabWidth]);
 
   useEffect(() => {
-    const backHandler = BackHandler.addEventListener(
+    const subscription = BackHandler.addEventListener(
       "hardwareBackPress",
       () => {
-        animateTab(state.index);
+        runOnUI(() => {
+          'worklet';
+          animateTab(state.index);
+        })();
         return false;
       }
     );
 
-    return () => backHandler.remove();
-  }, [animateTab, state.index]);
+    return () => subscription.remove();
+  }, [state.index]);
 
   const handleTabPress = useCallback(
     (index: number) => () => {
@@ -104,13 +111,7 @@ const CustomTabBar: React.FC<BottomTabBarProps> = ({
   return (
     <View
       className="w-full flex-row py-4"
-      style={{
-        position: "absolute",
-        left: 0,
-        right: 0,
-        bottom: 0,
-        backgroundColor: "transparent",
-      }}
+      style={styles.barContainer}
     >
       <AnimatedTabBackground
         activeTabIndex={activeTabIndex}
@@ -173,3 +174,13 @@ const CustomTabBar: React.FC<BottomTabBarProps> = ({
 };
 
 export default CustomTabBar;
+
+const styles = StyleSheet.create({
+  barContainer: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: "transparent",
+  }
+})

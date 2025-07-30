@@ -8,8 +8,12 @@ import * as SystemUI from "expo-system-ui";
 import { StyleSheet } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { enableScreens } from "react-native-screens";
 import "../../global.css";
 import { NotificationProvider } from "../contexts/NotificationContext";
+
+// Enable native screens implementation for better performance
+enableScreens();
 
 // to solve white background flash issue
 SystemUI.setBackgroundColorAsync("transparent");

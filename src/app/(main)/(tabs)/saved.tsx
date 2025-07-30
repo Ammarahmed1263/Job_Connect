@@ -39,6 +39,7 @@ const Saved = () => {
           <AppText className="text-center">No jobs saved</AppText>
           </View>
         )}
+        showsVerticalScrollIndicator={false}
         contentContainerClassName="pt-2 pb-4 gap-4 px-4 grow"
         contentContainerStyle={{
           flexGrow: 1,

@@ -1,13 +1,14 @@
 import JobSection from "@components/jobs/JobSection";
 import { AppText } from "@components/ui";
+import AppLoading from "@components/ui/AppLoading";
+import { TAB_HEIGHT } from "@constants/tabBar";
 import { useSearchJobs } from "@queries/homeQueries";
 import { useRecentJobsStore } from "@store/recentJobsStore";
 import type { JobCategory } from "@type/jobTypes";
 import { useRouter } from "expo-router";
 import React from "react";
-import { ActivityIndicator, ScrollView, View } from "react-native";
+import { ScrollView, View } from "react-native";
 import useRecommendedJobs from "./useRecommendedJobs";
-import { TAB_HEIGHT } from "@constants/tabBar";
 
 const ExploreContent = () => {
   const router = useRouter();
@@ -47,7 +48,10 @@ const ExploreContent = () => {
   if (isPending) {
     return (
       <View className="flex-1 items-center justify-center">
-        <ActivityIndicator size="large" />
+        <AppLoading
+          source={require("@assets/lottie/loading.json")}
+          size={200}
+        />
         <AppText className="mt-2">Loading jobs...</AppText>
       </View>
     );
