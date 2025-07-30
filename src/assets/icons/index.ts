@@ -47,3 +47,4 @@ export {default as letter} from './letter.svg';
 export {default as home_person} from './home-person.svg';
 export {default as ring} from './ring.svg';
 export {default as phone} from './phone.svg';
+export {default as user_circle} from './user-circle.svg'
