@@ -40,6 +40,7 @@ export const FiltersSheet = forwardRef<BottomSheetModal, FiltersSheetProps>(
       handleSubmit,
       reset,
       watch,
+      clearErrors,
       formState: { isValid },
     } = useForm<Filters>({
       defaultValues: filters,
@@ -115,7 +116,7 @@ export const FiltersSheet = forwardRef<BottomSheetModal, FiltersSheetProps>(
             showsVerticalScrollIndicator={false}
           >
             <FilterSection title="Location">
-              <LocationFilter name="location" control={control} />
+              <LocationFilter name="location" control={control} clearErrors={clearErrors}/>
             </FilterSection>
 
             <FilterSection title="Working Model">

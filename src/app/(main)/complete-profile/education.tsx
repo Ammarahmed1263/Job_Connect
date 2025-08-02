@@ -15,7 +15,7 @@ import React from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 
 const Education = () => {
-  const { control, handleSubmit } = useProfileSectionForm("education");
+  const { control, handleSubmit, clearErrors } = useProfileSectionForm("education");
   const { mutateAsync } = useUpdateSeekerProfile();
   const { colors } = useTheme();
   const { bottom } = useSafeArea();
@@ -40,6 +40,7 @@ const Education = () => {
         <ControlledLabelInput
           title="Education"
           control={control}
+          clearErrors={clearErrors}
           name="education"
           leftComponent={() => (
             <AppIcon
@@ -52,6 +53,7 @@ const Education = () => {
         <ControlledLabelInput
           title="Degree"
           control={control}
+          clearErrors={clearErrors}
           name="degree"
           leftComponent={() => (
             <AppIcon
@@ -64,6 +66,7 @@ const Education = () => {
         <ControlledLabelInput
           title="University"
           control={control}
+          clearErrors={clearErrors}
           name="university"
           leftComponent={() => (
             <AppIcon
@@ -76,6 +79,7 @@ const Education = () => {
         <ControlledLabelInput
           title="College Name"
           control={control}
+          clearErrors={clearErrors}
           name="collegeName"
           leftComponent={() => (
             <AppIcon

@@ -7,8 +7,8 @@ import { TouchableOpacity, View } from "react-native";
 interface ProfileSectionItemProps {
   item: ProfileSection;
   onPress: () => void;
-  completedFields?: number;
-  totalFields?: number;
+  completedFields: number;
+  totalFields: number;
 }
 
 const ProfileSectionItem: FC<ProfileSectionItemProps> = ({
@@ -19,7 +19,7 @@ const ProfileSectionItem: FC<ProfileSectionItemProps> = ({
 }) => {
   const { colors } = useTheme();
 
-  return (
+  return totalFields !== 0 ? (
     <TouchableOpacity
       onPress={onPress}
       className="flex-row items-center bg-[--card-color] p-4 rounded-xl mb-3 mx-4 shadow-sm"
@@ -30,11 +30,14 @@ const ProfileSectionItem: FC<ProfileSectionItemProps> = ({
       >
         <AppIcon name={item.iconName} size={24} color={colors["--bg-color"]} />
       </View>
-      <AppText numberOfLines={1} className="flex-1 text-[--text-primary] ms-2 mt-1">
+      <AppText
+        numberOfLines={1}
+        className="flex-1 text-[--text-primary] ms-2 mt-1"
+      >
         {item.sectionName}
       </AppText>
 
-      {completedFields === totalFields ? (
+      {completedFields === totalFields && totalFields !== 0 ? (
         <AppIcon
           name="checkmark"
           size={28}
@@ -42,7 +45,10 @@ const ProfileSectionItem: FC<ProfileSectionItemProps> = ({
         />
       ) : (
         <View className="flex-row items-center justify-center ms-2">
-          <AppText variant="light" className="!text-[--text-secondary] !text-lg mt-1">
+          <AppText
+            variant="light"
+            className="!text-[--text-secondary] !text-lg mt-1"
+          >
             {completedFields} / {totalFields}
           </AppText>
           <AppIcon
@@ -53,7 +59,7 @@ const ProfileSectionItem: FC<ProfileSectionItemProps> = ({
         </View>
       )}
     </TouchableOpacity>
-  );
+  ) : null;
 };
 
 export default ProfileSectionItem;

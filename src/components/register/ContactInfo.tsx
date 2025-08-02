@@ -16,7 +16,7 @@ const ContactInfo: FC<Props> = ({ setStep }) => {
   const { colors } = useTheme();
   const addressRef = useRef<TextInput>(null);
   const phoneRef = useRef<TextInput>(null);
-  const { control, trigger } = useFormContext<RegisterFormData>();
+  const { control, trigger, clearErrors } = useFormContext<RegisterFormData>();
   console.log("contact info rendered");
 
   const handlePrev = () => {
@@ -38,6 +38,7 @@ const ContactInfo: FC<Props> = ({ setStep }) => {
       <AppText>Contact Information</AppText>
       <ControlledLabelInput
         control={control}
+        clearErrors={clearErrors}
         rules={authRules.email}
         name="contact.email"
         title="Email"
@@ -63,6 +64,7 @@ const ContactInfo: FC<Props> = ({ setStep }) => {
       <ControlledLabelInput
         ref={phoneRef}
         control={control}
+        clearErrors={clearErrors}
         rules={authRules.phone}
         name="contact.phone"
         title="Phone"
@@ -85,6 +87,7 @@ const ContactInfo: FC<Props> = ({ setStep }) => {
       <ControlledLabelInput
         ref={addressRef}
         control={control}
+        clearErrors={clearErrors}
         rules={authRules.address}
         name="contact.address"
         title="Address"

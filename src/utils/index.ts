@@ -12,7 +12,6 @@ export {default as applyOpacity} from './applyOpacity';
 export {default as rgbStringToComponents} from './rgbStringToComponents';
 export {default as processThemeColors} from './processThemeColors';
 export {default as countNonEmptyFields} from './countNonEmptyFields';
-export {default as convertProfileToFormData} from './convertProfileToFormData';
 export {default as getFileMimeType} from './getFileMimeType';
 export {default as handlePickDocument} from './handlePickDocument';
 export {default as downloadResume } from './downloadResume';

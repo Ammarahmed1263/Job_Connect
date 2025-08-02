@@ -14,7 +14,7 @@ interface Props {
 
 const ProfessionalInfo: FC<Props> = ({ setStep }) => {
   const { colors } = useTheme();
-  const { control, trigger } = useFormContext<RegisterFormData>();
+  const { control, trigger, clearErrors } = useFormContext<RegisterFormData>();
   const experienceRef = useRef<TextInput>(null);
   const degreeRef = useRef<TextInput>(null);
   console.log("professional info rendered");
@@ -39,6 +39,7 @@ const ProfessionalInfo: FC<Props> = ({ setStep }) => {
 
       <ControlledLabelInput
         control={control}
+        clearErrors={clearErrors}
         rules={authRules.jobTitle}
         name="professional.jobTitle"
         title="Job Title"
@@ -60,6 +61,7 @@ const ProfessionalInfo: FC<Props> = ({ setStep }) => {
       <ControlledLabelInput
         ref={experienceRef}
         control={control}
+        clearErrors={clearErrors}
         rules={authRules.experience}
         name="professional.experience"
         title="Years of Experience"
@@ -80,6 +82,7 @@ const ProfessionalInfo: FC<Props> = ({ setStep }) => {
       <ControlledLabelInput
         ref={degreeRef}
         control={control}
+        clearErrors={clearErrors}
         rules={authRules.degree}
         name="professional.degree"
         title="Degree"

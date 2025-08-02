@@ -5,14 +5,15 @@ import {
   FieldValues,
   Path,
   RegisterOptions,
-  useFormContext,
+  UseFormClearErrors
 } from "react-hook-form";
-import LabelInput, { LabelInputProps } from "./LabelInput";
 import { TextInput } from "react-native";
+import LabelInput, { LabelInputProps } from "./LabelInput";
 
 interface Props<T extends FieldValues> extends LabelInputProps {
   control: Control<T>;
   name: Path<T>;
+  clearErrors: UseFormClearErrors<T>;
   rules?:
     | Omit<
         RegisterOptions<T, Path<T>>,
@@ -23,15 +24,13 @@ interface Props<T extends FieldValues> extends LabelInputProps {
 }
 
 function ControlledLabelInputInner<T extends FieldValues>(
-  { control, name, rules, onSubmitEditing, children, ...props }: Props<T>,
+  { control, name, rules, clearErrors, onSubmitEditing, children, ...props }: Props<T>,
   ref: Ref<TextInput>
 ) {
-  const methods = useFormContext<T>();
-  const usedControl = control || methods?.control;
 
   return (
     <Controller
-      control={usedControl}
+      control={control}
       name={name}
       rules={rules}
       render={({
@@ -46,7 +45,7 @@ function ControlledLabelInputInner<T extends FieldValues>(
             onChangeText={(text) => {
               onChange(text);
               if (error && text !== value) {
-                usedControl.setError(name, { type: "" });
+                clearErrors(name);
               }
             }}
             onBlur={(e) => {

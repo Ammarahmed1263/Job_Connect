@@ -15,7 +15,7 @@ import React from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 
 const Experience = () => {
-  const { control, handleSubmit } = useProfileSectionForm("experience");
+  const { control, handleSubmit, clearErrors } = useProfileSectionForm("experience");
   const { mutateAsync } = useUpdateSeekerProfile();
   const router = useRouter();
   const { bottom } = useSafeArea();
@@ -41,6 +41,7 @@ const Experience = () => {
         <ControlledLabelInput
           title="Years Of Experience"
           control={control}
+          clearErrors={clearErrors}
           name="yearsOfExperience"
           leftComponent={() => (
             <AppIcon
@@ -54,6 +55,7 @@ const Experience = () => {
         <ControlledLabelInput
           title="Current or Desired"
           control={control}
+          clearErrors={clearErrors}
           name="currentOrDesiredJob"
           leftComponent={() => (
             <AppIcon
@@ -66,6 +68,7 @@ const Experience = () => {
         <ControlledLabelInput
           title="Company"
           control={control}
+          clearErrors={clearErrors}
           name="companyWorkedAt"
           leftComponent={() => (
             <AppIcon
@@ -78,6 +81,7 @@ const Experience = () => {
         <ControlledLabelInput
           title="Title"
           control={control}
+          clearErrors={clearErrors}
           name="workedAs"
           leftComponent={() => (
             <AppIcon

@@ -2,6 +2,7 @@ import {
   AppButton,
   AppIcon,
   ControlledLabelInput,
+  ControlledPhoneInput,
   NavigationHeader,
 } from "@components/ui";
 import { vs } from "@constants/metrics";
@@ -15,7 +16,7 @@ import React from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 
 const ContactInfo = () => {
-  const { control, handleSubmit, formState } =
+  const { control, handleSubmit, formState, clearErrors } =
     useProfileSectionForm("contactInfo");
   const { colors } = useTheme();
   const { bottom } = useSafeArea();
@@ -46,6 +47,7 @@ const ContactInfo = () => {
         <ControlledLabelInput
           title="First Name (Read-only)"
           control={control}
+          clearErrors={clearErrors}
           name="firstName"
           editable={false}
           leftComponent={({ focused }) => (
@@ -61,6 +63,7 @@ const ContactInfo = () => {
         <ControlledLabelInput
           title="Last Name (Read-only)"
           control={control}
+          clearErrors={clearErrors}
           name="lastName"
           editable={false}
           leftComponent={({ focused }) => (
@@ -76,6 +79,7 @@ const ContactInfo = () => {
         <ControlledLabelInput
           title="Email (Read-only)"
           control={control}
+          clearErrors={clearErrors}
           name="email"
           placeholder="example@domain.com"
           inputMode="email"
@@ -94,23 +98,17 @@ const ContactInfo = () => {
           )}
           editable={false}
         />
-        <ControlledLabelInput
+        <ControlledPhoneInput
           title="Phone Number"
+          placeholder="(123) 456-7890"
           control={control}
+          clearErrors={clearErrors}
           name="phoneNumber"
-          leftComponent={({ focused }) => (
-            <AppIcon
-              name="phone"
-              size={24}
-              color={
-                focused ? colors["--accent-color"] : colors["--text-primary"]
-              }
-            />
-          )}
         />
         <ControlledLabelInput
           title="Address"
           control={control}
+          clearErrors={clearErrors}
           name="address"
           leftComponent={({ focused }) => (
             <AppIcon
@@ -125,6 +123,7 @@ const ContactInfo = () => {
         <ControlledLabelInput
           title="Portfolio"
           control={control}
+          clearErrors={clearErrors}
           name="portfolio"
           leftComponent={({ focused }) => (
             <AppIcon
@@ -139,6 +138,7 @@ const ContactInfo = () => {
         <ControlledLabelInput
           title="LinkedIn Link"
           control={control}
+          clearErrors={clearErrors}
           name="linkedInLink"
           leftComponent={({ focused }) => (
             <AppIcon
@@ -153,6 +153,7 @@ const ContactInfo = () => {
         <ControlledLabelInput
           title="Twitter Link"
           control={control}
+          clearErrors={clearErrors}
           name="twitterLink"
           leftComponent={({ focused }) => (
             <AppIcon
@@ -167,6 +168,7 @@ const ContactInfo = () => {
         <ControlledLabelInput
           title="Instagram Link"
           control={control}
+          clearErrors={clearErrors}
           name="instagramLink"
           leftComponent={({ focused }) => (
             <AppIcon
@@ -181,6 +183,7 @@ const ContactInfo = () => {
         <ControlledLabelInput
           title="Facebook Link"
           control={control}
+          clearErrors={clearErrors}
           name="facebookLink"
           leftComponent={({ focused }) => (
             <AppIcon

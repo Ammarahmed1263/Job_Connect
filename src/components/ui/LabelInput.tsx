@@ -80,7 +80,7 @@ const LabelInput = forwardRef<TextInput, LabelInputProps>(
     return (
       <View
         style={containerStyle}
-        className={clsx(containerClassName)}
+        className={containerClassName}
         testID="container"
       >
         {title.length > 0 && (
@@ -113,12 +113,12 @@ const LabelInput = forwardRef<TextInput, LabelInputProps>(
 
           <TextInput
             ref={inputRef}
-            placeholderTextColor={colors["--text-primary"]}
+            placeholderTextColor={colors["--text-muted"]}
             returnKeyType="next"
             autoCapitalize="none"
             cursorColor={colors["--accent-color"]}
             secureTextEntry={secureTextEntry && !isPasswordVisible}
-            className="flex-1 text-[--text-primary] min-h-12 font-montserrat-light px-2"
+            className="flex-1 text-[--text-primary] min-h-12 font-montserrat-light px-3"
             onFocus={handleFocus}
             onBlur={handleBlur}
             testID="label-input"

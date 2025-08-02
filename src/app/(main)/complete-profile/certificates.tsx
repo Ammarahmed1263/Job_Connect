@@ -15,7 +15,7 @@ import React from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 
 const Certificates = () => {
-  const { control, handleSubmit } = useProfileSectionForm('certifications');
+  const { control, handleSubmit, clearErrors } = useProfileSectionForm('certifications');
   const { mutateAsync } = useUpdateSeekerProfile();
   const { bottom } = useSafeArea();
   const router = useRouter();
@@ -40,6 +40,7 @@ const Certificates = () => {
         <ControlledLabelInput
           title="Certification Name"
           control={control}
+          clearErrors={clearErrors}
           name="certificationName"
           leftComponent={() => (
             <AppIcon
@@ -52,6 +53,7 @@ const Certificates = () => {
         <ControlledLabelInput
           title="Issue Date"
           control={control}
+          clearErrors={clearErrors}
           name="issueDate"
           leftComponent={() => (
             <AppIcon
@@ -64,6 +66,7 @@ const Certificates = () => {
         <ControlledLabelInput
           title="Issuing Organization"
           control={control}
+          clearErrors={clearErrors}
           name="issuingOrganization"
           leftComponent={() => (
             <AppIcon
@@ -76,6 +79,7 @@ const Certificates = () => {
         <ControlledLabelInput
           title="Expiry Date (Optional)"
           control={control}
+          clearErrors={clearErrors}
           name="expiryDate"
           leftComponent={() => (
             <AppIcon

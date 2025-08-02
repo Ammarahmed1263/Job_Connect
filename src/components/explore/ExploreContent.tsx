@@ -48,11 +48,10 @@ const ExploreContent = () => {
   if (isPending) {
     return (
       <View className="flex-1 items-center justify-center">
-        <AppLoading
-          source={require("@assets/lottie/loading.json")}
-          size={200}
-        />
-        <AppText className="mt-2">Loading jobs...</AppText>
+        <AppLoading size={100} />
+        <AppText variant="medium" className="mt-2">
+          Loading jobs...
+        </AppText>
       </View>
     );
   }

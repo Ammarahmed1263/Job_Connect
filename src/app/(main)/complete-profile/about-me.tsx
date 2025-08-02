@@ -15,7 +15,7 @@ import React from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 
 const AboutMe = () => {
-  const { control, handleSubmit, formState } = useProfileSectionForm("about");
+  const { control, handleSubmit, formState, clearErrors } = useProfileSectionForm("about");
   const { bottom } = useSafeArea();
   const { mutateAsync } = useUpdateSeekerProfile();
   const router = useRouter();
@@ -41,10 +41,12 @@ const AboutMe = () => {
           paddingBottom: bottom + vs(112),
         }}
         keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator={false}
       >
         <ControlledLabelInput
           title="Bio"
           control={control}
+          clearErrors={clearErrors}
           name="bio"
           multiline={true}
           numberOfLines={3}
@@ -67,6 +69,7 @@ const AboutMe = () => {
         {/* <ControlledLabelInput
           title="Cover Letter"
           control={control}
+          clearErrors={clearErrors}
           name="coverLetter"
           multiline={true}
           numberOfLines={6}
@@ -89,6 +92,7 @@ const AboutMe = () => {
         <ControlledLabelInput
           title="Cover Letter"
           control={control}
+          clearErrors={clearErrors}
           name="coverLetter"
           multiline={true}
           numberOfLines={6}
@@ -111,6 +115,7 @@ const AboutMe = () => {
         <ControlledLabelInput
           title="Birth Date"
           control={control}
+          clearErrors={clearErrors}
           name="dateOfBirth"
           leftComponent={() => (
             <AppIcon
@@ -123,6 +128,7 @@ const AboutMe = () => {
         <ControlledLabelInput
           title="Nationality"
           control={control}
+          clearErrors={clearErrors}
           name="nationality"
           leftComponent={() => (
             <AppIcon name="city" size={24} color={colors["--text-primary"]} />
@@ -131,6 +137,7 @@ const AboutMe = () => {
         <ControlledLabelInput
           title="Marital Status"
           control={control}
+          clearErrors={clearErrors}
           name="maritalStatus"
           leftComponent={() => (
             <AppIcon name="ring" size={24} color={colors["--text-primary"]} />
@@ -139,6 +146,7 @@ const AboutMe = () => {
         <ControlledLabelInput
           title="gender"
           control={control}
+          clearErrors={clearErrors}
           name="gender"
           leftComponent={() => (
             <AppIcon name="family" size={34} color={colors["--text-primary"]} />

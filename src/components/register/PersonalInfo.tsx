@@ -20,7 +20,7 @@ interface Props {
 const PersonalInfo: FC<Props> = ({ setStep }) => {
   const { colors } = useTheme();
   const lastNameRef = useRef<TextInput>(null);
-  const { control, trigger } = useFormContext<RegisterFormData>();
+  const { control, trigger, clearErrors } = useFormContext<RegisterFormData>();
 
   const handleNext = async () => {
     const isValid = await trigger(["personal.firstName", "personal.lastName"]);
@@ -34,6 +34,7 @@ const PersonalInfo: FC<Props> = ({ setStep }) => {
 
       <ControlledLabelInput
         control={control}
+        clearErrors={clearErrors}
         rules={authRules.firstName}
         name="personal.firstName"
         title="First Name"
@@ -55,6 +56,7 @@ const PersonalInfo: FC<Props> = ({ setStep }) => {
       <ControlledLabelInput
         ref={lastNameRef}
         control={control}
+        clearErrors={clearErrors}
         rules={authRules.lastName}
         name="personal.lastName"
         title="Last Name"

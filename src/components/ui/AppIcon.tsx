@@ -48,7 +48,8 @@ import {
   trash_bin,
   twitter,
   user_id,
-  user_circle
+  user_circle,
+  pen_round
 } from "@assets/icons";
 import React, { FC } from "react";
 import { SvgProps } from "react-native-svg";
@@ -105,6 +106,7 @@ const icons = {
   ring: ring,
   phone: phone,
   "user-circle": user_circle,
+  "pen-round": pen_round,
 } as const;
 
 export type IconName = keyof typeof icons;

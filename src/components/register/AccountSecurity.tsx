@@ -1,19 +1,19 @@
 import {
   AppButton,
   AppIcon,
+  AppLoading,
   AppText,
   ControlledLabelInput,
 } from "@components/ui";
-import { focusRef } from "@utils";
-import React, { Dispatch, FC, SetStateAction, useRef } from "react";
-import { ActivityIndicator, TextInput, View } from "react-native";
-import Icon from "@expo/vector-icons/Ionicons";
 import { useTheme } from "@contexts/ThemeContext";
-import { RegisterFormData } from "@type/authTypes";
-import { useFormContext } from "react-hook-form";
-import authRules from "schemas/auth";
-import { BaseSyntheticEvent } from "react";
+import Icon from "@expo/vector-icons/Ionicons";
 import useAuthStore from "@store/authStore";
+import { RegisterFormData } from "@type/authTypes";
+import { focusRef } from "@utils";
+import React, { BaseSyntheticEvent, Dispatch, FC, SetStateAction, useRef } from "react";
+import { useFormContext } from "react-hook-form";
+import { TextInput, View } from "react-native";
+import authRules from "schemas/auth";
 
 interface Props {
   setStep: Dispatch<SetStateAction<number>>;
@@ -22,7 +22,7 @@ interface Props {
 
 const AccountSecurity: FC<Props> = ({ setStep, onSubmit }) => {
   const { colors } = useTheme();
-  const { control, getValues } = useFormContext<RegisterFormData>();
+  const { control, getValues, clearErrors } = useFormContext<RegisterFormData>();
   const { isLoading, error } = useAuthStore();
   const confirmPasswordRef = useRef<TextInput>(null);
   console.log("account info rendered");
@@ -37,6 +37,7 @@ const AccountSecurity: FC<Props> = ({ setStep, onSubmit }) => {
 
       <ControlledLabelInput
         control={control}
+        clearErrors={clearErrors}
         rules={authRules.password}
         name="account.password"
         title="Password"
@@ -69,6 +70,7 @@ const AccountSecurity: FC<Props> = ({ setStep, onSubmit }) => {
       <ControlledLabelInput
         ref={confirmPasswordRef}
         control={control}
+        clearErrors={clearErrors}
         rules={authRules.confirmPassword(getValues)}
         name="account.confirmPassword"
         title="Confirm Password"
@@ -110,11 +112,7 @@ const AccountSecurity: FC<Props> = ({ setStep, onSubmit }) => {
           {isLoading && (
             <View className="items-center justify-center">
               <AppText className="opacity-0">Register</AppText>
-              <ActivityIndicator
-                size="small"
-                color={colors["--accent-color"]}
-                className="absolute"
-              />
+              <AppLoading containerClassName="absolute"/>
             </View>
           )}
         </AppButton>

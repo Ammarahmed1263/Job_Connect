@@ -1,10 +1,10 @@
 import JobCard from "@components/jobs/JobCard";
-import { AppText, NavigationHeader } from "@components/ui";
+import { AppLoading, AppText, NavigationHeader } from "@components/ui";
 import { useSearchJobs } from "@queries/homeQueries";
 import type { JobCategory } from "@type/jobTypes";
 import { useLocalSearchParams } from "expo-router";
 import React from "react";
-import { ActivityIndicator, FlatList, View } from "react-native";
+import { FlatList, View } from "react-native";
 
 const JobListing = () => {
   const { category } = useLocalSearchParams<{ category?: JobCategory }>();
@@ -12,7 +12,6 @@ const JobListing = () => {
     useSearchJobs({ category });
   const jobs = data?.pages.flatMap((page) => page.data) || [];
   const totalCount = data?.pages[0]?.totalCount || 0;
-
 
   const getTitle = () => {
     switch (category) {
@@ -36,7 +35,7 @@ const JobListing = () => {
   if (isPending) {
     return (
       <View className="flex-1 items-center justify-center">
-        <ActivityIndicator size="large" />
+        <AppLoading size={100} />
         <AppText className="mt-2">Loading jobs...</AppText>
       </View>
     );
@@ -49,7 +48,6 @@ const JobListing = () => {
       </View>
     );
   }
-
 
   return (
     <View className="flex-1 pt-14">
@@ -66,21 +64,18 @@ const JobListing = () => {
         contentContainerClassName="py-4 gap-4 px-4"
         onEndReached={() => hasNextPage && !isFetching && fetchNextPage()}
         onEndReachedThreshold={0.5}
-        ListFooterComponent={() => {
-          if (hasNextPage) {
-            return <ActivityIndicator size="small" className="mt-2" />;
-          }
-          if (!hasNextPage) {
-            return (
-              <View className="my-2">
-                <AppText className="text-center !text-[--text-muted]">
-                  No more jobs
-                </AppText>
-              </View>
-            );
-          }
-          return null;
-        }}
+        ListFooterComponent={() =>
+          hasNextPage ? (
+            <AppLoading size={30} />
+          ) : (
+            <View className="mb-2">
+              <AppText className="text-center !text-[--text-muted]">
+                No more jobs
+              </AppText>
+            </View>
+          )
+        }
+        showsVerticalScrollIndicator={false}
       />
     </View>
   );

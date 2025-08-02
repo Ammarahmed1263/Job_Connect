@@ -1,9 +1,10 @@
 import {
   AppButton,
+  AppIcon,
+  AppLoading,
   AppLogo,
   AppText,
   ControlledLabelInput,
-  AppIcon,
 } from "@components/ui";
 import { hs, vs } from "@constants/metrics";
 import { useTheme } from "@contexts/ThemeContext";
@@ -17,11 +18,10 @@ import { useSearchParams } from "expo-router/build/hooks";
 import { useRef } from "react";
 import { useForm } from "react-hook-form";
 import {
-  ActivityIndicator,
   Keyboard,
   ScrollView,
   TextInput,
-  View,
+  View
 } from "react-native";
 import authRules from "schemas/auth";
 
@@ -29,7 +29,7 @@ const Login = () => {
   const router = useRouter();
   const { colors } = useTheme();
   const passwordRef = useRef<TextInput | null>(null);
-  const { control, handleSubmit } = useForm<LoginFormData>({
+  const { control, handleSubmit, clearErrors } = useForm<LoginFormData>({
     mode: "onBlur",
     reValidateMode: "onChange",
     defaultValues: {
@@ -77,6 +77,7 @@ const Login = () => {
 
           <ControlledLabelInput
             control={control}
+            clearErrors={clearErrors}
             name="email"
             title="Email"
             placeholder="example@domain.com"
@@ -102,6 +103,7 @@ const Login = () => {
           <ControlledLabelInput
             ref={passwordRef}
             control={control}
+            clearErrors={clearErrors}
             name="password"
             title="Password"
             placeholder="password"
@@ -148,11 +150,7 @@ const Login = () => {
             {isLoading && (
               <View className="items-center justify-center">
                 <AppText className="opacity-0">Login</AppText>
-                <ActivityIndicator
-                  size="small"
-                  color={colors["--accent-color"]}
-                  className="absolute"
-                />
+                <AppLoading size={100} containerClassName="absolute"/>
               </View>
             )}
           </AppButton>

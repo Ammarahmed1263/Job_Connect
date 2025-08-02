@@ -1,5 +1,5 @@
 import JobCard from "@components/jobs/JobCard";
-import { AppText } from "@components/ui";
+import { AppLoading, AppText } from "@components/ui";
 import { vs } from "@constants/metrics";
 import { TAB_HEIGHT } from "@constants/tabBar";
 import { useSearchJobs } from "@queries/homeQueries";
@@ -8,7 +8,7 @@ import { useSearchStore } from "@store/searchStore";
 import { Filters } from "@type/filterTypes";
 import { getCleanedFilters } from "@utils";
 import React, { useMemo } from "react";
-import { ActivityIndicator, FlatList, View } from "react-native";
+import { FlatList, View } from "react-native";
 
 interface QueryFilters extends Partial<Filters> {
   title?: string;
@@ -44,7 +44,7 @@ const SearchResults = () => {
   if (isLoading) {
     return (
       <View className="flex-1 items-center justify-center">
-        <ActivityIndicator size="large" />
+        <AppLoading size={100} />
         <AppText className="mt-2">Loading jobs...</AppText>
       </View>
     );
@@ -60,14 +60,15 @@ const SearchResults = () => {
     );
   }
 
- 
   const jobs = data?.pages.flatMap((page) => page.data) || [];
   const totalCount = data?.pages[0]?.totalCount || 0;
 
   if (jobs.length === 0) {
     return (
       <View className="flex-1 items-center justify-center mx-4">
-        <AppText className="text-center">No jobs found matching your criteria.</AppText>
+        <AppText className="text-center">
+          No jobs found matching your criteria.
+        </AppText>
       </View>
     );
   }
@@ -89,21 +90,17 @@ const SearchResults = () => {
           }
         }}
         onEndReachedThreshold={0.5}
-        ListFooterComponent={() => {
-          if (hasNextPage) {
-            return <ActivityIndicator size="small" className="mt-2" />;
-          }
-          if (!hasNextPage) {
-            return (
-              <View className="my-2">
-                <AppText className="text-center !text-[--text-muted]">
-                  No more jobs
-                </AppText>
-              </View>
-            );
-          }
-          return null;
-        }}
+        ListFooterComponent={() =>
+          hasNextPage ? (
+            <AppLoading size={30} />
+          ) : (
+            <View className="mb-2">
+              <AppText className="text-center !text-[--text-muted]">
+                No more jobs
+              </AppText>
+            </View>
+          )
+        }
         showsVerticalScrollIndicator={false}
       />
     </View>
