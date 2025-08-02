@@ -16,11 +16,8 @@ const CompleteProfileScreen = () => {
   const { totalFields, completedFields, getSectionProgress } =
     useProfileStore();
 
-  console.log("profile data here: ", totalFields, completedFields);
-
   const handleSectionPress = (item: ProfileSection) => {
     if (item.screen) {
-      console.log("item pressed: ", item.screen);
       router.push(`/complete-profile/${item.screen}`);
     } else {
       console.log(`section with name ${item.sectionName} has no screen`);
