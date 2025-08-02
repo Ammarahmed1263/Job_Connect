@@ -24,7 +24,7 @@ export interface CompanyWorkedAt {
   companyName: string;
 }
 
-export interface Skills {
+export interface Skill {
   skillName: string;
 }
 
@@ -58,7 +58,7 @@ export interface UserProfile {
   phoneNumber?: string;
   certifications?: Certifications[];
   companyWorkedAt?: CompanyWorkedAt[];
-  skills?: Skills[];
+  skills?: Skill[];
   workedAs?: WorkedAs[];
   resumes?: Resume[];
 }

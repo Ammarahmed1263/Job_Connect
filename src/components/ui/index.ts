@@ -7,3 +7,5 @@ export {default as AppLogo} from './AppLogo';
 export {default as AppIcon} from './AppIcon';
 export {default as Pagination} from './Pagination';
 export {default as NavigationHeader} from './NavigationHeader';
+export {default as ControlledPhoneInput} from './ControlledPhoneInput';
+export {default as AppLoading} from './AppLoading';

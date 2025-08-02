@@ -86,7 +86,7 @@ export const profileSectionsFields = {
     "issuingOrganization",
     "expiryDate",
   ],
-  skills: ["skillsName"],
+  skills: ["skills"],
   resumes: ["resume"],
 } as const;
 

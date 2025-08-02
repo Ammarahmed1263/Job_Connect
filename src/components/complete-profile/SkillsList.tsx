@@ -1,0 +1,86 @@
+import React, { FC } from "react";
+import { Pressable, View } from "react-native";
+import { AppIcon, AppText } from "@components/ui";
+import { impactAsync, ImpactFeedbackStyle } from "expo-haptics";
+import Animated, {
+  FadeIn,
+  FadeOut,
+  LinearTransition,
+} from "react-native-reanimated";
+import { useTheme } from "@contexts/ThemeContext";
+import { Skill } from "@type/userTypes";
+
+interface SkillsListProps {
+  skills: Skill[];
+  onEdit: (index: number, skill: string) => void;
+  onRemove: (index: number) => void;
+}
+
+const SkillsList: FC<SkillsListProps> = ({
+  skills,
+  onEdit,
+  onRemove,
+}) => {
+  const { colors } = useTheme();
+
+  return (
+    <View className="flex-row flex-wrap gap-2">
+      {skills.length === 0 && (
+        <View className="py-4 w-full items-center px-4">
+          <AppText className="text-[--text-muted] text-center" variant="medium">
+            Add your skills to enhance your profile
+          </AppText>
+        </View>
+      )}
+
+      {skills.map((skill, index) => (
+        <Animated.View
+          key={index}
+          entering={FadeIn.duration(300)}
+          exiting={FadeOut.duration(200)}
+          layout={LinearTransition.springify()}
+          className="rounded-full border-2 border-[--accent-color] px-3 py-2 flex-row items-center justify-between gap-2"
+        >
+          <AppText
+            className="!text-[--text-primary]"
+            numberOfLines={1}
+          >
+           {skill.skillName}
+          </AppText>
+
+          <View className="flex-row self-end">
+            <Pressable
+              onPress={async () => {
+                await impactAsync(ImpactFeedbackStyle.Light);
+                onEdit(index, skill.skillName);
+              }}
+              className="p-1"
+            >
+              <AppIcon
+                name="pen-round"
+                size={22}
+                color={colors["--text-primary"]}
+              />
+            </Pressable>
+
+            <Pressable
+              onPress={async () => {
+                await impactAsync(ImpactFeedbackStyle.Medium);
+                onRemove(index);
+              }}
+              className="p-1"
+            >
+              <AppIcon
+                name="trash-bin"
+                size={22}
+                color={colors["--error-color"]}
+              />
+            </Pressable>
+          </View>
+        </Animated.View>
+      ))}
+    </View>
+  );
+};
+
+export default SkillsList;

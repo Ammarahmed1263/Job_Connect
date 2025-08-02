@@ -1,6 +1,7 @@
 import apiClient from "@api/apiClient";
 import { UserProfile } from "@type/userTypes";
 import { endpoints } from "api/endpoints";
+import { AxiosError } from "axios";
 
 const userBase = endpoints.user;
 
@@ -38,6 +39,7 @@ const userService = {
       console.log("get seeker Profile responded: ", JSON.stringify(data, null, 2));
       return data;
     } catch (error) {
+      console.log('error fetching seeker profile: ', (error as AxiosError)?.response?.data)
       throw error;
     }
   },
@@ -47,7 +49,8 @@ const userService = {
       console.log("updated seeker profile: ", JSON.stringify(data, null, 2));
       return data;
     } catch (error) {
-      console.log('error updating seeker profile', error);
+      const axiosError = error as AxiosError
+      console.log('error updating seeker profile', axiosError?.response?.data);
       throw error;
     }
   },
