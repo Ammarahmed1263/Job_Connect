@@ -1,6 +1,6 @@
 import { useWithAuth } from "@hooks/useWithAuth";
+import { useJobSavedStatus } from "@hooks/useJobSavedStatus";
 import { useSaveJob, useUnsaveJob } from "@queries/jobQueries";
-import { useSavedJobs } from "@queries/userQueries";
 import { jobSummary } from "@type/jobTypes";
 import { extractTags } from "@utils";
 import { useRouter } from "expo-router";
@@ -33,10 +33,9 @@ const JobCard = ({
 }: JobCardProps) => {
   const router = useRouter();
   const { requireAuth } = useWithAuth();
-  const { data: savedJobs } = useSavedJobs();
+  const { isSaved } = useJobSavedStatus(item.id);
   const { mutate: unsaveJob } = useUnsaveJob();
   const { mutate: saveJob } = useSaveJob();
-  const isSaved = savedJobs?.data.some((job: jobSummary) => job.id === item.id);
 
   const handleJobPress = () => {
     router.push({

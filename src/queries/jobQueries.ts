@@ -60,7 +60,6 @@ export const useSaveJob = () => {
         ({ message, data }: { message: string; data: jobSummary[] }) => ({
           message,
           data: [
-            ...(data || []),
             {
               id: job.id,
               title: job.title,
@@ -69,12 +68,13 @@ export const useSaveJob = () => {
               postedDate: job.postedDate,
               applicationsCount: job.applicationsCount,
             },
+            ...(data || []),
           ],
         })
       );
       return { previousJobs };
     },
-    onError: (err, jobId, context) => {
+    onError: (err, _, context) => {
       console.log("save error: ", err);
       if (context?.previousJobs) {
         queryClient.setQueryData(["getSavedJobs"], context.previousJobs);
@@ -97,7 +97,7 @@ export const useUnsaveJob = () => {
       queryClient.setQueryData(
         ["getSavedJobs"],
         ({ message, data }: { message: string; data: jobSummary[] }) => ({
-          message: message,
+          message,
           data: data.filter((job) => job.id !== jobId),
         })
       );
@@ -105,7 +105,7 @@ export const useUnsaveJob = () => {
       console.log("unsave mutation: ", jobId, previousJobs);
       return { previousJobs };
     },
-    onError: (err, jobId, context) => {
+    onError: (err, _, context) => {
       console.error("unsave error: ", err);
       if (context?.previousJobs) {
         queryClient.setQueryData(["getSavedJobs"], context.previousJobs);
