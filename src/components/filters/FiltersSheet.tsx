@@ -23,7 +23,7 @@ import {
   FilterSection,
   LocationFilter,
   SalaryRangeFilter,
-  SegmentedControlFilter,
+  SegmentedControlFilter
 } from "./filter-inputs";
 
 interface FiltersSheetProps {}
@@ -141,6 +141,7 @@ export const FiltersSheet = forwardRef<BottomSheetModal, FiltersSheetProps>(
                 maxSalaryName="maxSalary"
                 watch={watch}
                 control={control}
+                clearErrors={clearErrors}
               />
             </FilterSection>
 

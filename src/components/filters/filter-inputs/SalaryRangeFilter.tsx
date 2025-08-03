@@ -1,7 +1,7 @@
 import { ControlledLabelInput } from "@components/ui";
 import { Filters } from "@type/filterTypes";
 import React from "react";
-import { Control, UseFormWatch } from "react-hook-form";
+import { Control, UseFormClearErrors, UseFormWatch } from "react-hook-form";
 import { View } from "react-native";
 import filterRules from "schemas/filter";
 
@@ -10,6 +10,7 @@ interface SalaryRangeFilterProps {
   maxSalaryName: keyof Filters;
   control: Control<Filters>;
   watch:  UseFormWatch<Filters>;
+  clearErrors: UseFormClearErrors<Filters>
 }
 
 const SalaryRangeFilter: React.FC<SalaryRangeFilterProps> = ({
@@ -17,15 +18,17 @@ const SalaryRangeFilter: React.FC<SalaryRangeFilterProps> = ({
   maxSalaryName,
   control,
   watch,
+  clearErrors
 }) => {
   const minSalary = watch(minSalaryName) || "";
   const maxSalary = watch(maxSalaryName) || "";
   const rules = filterRules({minSalary, maxSalary});
 
   return (
-    <View className="flex-row justify-between px-2 pt-2">
+    <View className="flex-row justify-between px-2 pt-2 gap-4">
       <ControlledLabelInput
         control={control}
+        clearErrors={clearErrors}
         name={minSalaryName}
         title="Min Salary"
         placeholder="e.g., 20000"
@@ -35,6 +38,7 @@ const SalaryRangeFilter: React.FC<SalaryRangeFilterProps> = ({
       />
       <ControlledLabelInput
         control={control}
+        clearErrors={clearErrors}
         name={maxSalaryName}
         title="Max Salary"
         placeholder="e.g., 80000"
