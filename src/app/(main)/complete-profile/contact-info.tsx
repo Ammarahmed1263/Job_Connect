@@ -1,25 +1,23 @@
+import { ProfileSectionLayout } from "@components/complete-profile";
 import {
-  AppButton,
   AppIcon,
   ControlledLabelInput,
-  ControlledPhoneInput,
-  NavigationHeader,
+  ControlledPhoneInput
 } from "@components/ui";
 import { vs } from "@constants/metrics";
 import { useTheme } from "@contexts/ThemeContext";
 import useProfileSectionForm from "@hooks/useProfileSectionForm";
-import { useSafeArea } from "@hooks/useSafeArea";
 import { useUpdateSeekerProfile } from "@queries/userQueries";
 import { ContactInfoForm } from "@type/profileFormTypes";
 import { useRouter } from "expo-router";
 import React from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
+import { StyleSheet } from "react-native";
+import profileRules from "schemas/profile";
 
 const ContactInfo = () => {
   const { control, handleSubmit, formState, clearErrors } =
     useProfileSectionForm("contactInfo");
   const { colors } = useTheme();
-  const { bottom } = useSafeArea();
   const { mutateAsync } = useUpdateSeekerProfile();
   console.log("form state: ", JSON.stringify(formState.defaultValues, null, 2));
   const router = useRouter();
@@ -33,22 +31,17 @@ const ContactInfo = () => {
   };
 
   return (
-    <View className="flex-1">
-      <NavigationHeader title="Contact Info" />
-
-      <ScrollView
-        contentContainerClassName="gap-4 px-4 pt-4"
-        contentContainerStyle={{
-          paddingBottom: bottom + vs(112),
-        }}
-        keyboardShouldPersistTaps="handled"
-        showsVerticalScrollIndicator={false}
-      >
+    <ProfileSectionLayout
+      title="Contact"
+      onSave={handleSubmit(updateUserContact)}
+      contentContainerClassName="gap-4 px-4 py-4"
+    >
         <ControlledLabelInput
           title="First Name (Read-only)"
           control={control}
           clearErrors={clearErrors}
           name="firstName"
+          rules={profileRules.firstName}
           editable={false}
           leftComponent={({ focused }) => (
             <AppIcon
@@ -65,6 +58,7 @@ const ContactInfo = () => {
           control={control}
           clearErrors={clearErrors}
           name="lastName"
+          rules={profileRules.lastName}
           editable={false}
           leftComponent={({ focused }) => (
             <AppIcon
@@ -81,6 +75,7 @@ const ContactInfo = () => {
           control={control}
           clearErrors={clearErrors}
           name="email"
+          rules={profileRules.email}
           placeholder="example@domain.com"
           inputMode="email"
           autoComplete="email"
@@ -110,6 +105,7 @@ const ContactInfo = () => {
           control={control}
           clearErrors={clearErrors}
           name="address"
+          rules={profileRules.address}
           leftComponent={({ focused }) => (
             <AppIcon
               name="home-person"
@@ -125,6 +121,8 @@ const ContactInfo = () => {
           control={control}
           clearErrors={clearErrors}
           name="portfolio"
+          rules={profileRules.portfolio}
+          placeholder="https://yourportfolio.com"
           leftComponent={({ focused }) => (
             <AppIcon
               name="user-circle"
@@ -140,6 +138,8 @@ const ContactInfo = () => {
           control={control}
           clearErrors={clearErrors}
           name="linkedInLink"
+          rules={profileRules.linkedInLink}
+          placeholder="https://linkedin.com/in/username"
           leftComponent={({ focused }) => (
             <AppIcon
               name="linkedin"
@@ -155,6 +155,8 @@ const ContactInfo = () => {
           control={control}
           clearErrors={clearErrors}
           name="twitterLink"
+          rules={profileRules.twitterLink}
+          placeholder="https://twitter.com/username"
           leftComponent={({ focused }) => (
             <AppIcon
               name="twitter"
@@ -170,6 +172,8 @@ const ContactInfo = () => {
           control={control}
           clearErrors={clearErrors}
           name="instagramLink"
+          rules={profileRules.instagramLink}
+          placeholder="https://instagram.com/username"
           leftComponent={({ focused }) => (
             <AppIcon
               name="instagram"
@@ -185,6 +189,8 @@ const ContactInfo = () => {
           control={control}
           clearErrors={clearErrors}
           name="facebookLink"
+          rules={profileRules.facebookLink}
+          placeholder="https://facebook.com/username"
           leftComponent={({ focused }) => (
             <AppIcon
               name="facebook"
@@ -195,23 +201,7 @@ const ContactInfo = () => {
             />
           )}
         />
-      </ScrollView>
-
-      <View
-        className="absolute px-4 bg-[--card-color] shadow-lg"
-        style={{
-          ...styles.saveButton,
-          paddingBottom: bottom + vs(20),
-        }}
-      >
-        <AppButton
-          title="Save"
-          onPress={handleSubmit(updateUserContact)}
-          className="py-2"
-          wrapperClassName="!rounded-full mx-2"
-        />
-      </View>
-    </View>
+    </ProfileSectionLayout>
   );
 };
 

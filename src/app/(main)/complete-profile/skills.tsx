@@ -4,6 +4,7 @@ import {
   ControlledLabelInput,
   NavigationHeader,
 } from "@components/ui";
+import profileRules from "schemas/profile";
 import { SkillsList } from "@components/complete-profile";
 import { vs } from "@constants/metrics";
 import { useTheme } from "@contexts/ThemeContext";
@@ -46,6 +47,7 @@ const Skills = () => {
           control={control}
           clearErrors={clearErrors}
           name="skillInput"
+          rules={profileRules.skillInput}
           containerClassName="flex-1"
           leftComponent={() => (
             <AppIcon name="chart" size={24} color={colors["--text-primary"]} />

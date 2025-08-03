@@ -1,23 +1,19 @@
 import {
-  AppButton,
   AppIcon,
   ControlledLabelInput,
-  NavigationHeader,
 } from "@components/ui";
-import { vs } from "@constants/metrics";
+import { ProfileSectionLayout } from "@components/complete-profile";
+import profileRules from "schemas/profile";
 import { useTheme } from "@contexts/ThemeContext";
 import useProfileSectionForm from "@hooks/useProfileSectionForm";
-import { useSafeArea } from "@hooks/useSafeArea";
 import { useUpdateSeekerProfile } from "@queries/userQueries";
 import { CertificationsForm } from "@type/profileFormTypes";
 import { useRouter } from "expo-router";
 import React from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
 
 const Certificates = () => {
   const { control, handleSubmit, clearErrors } = useProfileSectionForm('certifications');
   const { mutateAsync } = useUpdateSeekerProfile();
-  const { bottom } = useSafeArea();
   const router = useRouter();
   const { colors } = useTheme();
 
@@ -30,18 +26,18 @@ const Certificates = () => {
   };
 
   return (
-    <View className="flex-1">
-      <NavigationHeader title="Certificates" />
-      <ScrollView
-        contentContainerClassName="gap-4 px-4 py-4"
-        className="flex-1"
-        keyboardShouldPersistTaps="handled"
-      >
+    <ProfileSectionLayout
+      title="Certificates"
+      onSave={handleSubmit(updateUserCerts)}
+      contentContainerClassName="gap-4 px-4 py-4"
+    >
         <ControlledLabelInput
           title="Certification Name"
           control={control}
           clearErrors={clearErrors}
           name="certificationName"
+          rules={profileRules.certificationName}
+          placeholder="e.g. AWS Certified Solutions Architect"
           leftComponent={() => (
             <AppIcon
               name="diploma"
@@ -55,6 +51,8 @@ const Certificates = () => {
           control={control}
           clearErrors={clearErrors}
           name="issueDate"
+          rules={profileRules.issueDate}
+          placeholder="DD/MM/YYYY"
           leftComponent={() => (
             <AppIcon
               name="calendar"
@@ -68,6 +66,8 @@ const Certificates = () => {
           control={control}
           clearErrors={clearErrors}
           name="issuingOrganization"
+          rules={profileRules.issuingOrganization}
+          placeholder="e.g. Amazon Web Services"
           leftComponent={() => (
             <AppIcon
             name="city"
@@ -81,6 +81,8 @@ const Certificates = () => {
           control={control}
           clearErrors={clearErrors}
           name="expiryDate"
+          rules={profileRules.expiryDate}
+          placeholder="DD/MM/YYYY"
           leftComponent={() => (
             <AppIcon
               name="calendar"
@@ -89,37 +91,8 @@ const Certificates = () => {
             />
           )}
           />
-      </ScrollView>
-
-      <View
-        className="absolute px-4 bg-[--card-color] shadow-lg"
-        style={{
-          ...styles.saveButton,
-          paddingBottom: bottom + vs(20),
-        }}
-      >
-        <AppButton
-          title="Save"
-          onPress={handleSubmit(updateUserCerts)}
-          className="py-2"
-          wrapperClassName="!rounded-full mx-2"
-        />
-      </View>
-    </View>
+    </ProfileSectionLayout>
   );
 };
 
 export default Certificates;
-
-const styles = StyleSheet.create({
-  saveButton: {
-    bottom: 0,
-    left: 0,
-    right: 0,
-    paddingTop: vs(14),
-    borderRadius: vs(14),
-  },
-  placeholder: {
-    height: vs(80),
-  },
-});

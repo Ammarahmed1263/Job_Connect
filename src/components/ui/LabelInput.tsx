@@ -15,6 +15,7 @@ import {
   ViewStyle,
 } from "react-native";
 import AppText from "./AppText";
+import AppIcon from "./AppIcon";
 
 export interface LabelInputProps extends TextInputProps {
   containerStyle?: StyleProp<ViewStyle>;
@@ -38,6 +39,7 @@ export interface LabelInputProps extends TextInputProps {
   }) => ReactNode;
   title: string;
   error?: string;
+  editable?: boolean;
 }
 
 const LabelInput = forwardRef<TextInput, LabelInputProps>(
@@ -53,6 +55,7 @@ const LabelInput = forwardRef<TextInput, LabelInputProps>(
       onFocus,
       onBlur,
       secureTextEntry = false,
+      editable = true,
       ...props
     },
     ref
@@ -64,8 +67,10 @@ const LabelInput = forwardRef<TextInput, LabelInputProps>(
     const inputRef = (ref as React.RefObject<TextInput>) ?? localRef;
 
     const handleFocus = (e: NativeSyntheticEvent<TextInputFocusEventData>) => {
-      setIsFocused(true);
-      onFocus?.(e);
+      if (editable) {
+        setIsFocused(true);
+        onFocus?.(e);
+      }
     };
 
     const handleBlur = (e: NativeSyntheticEvent<TextInputFocusEventData>) => {
@@ -89,10 +94,11 @@ const LabelInput = forwardRef<TextInput, LabelInputProps>(
           </AppText>
         )}
         <Pressable
-          onPress={() => inputRef?.current?.focus()}
+          onPress={() => editable && inputRef?.current?.focus()}
           hitSlop={20}
           className={clsx(
-            "rounded-xl flex-row items-center justify-between bg-[--card-color] border-2 min-h-12",
+            "rounded-xl flex-row items-center justify-between border-2 min-h-12 overflow-hidden px-3",
+            !editable ? "!bg-[--text-muted]/20" : "bg-[--card-color]",
             error
               ? "border-[--error-color]"
               : isFocused
@@ -103,7 +109,7 @@ const LabelInput = forwardRef<TextInput, LabelInputProps>(
           testID="pressable-container"
         >
           {leftComponent && (
-            <View className="ms-3" testID="left-component-container">
+            <View testID="left-component-container">
               {leftComponent({
                 focused: isFocused,
                 error,
@@ -118,19 +124,26 @@ const LabelInput = forwardRef<TextInput, LabelInputProps>(
             autoCapitalize="none"
             cursorColor={colors["--accent-color"]}
             secureTextEntry={secureTextEntry && !isPasswordVisible}
-            className="flex-1 text-[--text-primary] min-h-12 font-montserrat-light px-3"
+            className={clsx(
+              "flex-1 min-h-12 font-montserrat pe-4 ps-2 py-0",
+              !editable ? "text-[--text-muted]" : "text-[--text-primary]"
+            )}
+            style={{
+              textAlignVertical: 'center',
+              lineHeight: ms(16),
+            }}
             onFocus={handleFocus}
             onBlur={handleBlur}
             testID="label-input"
+            editable={editable}
             {...props}
           />
 
-          {secureTextEntry ? (
+          {secureTextEntry && editable ? (
             <Pressable
               onPress={togglePasswordVisibility}
               hitSlop={20}
-              className="me-3"
-              testID="toggle-visibility" // Added testID for password toggle
+              testID="toggle-visibility"
             >
               {rightComponent ? (
                 rightComponent({
@@ -150,6 +163,16 @@ const LabelInput = forwardRef<TextInput, LabelInputProps>(
               )}
             </Pressable>
           ) : null}
+          
+          {!editable && (
+            <View className="me-3">
+              <AppIcon
+                name="lock"
+                size={20}
+                color={colors["--text-muted"]}
+              />
+            </View>
+          )}
         </Pressable>
         {error && (
           <AppText

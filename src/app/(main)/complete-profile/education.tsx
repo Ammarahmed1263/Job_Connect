@@ -1,24 +1,20 @@
+import { ProfileSectionLayout } from "@components/complete-profile";
 import {
-  AppButton,
   AppIcon,
   ControlledLabelInput,
-  NavigationHeader,
 } from "@components/ui";
-import { vs } from "@constants/metrics";
 import { useTheme } from "@contexts/ThemeContext";
 import useProfileSectionForm from "@hooks/useProfileSectionForm";
-import { useSafeArea } from "@hooks/useSafeArea";
 import { useUpdateSeekerProfile } from "@queries/userQueries";
 import { EducationForm } from "@type/profileFormTypes";
 import { useRouter } from "expo-router";
 import React from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
+import profileRules from "schemas/profile";
 
 const Education = () => {
   const { control, handleSubmit, clearErrors } = useProfileSectionForm("education");
   const { mutateAsync } = useUpdateSeekerProfile();
   const { colors } = useTheme();
-  const { bottom } = useSafeArea();
   const router = useRouter();
 
   const updateUserEducation = async (data: EducationForm) => {
@@ -30,18 +26,18 @@ const Education = () => {
   };
 
   return (
-    <View className="flex-1">
-      <NavigationHeader title="Education" />
-      <ScrollView
-        contentContainerClassName="gap-4 px-4 py-4"
-        className="flex-1"
-        keyboardShouldPersistTaps="handled"
-      >
+    <ProfileSectionLayout
+      title="Education"
+      onSave={handleSubmit(updateUserEducation)}
+      contentContainerClassName="gap-4 px-4 py-4"
+    >
         <ControlledLabelInput
           title="Education"
           control={control}
           clearErrors={clearErrors}
           name="education"
+          rules={profileRules.education}
+          placeholder="Highest level of education"
           leftComponent={() => (
             <AppIcon
               name="academic-cap"
@@ -55,6 +51,8 @@ const Education = () => {
           control={control}
           clearErrors={clearErrors}
           name="degree"
+          rules={profileRules.degree}
+          placeholder="e.g. Bachelor of Science"
           leftComponent={() => (
             <AppIcon
               name="diploma"
@@ -68,6 +66,8 @@ const Education = () => {
           control={control}
           clearErrors={clearErrors}
           name="university"
+          rules={profileRules.university}
+          placeholder="e.g. Harvard University"
           leftComponent={() => (
             <AppIcon
               name="city"
@@ -81,6 +81,8 @@ const Education = () => {
           control={control}
           clearErrors={clearErrors}
           name="collegeName"
+          rules={profileRules.collegeName}
+          placeholder="e.g. College of Engineering"
           leftComponent={() => (
             <AppIcon
               name="city"
@@ -89,37 +91,9 @@ const Education = () => {
             />
           )}
         />
-      </ScrollView>
-
-      <View
-        className="absolute px-4 bg-[--card-color] shadow-lg"
-        style={{
-          ...styles.saveButton,
-          paddingBottom: bottom + vs(20),
-        }}
-      >
-        <AppButton
-          title="Save"
-          onPress={handleSubmit(updateUserEducation)}
-          className="py-2"
-          wrapperClassName="!rounded-full mx-2"
-        />
-      </View>
-    </View>
+    </ProfileSectionLayout>
   );
 };
 
 export default Education;
 
-const styles = StyleSheet.create({
-  saveButton: {
-    bottom: 0,
-    left: 0,
-    right: 0,
-    paddingTop: vs(14),
-    borderRadius: vs(14),
-  },
-  placeholder: {
-    height: vs(80),
-  },
-});

@@ -1,22 +1,19 @@
+import { ProfileSectionLayout } from "@components/complete-profile";
 import {
-  AppButton,
   AppIcon,
   ControlledLabelInput,
-  NavigationHeader,
 } from "@components/ui";
 import { vs } from "@constants/metrics";
 import { useTheme } from "@contexts/ThemeContext";
 import useProfileSectionForm from "@hooks/useProfileSectionForm";
-import { useSafeArea } from "@hooks/useSafeArea";
 import { useUpdateSeekerProfile } from "@queries/userQueries";
 import { AboutForm } from "@type/profileFormTypes";
 import { useRouter } from "expo-router";
 import React from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
+import profileRules from "schemas/profile";
 
 const AboutMe = () => {
   const { control, handleSubmit, formState, clearErrors } = useProfileSectionForm("about");
-  const { bottom } = useSafeArea();
   const { mutateAsync } = useUpdateSeekerProfile();
   const router = useRouter();
   const { colors } = useTheme();
@@ -32,22 +29,17 @@ const AboutMe = () => {
   };
 
   return (
-    <View className="flex-1">
-      <NavigationHeader title="About Me" />
-
-      <ScrollView
-        contentContainerClassName="gap-4 px-2 pt-4"
-        contentContainerStyle={{
-          paddingBottom: bottom + vs(112),
-        }}
-        keyboardShouldPersistTaps="handled"
-        showsVerticalScrollIndicator={false}
-      >
+    <ProfileSectionLayout 
+      title="About Me"
+      onSave={handleSubmit(updateUserAbout)}
+      contentContainerClassName="gap-4 px-2 pt-4"
+    >
         <ControlledLabelInput
           title="Bio"
           control={control}
           clearErrors={clearErrors}
           name="bio"
+          rules={profileRules.bio}
           multiline={true}
           numberOfLines={3}
           pressableClassName="!items-start"
@@ -94,6 +86,7 @@ const AboutMe = () => {
           control={control}
           clearErrors={clearErrors}
           name="coverLetter"
+          rules={profileRules.coverLetter}
           multiline={true}
           numberOfLines={6}
           pressableClassName="!items-start"
@@ -117,6 +110,7 @@ const AboutMe = () => {
           control={control}
           clearErrors={clearErrors}
           name="dateOfBirth"
+          rules={profileRules.dateOfBirth}
           leftComponent={() => (
             <AppIcon
               name="calendar"
@@ -152,37 +146,8 @@ const AboutMe = () => {
             <AppIcon name="family" size={34} color={colors["--text-primary"]} />
           )}
         />
-      </ScrollView>
-
-      <View
-        className="absolute px-4 bg-[--card-color] shadow-lg"
-        style={{
-          ...styles.saveButton,
-          paddingBottom: bottom + vs(20),
-        }}
-      >
-        <AppButton
-          title="Save"
-          onPress={handleSubmit(updateUserAbout)}
-          className="py-2"
-          wrapperClassName="!rounded-full mx-2"
-        />
-      </View>
-    </View>
+    </ProfileSectionLayout>
   );
 };
 
 export default AboutMe;
-
-const styles = StyleSheet.create({
-  saveButton: {
-    bottom: 0,
-    left: 0,
-    right: 0,
-    paddingTop: vs(14),
-    borderRadius: vs(14),
-  },
-  placeholder: {
-    height: vs(60),
-  },
-});

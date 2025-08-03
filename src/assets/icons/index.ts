@@ -49,3 +49,4 @@ export {default as ring} from './ring.svg';
 export {default as phone} from './phone.svg';
 export {default as user_circle} from './user-circle.svg';
 export {default as pen_round} from './pen-round.svg';
+export {default as lock} from './lock.svg';
