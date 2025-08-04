@@ -22,6 +22,13 @@ const useAuthStore = create<authStore>()(
         try {
           const data = await authService.login(credentials);
           console.log("user here: ", data);
+
+          if (credentials.rememberMe) {
+            await AsyncStorage.setItem("saved_email", data.email);
+          } else {
+            await AsyncStorage.removeItem("saved_email");
+          }          
+
           await secureStorage.setToken("auth_token", data.token);
           await secureStorage.setToken("refresh_token", data.refreshToken);
 

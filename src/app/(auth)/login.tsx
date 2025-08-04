@@ -6,35 +6,33 @@ import {
   AppText,
   ControlledLabelInput,
 } from "@components/ui";
+import { ControlledCheckBox } from "@components/ui";
 import { hs, vs } from "@constants/metrics";
 import { useTheme } from "@contexts/ThemeContext";
 import Icon from "@expo/vector-icons/Ionicons";
 import { useSafeArea } from "@hooks/useSafeArea";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import useAuthStore from "@store/authStore";
 import { LoginFormData } from "@type/authTypes";
 import { focusRef } from "@utils";
 import { useRouter } from "expo-router";
 import { useSearchParams } from "expo-router/build/hooks";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
-import {
-  Keyboard,
-  ScrollView,
-  TextInput,
-  View
-} from "react-native";
+import { Keyboard, ScrollView, TextInput, View } from "react-native";
 import authRules from "schemas/auth";
 
 const Login = () => {
   const router = useRouter();
   const { colors } = useTheme();
   const passwordRef = useRef<TextInput | null>(null);
-  const { control, handleSubmit, clearErrors } = useForm<LoginFormData>({
+  const { control, handleSubmit, clearErrors, setValue } = useForm<LoginFormData>({
     mode: "onBlur",
     reValidateMode: "onChange",
     defaultValues: {
       email: "",
       password: "",
+      rememberMe: false
     },
   });
   const { top, bottom } = useSafeArea();
@@ -53,6 +51,16 @@ const Login = () => {
       console.log("final login error: ", (error as Error).message);
     }
   };
+
+  useEffect(() => {
+    (async () => {
+      const savedEmail = await AsyncStorage.getItem("saved_email");
+      if (savedEmail) {
+        setValue("email", savedEmail);
+        setValue("rememberMe", true);
+      }
+    })();
+  }, []);
 
   return (
     <ScrollView
@@ -75,61 +83,83 @@ const Login = () => {
             Welcome back! We have missed you!
           </AppText>
 
-          <ControlledLabelInput
-            control={control}
-            clearErrors={clearErrors}
-            name="email"
-            title="Email"
-            placeholder="example@domain.com"
-            inputMode="email"
-            rules={authRules.email}
-            autoComplete="email"
-            autoCapitalize="none"
-            autoCorrect={false}
-            autoFocus={true}
-            submitBehavior="submit"
-            onSubmitEditing={() => focusRef(passwordRef)}
-            leftComponent={({ focused }) => (
-              <Icon
-                name="mail-outline"
-                size={24}
-                color={
-                  focused ? colors["--accent-color"] : colors["--text-primary"]
-                }
-              />
-            )}
-          />
+          <View className="gap-4">
+            <ControlledLabelInput
+              control={control}
+              clearErrors={clearErrors}
+              name="email"
+              title="Email"
+              placeholder="example@domain.com"
+              inputMode="email"
+              rules={authRules.email}
+              autoComplete="email"
+              autoCapitalize="none"
+              autoCorrect={false}
+              autoFocus={true}
+              submitBehavior="submit"
+              onSubmitEditing={() => focusRef(passwordRef)}
+              leftComponent={({ focused }) => (
+                <Icon
+                  name="mail-outline"
+                  size={24}
+                  color={
+                    focused
+                      ? colors["--accent-color"]
+                      : colors["--text-primary"]
+                  }
+                />
+              )}
+            />
 
-          <ControlledLabelInput
-            ref={passwordRef}
-            control={control}
-            clearErrors={clearErrors}
-            name="password"
-            title="Password"
-            placeholder="password"
-            rules={authRules.password}
-            autoComplete="password"
-            returnKeyType="done"
-            rightComponent={({ passwordVisible, focused }) => (
-              <AppIcon
-                name={passwordVisible ? "eye-outline" : "eye-closed"}
-                size={22}
-                color={
-                  focused ? colors["--accent-color"] : colors["--text-primary"]
-                }
-              />
-            )}
-            leftComponent={({ focused }) => (
-              <Icon
-                name="lock-closed-outline"
-                size={22}
-                color={
-                  focused ? colors["--accent-color"] : colors["--text-primary"]
-                }
-              />
-            )}
-            secureTextEntry
-          />
+            <ControlledLabelInput
+              ref={passwordRef}
+              control={control}
+              clearErrors={clearErrors}
+              name="password"
+              title="Password"
+              placeholder="password"
+              rules={authRules.password}
+              autoComplete="password"
+              returnKeyType="done"
+              rightComponent={({ passwordVisible, focused }) => (
+                <AppIcon
+                  name={passwordVisible ? "eye-outline" : "eye-closed"}
+                  size={22}
+                  color={
+                    focused
+                      ? colors["--accent-color"]
+                      : colors["--text-primary"]
+                  }
+                />
+              )}
+              leftComponent={({ focused }) => (
+                <Icon
+                  name="lock-closed-outline"
+                  size={22}
+                  color={
+                    focused
+                      ? colors["--accent-color"]
+                      : colors["--text-primary"]
+                  }
+                />
+              )}
+              secureTextEntry
+            />
+          </View>
+          <View className="flex-row justify-between items-center mt-3">
+            <View className="flex-row gap-2 items-center">
+              <ControlledCheckBox control={control} name="rememberMe" />
+              <AppText variant="light">Remember Me</AppText>
+            </View>
+
+            <AppButton
+              textVariant="light"
+              title="Forgot Password?"
+              textClassName="!text-[--text-secondary]"
+              // onPress={() => router.push("/forgot-password")}
+              flat
+            />
+          </View>
 
           {error && (
             <AppText
@@ -150,17 +180,13 @@ const Login = () => {
             {isLoading && (
               <View className="items-center justify-center">
                 <AppText className="opacity-0">Login</AppText>
-                <AppLoading size={100} containerClassName="absolute"/>
+                <AppLoading
+                  source={require("@assets/lottie/spinner.json")}
+                  containerClassName="absolute"
+                />
               </View>
             )}
           </AppButton>
-          <AppButton
-            textVariant="light"
-            title="forgot password?"
-            wrapperClassName="ms-4 mt-2 self-center"
-            onPress={() => console.log("i was clicked!")}
-            flat
-          />
         </View>
         <View className="h-[1px] bg-[--text-muted] my-6 mx-4" />
         <View className="flex-row items-center justify-center mb-8">

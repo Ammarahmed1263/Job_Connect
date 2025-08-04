@@ -50,7 +50,8 @@ import {
   user_id,
   user_circle,
   pen_round,
-  lock
+  lock,
+  check
 } from "@assets/icons";
 import React, { FC } from "react";
 import { SvgProps } from "react-native-svg";
@@ -108,7 +109,8 @@ const icons = {
   phone: phone,
   "user-circle": user_circle,
   "pen-round": pen_round,
-  lock: lock
+  lock: lock,
+  check: check
 } as const;
 
 export type IconName = keyof typeof icons;

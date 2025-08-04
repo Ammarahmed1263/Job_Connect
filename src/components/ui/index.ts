@@ -9,3 +9,5 @@ export {default as Pagination} from './Pagination';
 export {default as NavigationHeader} from './NavigationHeader';
 export {default as ControlledPhoneInput} from './ControlledPhoneInput';
 export {default as AppLoading} from './AppLoading';
+export {default as ReadMoreText} from './ReadMoreText';
+export {default as ControlledCheckBox} from './ControlledCheckBox';
