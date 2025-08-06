@@ -82,6 +82,8 @@ const CustomTabBar: React.FC<BottomTabBarProps> = ({
       () => {
         runOnUI(() => {
           'worklet';
+          activeTabIndex.value = state.index;
+          indicatorPosition.value = state.index * tabWidth + tabWidth / 2;
           animateTab(state.index);
         })();
         return false;
@@ -89,7 +91,7 @@ const CustomTabBar: React.FC<BottomTabBarProps> = ({
     );
 
     return () => subscription.remove();
-  }, [state.index]);
+  }, [state.index, tabWidth, animateTab]);
 
   const handleTabPress = useCallback(
     (index: number) => () => {
@@ -144,7 +146,7 @@ const CustomTabBar: React.FC<BottomTabBarProps> = ({
           transform: [
             {
               translateY: withSpring(
-                isFocused ? WHOLE_DEPTH - 5 : WHOLE_DEPTH,
+                isFocused ? WHOLE_DEPTH - 2 : WHOLE_DEPTH + 2,
                 {
                   damping: 5,
                   stiffness: 200,
