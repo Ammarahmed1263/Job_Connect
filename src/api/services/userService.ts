@@ -18,7 +18,6 @@ const userService = {
   fetchAppliedJobs: async () => {
     try {
       const { data } = await apiClient.get(userBase.getAppliedJobs);
-      console.log("get applied jobs called: ", data);
       return data;
     } catch (error) {
       throw error;

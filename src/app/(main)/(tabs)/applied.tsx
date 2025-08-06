@@ -1,5 +1,5 @@
 import JobCard from "@components/jobs/JobCard";
-import { AppText, NavigationHeader } from "@components/ui";
+import { AppLoading, AppText, NavigationHeader } from "@components/ui";
 import { vs } from "@constants/metrics";
 import { TAB_HEIGHT } from "@constants/tabBar";
 import { useTheme } from "@contexts/ThemeContext";
@@ -10,7 +10,7 @@ import React from "react";
 import { FlatList, View } from "react-native";
 
 const Applied = () => {
-  const { isAuthenticated } = useAuthStore((state) => state);
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const { data, isPending } = useAppliedJobs(isAuthenticated);
   const { colors } = useTheme();
 
@@ -21,23 +21,16 @@ const Applied = () => {
       </View>
     );
 
-  if (isPending)
-    return (
-      <View className="flex-1 items-center justify-center">
-        <AppText>loading...</AppText>
-      </View>
-    );
+  if (isPending) return <AppLoading size={120} containerStyle={{ flex: 1 }} />;
 
   return (
     <View className="flex-1">
       <NavigationHeader showBackButton={false} title="Applied Jobs" />
       <FlatList
-        data={data?.data}
+        data={data?.data.reverse()}
         keyExtractor={(item, index) => item.id.toString() + index.toString()}
         renderItem={({ item }) => {
-          const color = statusColorSelector(
-            item?.applicants[0]?.status
-          );
+          const color = statusColorSelector(item?.applicants[0]?.status);
           return (
             <JobCard
               item={item}
@@ -45,10 +38,7 @@ const Applied = () => {
                 <View
                   className={"py-1 px-2 rounded-lg"}
                   style={{
-                    backgroundColor: applyOpacity(
-                      colors[color],
-                      0.2
-                    ),
+                    backgroundColor: applyOpacity(colors[color], 0.2),
                   }}
                 >
                   <AppText
