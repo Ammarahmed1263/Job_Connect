@@ -19,3 +19,4 @@ export { default as shareResume } from './shareResume';
 export { default as handleDownloadResume } from './handleDownloadResume';
 export { default as handleAppRedirection } from './handleAppRedirection';
 export { default as getNotificationCategory } from './getNotificationCategory';
+export { default as compareResumesNames } from './compareResumesNames';

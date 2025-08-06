@@ -11,18 +11,11 @@ import {
   BottomSheetModal,
   BottomSheetScrollView,
 } from "@gorhom/bottom-sheet";
+import { useJobApplication } from "@hooks/useJobApplication";
 import { useSafeArea } from "@hooks/useSafeArea";
-import { useApplyForJobById } from "@queries/jobQueries";
-import { useFetchResumes, useUploadResume } from "@queries/resumeQueries";
-import { useQueryClient } from "@tanstack/react-query";
-import { JobApplicationParams } from "@type/jobTypes";
-import { Resume } from "@type/userTypes";
-import { handlePickDocument } from "@utils";
-import * as DocumentPicker from "expo-document-picker";
-import { useRouter } from "expo-router";
-import React, { forwardRef, useCallback, useEffect, useMemo } from "react";
-import { useForm } from "react-hook-form";
-import { Alert, TouchableOpacity, View } from "react-native";
+import { useFetchResumes } from "@queries/resumeQueries";
+import React, { forwardRef, useCallback, useMemo } from "react";
+import { TouchableOpacity, View } from "react-native";
 import profileRules from "schemas/profile";
 
 interface ApplicationModalProps {
@@ -30,43 +23,21 @@ interface ApplicationModalProps {
   jobTitle: string;
 }
 
-interface ApplicationFormData {
-  coverLetter: string;
-  resumeId: number | null;
-  newResume: DocumentPicker.DocumentPickerAsset | null;
-}
-
 const ApplicationModal = forwardRef<BottomSheetModal, ApplicationModalProps>(
   ({ jobId, jobTitle }, ref) => {
     const { bottom } = useSafeArea();
     const { colors } = useTheme();
-    const router = useRouter();
-    const queryClient = useQueryClient();
     const { data: resumes, isLoading: isResumesLoading } = useFetchResumes();
-    const { mutateAsync: applyForJobById, isPending: isApplying } =
-      useApplyForJobById();
-    const { mutateAsync: uploadResume, isPending: isUploading } =
-      useUploadResume();
-
     const {
-      control,
-      handleSubmit,
-      formState: { isValid },
-      clearErrors,
-      reset,
-      setValue,
-      watch,
-    } = useForm<ApplicationFormData>({
-      defaultValues: {
-        coverLetter: "",
-        resumeId: null,
-        newResume: null,
-      },
-      mode: "onChange",
-    });
-
-    const selectedResumeId = watch("resumeId");
-    const selectedNewResume = watch("newResume");
+      isUploading,
+      isApplying,
+      formMethods,
+      handleSelectResume,
+      handleUploadNewResume,
+      onSubmit,
+    } = useJobApplication(jobId, ref);
+    const selectedResumeId = formMethods.watch("resumeId");
+    const selectedNewResume = formMethods.watch("newResume");
 
     const snapPoints = useMemo(() => ["85%", "90%"], []);
 
@@ -82,93 +53,6 @@ const ApplicationModal = forwardRef<BottomSheetModal, ApplicationModalProps>(
       ),
       []
     );
-
-    useEffect(() => {
-      reset();
-    }, [reset, jobId]);
-
-    const handleSelectResume = (resume: Resume) => {
-      setValue("resumeId", resume.id, { shouldValidate: true });
-      setValue("newResume", null, { shouldValidate: true });
-    };
-
-    const handleUploadNewResume = async () => {
-      await handlePickDocument(async (asset) => {
-        setValue("newResume", asset, { shouldValidate: true });
-        setValue("resumeId", null, { shouldValidate: true });
-      });
-    };
-
-    const onSubmit = async (data: ApplicationFormData) => {
-      if (!data.resumeId && !data.newResume) {
-        Alert.alert("Error", "Please select or upload a resume");
-        return;
-      }
-
-      try {
-        let resumeId = data.resumeId;
-
-        if (data.newResume && !resumeId) {
-          try {
-            await uploadResume(data.newResume);
-            console.log("Resume uploaded successfully");
-            
-            
-            const updatedResumes = queryClient.getQueryData(["resumes"]);
-            console.log('updated resumes: ', updatedResumes, data.newResume?.name)
-            
-            if (updatedResumes && Array.isArray(updatedResumes)) {
-              const newlyUploadedResume = updatedResumes.find(
-                (resume) => resume.resumeName === data.newResume?.name
-              );
-              
-              if (newlyUploadedResume) {
-                resumeId = newlyUploadedResume.id;
-                setValue("resumeId", resumeId, { shouldValidate: true });
-                setValue("newResume", null, { shouldValidate: true });
-              } else {
-                Alert.alert(
-                  "Error",
-                  "Could not find the uploaded resume. Please try again."
-                );
-                return;
-              }
-            } else {
-              Alert.alert(
-                "Error",
-                "Failed to retrieve resumes. Please try again."
-              );
-              return;
-            }
-          } catch (uploadError) {
-            setValue("newResume", null);
-            console.error("Error uploading resume:", uploadError);
-            Alert.alert("Error", "Failed to upload resume. Please try again.");
-            return;
-          }
-        }
-
-        const applicationData: JobApplicationParams = {
-          jobId,
-          resumeId: resumeId || 0,
-          CoverLetter: data.coverLetter,
-        };
-
-        await applyForJobById(applicationData);
-        Alert.alert(
-          "Success",
-          "Your application has been submitted successfully"
-        );
-
-        if (ref && typeof ref !== "function") {
-          ref.current?.dismiss();
-        }
-        router.push("/applied");
-      } catch (error) {
-        console.error("Error applying for job:", error);
-        Alert.alert("Error", "Failed to submit application. Please try again.");
-      }
-    };
 
     return (
       <BottomSheetModal
@@ -275,8 +159,8 @@ const ApplicationModal = forwardRef<BottomSheetModal, ApplicationModalProps>(
             <View className="mb-6">
               <ControlledLabelInput
                 title="Cover Letter"
-                control={control}
-                clearErrors={clearErrors}
+                control={formMethods.control}
+                clearErrors={formMethods.clearErrors}
                 name="coverLetter"
                 rules={profileRules.coverLetter}
                 multiline
@@ -305,11 +189,11 @@ const ApplicationModal = forwardRef<BottomSheetModal, ApplicationModalProps>(
                   ? "Submitting..."
                   : "Submit Application"
               }
-              onPress={handleSubmit(onSubmit)}
+              onPress={formMethods.handleSubmit(onSubmit)}
               disabled={
                 isUploading ||
                 isApplying ||
-                !isValid ||
+                !formMethods.formState.isValid ||
                 (!selectedResumeId && !selectedNewResume)
               }
               wrapperClassName="w-full !rounded-full"
