@@ -164,14 +164,14 @@ const Login = () => {
           {error && (
             <AppText
               variant="light"
-              className="py-4 text-center color-[--error-color]"
+              className="mt-8 text-center color-[--error-color]"
             >
               {error}
             </AppText>
           )}
           <AppButton
             title="Login"
-            wrapperClassName="mt-12 mb-4"
+            wrapperClassName="mt-8 mb-4"
             onPress={handleSubmit(onSubmit, (e) => {
               console.log("Form has errors - aborting submission", e);
             })}

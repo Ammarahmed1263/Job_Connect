@@ -29,7 +29,7 @@ export const useUploadResume = () => {
       });
     },
     onError: (error) => {
-      console.error("Error uploading resume:", (error as AxiosError)?.response?.data);
+      console.error("Error uploading resume:", error, (error as AxiosError)?.response?.data);
     },
   });
 };

@@ -9,7 +9,6 @@ const userService = {
   fetchSavedJobs: async () => {
     try {
       const { data } = await apiClient.get(userBase.getSavedJobs);
-      console.log("get saved jobs responded: ", JSON.stringify(data, null, 2));
       return data;
     } catch (error) {
       throw error;

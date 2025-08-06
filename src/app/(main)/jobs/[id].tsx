@@ -127,7 +127,6 @@ const JobDetails = () => {
       </NavigationHeader>
 
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
-        {/* Company Info */}
         <View className="items-center py-4">
           <View className="w-20 aspect-square rounded-full bg-[--accent-color] items-center justify-center mb-4">
             <AppText
@@ -153,7 +152,6 @@ const JobDetails = () => {
           </View>
         </View>
 
-        {/* Job Details Grid */}
         <View className="flex-row flex-wrap justify-between px-4 pt-2 gap-4 mb-4">
           <DetailsBlock
             title={`Salary (${job?.salaryType})`}

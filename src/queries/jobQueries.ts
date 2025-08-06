@@ -123,7 +123,6 @@ export const useApplyForJobById = () => {
     mutationFn: (applicationData: JobApplicationParams) =>
       jobService.applyForJobById(applicationData),
     onSuccess: () => {
-      // Invalidate applied jobs query to refresh the list
       queryClient.invalidateQueries({ queryKey: ["getAppliedJobs"] });
     },
     onError: (error) => {
