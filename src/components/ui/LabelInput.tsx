@@ -97,13 +97,15 @@ const LabelInput = forwardRef<TextInput, LabelInputProps>(
           onPress={() => editable && inputRef?.current?.focus()}
           hitSlop={20}
           className={clsx(
-            "rounded-xl flex-row items-center justify-between border-2 min-h-12 overflow-hidden px-3",
+            "rounded-xl flex-row items-center justify-between border-2 min-h-12 overflow-hidden",
             !editable ? "!bg-[--text-muted]/20" : "bg-[--card-color]",
             error
               ? "border-[--error-color]"
               : isFocused
               ? "border-[--accent-color]"
               : "border-[--border-color]",
+            leftComponent ? 'ps-3' : 'ps-2',
+            rightComponent ? 'pe-3' : 'pe-2',
             pressableClassName
           )}
           testID="pressable-container"
@@ -125,13 +127,14 @@ const LabelInput = forwardRef<TextInput, LabelInputProps>(
             cursorColor={colors["--accent-color"]}
             secureTextEntry={secureTextEntry && !isPasswordVisible}
             className={clsx(
-              "flex-1 min-h-12 font-montserrat pe-4 ps-2 py-0",
-              !editable ? "text-[--text-muted]" : "text-[--text-primary]"
+              "flex-1 min-h-12 font-montserrat pe-2 py-0",
+              !editable ? "text-[--text-muted]" : "text-[--text-primary]",
+              leftComponent ? 'ps-2' : 'ps-0'
             )}
-            style={{
+            style={[{
               textAlignVertical: 'center',
               lineHeight: ms(16),
-            }}
+            }, props?.style]}
             onFocus={handleFocus}
             onBlur={handleBlur}
             testID="label-input"
