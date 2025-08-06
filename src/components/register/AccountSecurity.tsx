@@ -10,7 +10,13 @@ import Icon from "@expo/vector-icons/Ionicons";
 import useAuthStore from "@store/authStore";
 import { RegisterFormData } from "@type/authTypes";
 import { focusRef } from "@utils";
-import React, { BaseSyntheticEvent, Dispatch, FC, SetStateAction, useRef } from "react";
+import React, {
+  BaseSyntheticEvent,
+  Dispatch,
+  FC,
+  SetStateAction,
+  useRef,
+} from "react";
 import { useFormContext } from "react-hook-form";
 import { TextInput, View } from "react-native";
 import authRules from "schemas/auth";
@@ -22,7 +28,8 @@ interface Props {
 
 const AccountSecurity: FC<Props> = ({ setStep, onSubmit }) => {
   const { colors } = useTheme();
-  const { control, getValues, clearErrors } = useFormContext<RegisterFormData>();
+  const { control, getValues, clearErrors } =
+    useFormContext<RegisterFormData>();
   const { isLoading, error } = useAuthStore();
   const confirmPasswordRef = useRef<TextInput>(null);
   console.log("account info rendered");
@@ -55,7 +62,7 @@ const AccountSecurity: FC<Props> = ({ setStep, onSubmit }) => {
             }
           />
         )}
-        rightComponent={({passwordVisible, focused}) => (
+        rightComponent={({ passwordVisible, focused }) => (
           <AppIcon
             name={passwordVisible ? "eye-outline" : "eye-closed"}
             size={22}
@@ -86,7 +93,7 @@ const AccountSecurity: FC<Props> = ({ setStep, onSubmit }) => {
             }
           />
         )}
-        rightComponent={({passwordVisible, focused}) => (
+        rightComponent={({ passwordVisible, focused }) => (
           <AppIcon
             name={passwordVisible ? "eye-outline" : "eye-closed"}
             size={22}
@@ -112,7 +119,10 @@ const AccountSecurity: FC<Props> = ({ setStep, onSubmit }) => {
           {isLoading && (
             <View className="items-center justify-center">
               <AppText className="opacity-0">Register</AppText>
-              <AppLoading containerClassName="absolute"/>
+              <AppLoading
+                source={require("@assets/lottie/spinner.json")}
+                containerClassName="absolute"
+              />
             </View>
           )}
         </AppButton>
