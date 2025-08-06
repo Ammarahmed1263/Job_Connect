@@ -1,46 +1,47 @@
 import BriefCaseAnimation from "@assets/lottie/brief-case.json";
+import ApplicationModal from "@components/jobs/ApplicationModal";
 import DetailsBlock from "@components/jobs/DetailsBlock";
 import AboutTab from "@components/jobs/detailsTabs/AboutTab";
 import CompanyTab from "@components/jobs/detailsTabs/CompanyTab";
-import ReviewTab from "@components/jobs/detailsTabs/ReviewTab";
 import { AppButton, AppIcon, AppText, NavigationHeader } from "@components/ui";
-import { vs } from "@constants/metrics";
 import { useTheme } from "@contexts/ThemeContext";
-import { useSafeArea } from "@hooks/useSafeArea";
+import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { useWithAuth } from "@hooks/useWithAuth";
 import { useJobById, useSaveJob, useUnsaveJob } from "@queries/jobQueries";
-import { useSavedJobs } from "@queries/userQueries";
+import { useAppliedJobs, useSavedJobs } from "@queries/userQueries";
 import { useRecentJobsStore } from "@store/recentJobsStore";
 import { JobDetails as JobDetailsType } from "@type/jobTypes";
 import { formatSalary, getSeniorityLevel } from "@utils";
 import { useLocalSearchParams } from "expo-router";
 import LottieView from "lottie-react-native";
-import { useEffect, useState } from "react";
-import { ScrollView, TouchableOpacity, View, StyleSheet } from "react-native";
+import { useEffect, useRef, useState } from "react";
+import { ScrollView, TouchableOpacity, View } from "react-native";
 
 const JobDetails = () => {
   const { id } = useLocalSearchParams();
   const { colors } = useTheme();
-  const { bottom } = useSafeArea();
   const [activeTab, setActiveTab] = useState<"about" | "company" | "review">(
     "about"
   );
   const { data: job, isPending, isError } = useJobById(Number(id));
   const { data: savedJobs } = useSavedJobs();
+  const { data: appliedJobs } = useAppliedJobs();
   const { mutate: unsaveJob } = useUnsaveJob();
   const { mutate: saveJob } = useSaveJob();
   const addRecentJob = useRecentJobsStore((state) => state.addRecentJob);
   const { requireAuth } = useWithAuth();
-  console.log("saved jobs: ", savedJobs?.data);
+  const applicationModalRef = useRef<BottomSheetModal>(null);
+
   const isSaved =
     job &&
     savedJobs?.data?.some((savedJob: JobDetailsType) => savedJob.id === job.id);
-
-  console.log("job details: ", job);
+    
+  const hasApplied = 
+    job && 
+    appliedJobs?.data?.some((appliedJob: JobDetailsType) => appliedJob.id === job.id);
 
   useEffect(() => {
     if (job) {
-      console.log("added to recent successfully");
       addRecentJob({
         id: job.id,
         title: job.title,
@@ -67,6 +68,11 @@ const JobDetails = () => {
     } catch (error) {
       console.log("Error toggling job save:", error);
     }
+  };
+
+  const handleApply = () => {
+    if (requireAuth()) return;
+    applicationModalRef.current?.present();
   };
 
   if (isPending) {
@@ -182,7 +188,7 @@ const JobDetails = () => {
             value={getSeniorityLevel(job?.experience) ?? "N/A"}
           />
         </View>
-        {/* Tabs */}
+
         <View className="flex-row justify-center">
           {["about", "company"].map((tab) => (
             <TouchableOpacity
@@ -206,47 +212,29 @@ const JobDetails = () => {
           ))}
         </View>
 
-        {/* Tab Content */}
         {activeTab === "about" && <AboutTab job={job} />}
         {activeTab === "company" && <CompanyTab employer={job?.employer} />}
-        {activeTab === "review" && <ReviewTab />}
       </ScrollView>
 
-      {/* Apply Button */}
       <View className="pb-8 pt-4 p-4 bg-[--card-color] rounded-t-xl">
         <AppButton
-          title="Apply for Job"
+          title={hasApplied ? "Applied" : "Apply for Job"}
           variant="primary"
-          className="bg-[--accent-color]"
+          className={`${hasApplied ? "bg-[--text-muted]" : "bg-[--accent-color]"}`}
+          onPress={handleApply}
+          disabled={hasApplied}
+          disableShadow={hasApplied}
         />
       </View>
-      <View
-        className="absolute px-4 bg-[--card-color] shadow-lg"
-        style={{
-          ...styles.saveButton,
-          paddingBottom: bottom + vs(20),
-        }}
-      >
-        <AppButton
-          title="Save"
-          // onPress={handleSubmit(updateUserAbout)}
-          className="py-2"
-          wrapperClassName="!rounded-full mx-2"
-        />
-      </View>
+      
+      <ApplicationModal 
+        ref={applicationModalRef} 
+        jobId={Number(id)} 
+        jobTitle={job?.title || ""}
+      />
     </View>
   );
 };
 
 export default JobDetails;
-
-const styles = StyleSheet.create({
-  saveButton: {
-    bottom: 0,
-    left: 0,
-    right: 0,
-    paddingTop: vs(14),
-    borderRadius: vs(14),
-  },
-});
 

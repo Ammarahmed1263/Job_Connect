@@ -5,14 +5,12 @@ import {
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
-import { jobSummary } from "@type/jobTypes";
+import { JobApplicationParams, jobSummary } from "@type/jobTypes";
 
 export const useJobs = (size: number = 10, enabled: boolean = true) => {
   return useInfiniteQuery({
     queryKey: ["getAllJobs", size],
-    queryFn: async ({
-      pageParam,
-    }) => {
+    queryFn: async ({ pageParam }) => {
       console.log("page param: ", pageParam);
       const response = await jobService.fetchAllJobs(
         pageParam.page,
@@ -118,4 +116,18 @@ export const useUnsaveJob = () => {
   });
 };
 
-export const useApplyForJob = () => {};
+export const useApplyForJobById = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (applicationData: JobApplicationParams) =>
+      jobService.applyForJobById(applicationData),
+    onSuccess: () => {
+      // Invalidate applied jobs query to refresh the list
+      queryClient.invalidateQueries({ queryKey: ["getAppliedJobs"] });
+    },
+    onError: (error) => {
+      console.error("Error applying for job:", error);
+    },
+  });
+};

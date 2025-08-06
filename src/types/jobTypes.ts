@@ -43,3 +43,9 @@ export interface JobsApiResponse {
 }
 
 export type JobCategory = 'suggested' | 'recent' | 'trending' | 'bigCompanies' | 'remote' | 'fullTime';
+
+export interface JobApplicationParams {
+  jobId: number;
+  CoverLetter?: string;
+  resumeId: number;
+};

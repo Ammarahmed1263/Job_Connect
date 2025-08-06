@@ -2,6 +2,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import resumeService from "@api/services/resumeService";
 import { Resume } from "@type/userTypes";
 import * as DocumentPicker from "expo-document-picker";
+import { AxiosError } from "axios";
 
 export const useFetchResumes = () =>
   useQuery<Resume[]>({
@@ -28,7 +29,7 @@ export const useUploadResume = () => {
       });
     },
     onError: (error) => {
-      console.error("Error uploading resume:", error);
+      console.error("Error uploading resume:", (error as AxiosError)?.response?.data);
     },
   });
 };

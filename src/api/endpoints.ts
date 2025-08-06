@@ -1,3 +1,5 @@
+import { JobApplicationParams } from "@type/jobTypes";
+
 export const publicEndpoints = [
   "Accounts/Register/JobSeeker",
   "Accounts/Login",
@@ -40,8 +42,8 @@ export const endpoints = {
     getJobById: (jobId: number) => `JobSeeker/GetJobById/${jobId}`,
     saveJob: "JobSeeker/SaveJob",
     unsaveJob: "JobSeeker/UnsaveJob",
-    applyForJob: "JobSeeker/ApplyForJob",
-    applyForJobByResumeId: "JobSeeker/ApplyForJobByResumeId",
+    applyForJobByResumeId: ({jobId, resumeId}: Omit<JobApplicationParams, "CoverLetter">) =>
+      `JobSeeker/ApplyForJobByResumeId/${jobId}/${resumeId}`,
   },
   home: {
     getAllJobs: "Home/GetAllJobs",
@@ -55,6 +57,7 @@ export const endpoints = {
     sendPushToken: "Notification/push-token",
   },
   machine: {
-    getRecomendedJobs: "https://jobconnectrecommendationsystem.onrender.com/recommend"
-  }
+    getRecomendedJobs:
+      "https://jobconnectrecommendationsystem.onrender.com/recommend",
+  },
 };

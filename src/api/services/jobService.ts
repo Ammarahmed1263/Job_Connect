@@ -1,4 +1,8 @@
-import { JobDetails, JobsApiResponse } from "@type/jobTypes";
+import {
+  JobApplicationParams,
+  JobDetails,
+  JobsApiResponse,
+} from "@type/jobTypes";
 import apiClient from "api/apiClient";
 import { endpoints } from "api/endpoints";
 import { AxiosError } from "axios";
@@ -52,19 +56,30 @@ const jobService = {
       throw error;
     }
   },
-  applyForJob: async (jobDetails: any) => {
+  applyForJobById: async (jobDetails: JobApplicationParams) => {
     try {
-      const { data } = await apiClient.postForm(jobsBase.applyForJob, {
-        jobId: 1,
-        coverLetter: "",
-        resume: "",
-        selectedResumePath: "",
-      });
-      console.log(data);
+      const queryParams = {
+        CoverLetter: jobDetails.CoverLetter,
+      };
+
+      const PathParams = {
+        jobId: jobDetails.jobId,
+        resumeId: jobDetails.resumeId,
+      };
+
+      const { data } = await apiClient.post(
+        jobsBase.applyForJobByResumeId(PathParams),
+        null,
+        { params: queryParams }
+      );
+      console.log("Job application submitted successfully:", data);
       return data;
     } catch (error) {
-      console.log(error);
-      throw error;
+      console.error(
+        "Error applying for job:",
+        (error as AxiosError)?.response?.data
+      );
+      throw (error as AxiosError)?.response?.data;
     }
   },
 };
