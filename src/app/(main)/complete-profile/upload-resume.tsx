@@ -1,11 +1,10 @@
-import { AppButton, AppIcon, AppText, NavigationHeader } from "@components/ui";
-import React from "react";
-import { Alert, FlatList, TouchableOpacity, View } from "react-native";
-import { Resume } from "@type/userTypes";
-import { useFetchResumes, useUploadResume } from "@queries/resumeQueries";
-import { useTheme } from "@contexts/ThemeContext";
-import { handlePickDocument } from "@utils";
 import ResumeItem from "@components/complete-profile/ResumeItem";
+import { AppIcon, AppText, NavigationHeader } from "@components/ui";
+import { useTheme } from "@contexts/ThemeContext";
+import { useFetchResumes, useUploadResume } from "@queries/resumeQueries";
+import { handlePickDocument } from "@utils";
+import React from "react";
+import { FlatList, TouchableOpacity, View } from "react-native";
 
 const UploadResume = () => {
   const { data: resumes = [], isPending } = useFetchResumes();

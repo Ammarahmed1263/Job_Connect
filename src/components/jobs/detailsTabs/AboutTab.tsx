@@ -1,4 +1,4 @@
-import { AppText } from "@components/ui";
+import { AppText, ReadMoreText } from "@components/ui";
 import { View } from "react-native";
 import { JobDetails } from "@type/jobTypes";
 
@@ -10,10 +10,8 @@ const AboutTab = ({ job }: AboutTabProps) => {
   return (
     <View className="p-4">
       <AppText variant="medium" className="text-lg mb-2">About this Job</AppText>
-      <AppText className="color-[--text-muted] mb-4">
-        {job?.description}
-        <AppText className="color-[--accent-color]"> Read more</AppText>
-      </AppText>
+      <ReadMoreText text={job?.description ?? ""} limit={10} />
+
 
       <AppText variant="medium" className="text-lg mb-2">Job Description</AppText>
       <View className="gap-2">
