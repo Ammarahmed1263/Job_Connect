@@ -1,16 +1,19 @@
+import { fontFamily, fontVariants } from "@constants/Fonts";
 import { hs, ms, vs } from "@constants/metrics";
 import { useTheme } from "@contexts/ThemeContext";
 import React, { ReactElement, useState } from "react";
 import {
+  I18nManager,
   StyleProp,
   StyleSheet,
   TextStyle,
   View,
-  ViewStyle
+  ViewStyle,
 } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 import { DropdownProps } from "react-native-element-dropdown/lib/typescript/components/Dropdown/model";
 import AppText from "./AppText";
+import { applyOpacity } from "@utils";
 
 export interface BaseDropdownItem {
   label: string;
@@ -34,8 +37,16 @@ interface AppDropdownProps<T extends BaseDropdownItem>
   onChange: (item: T) => void;
   error?: string;
 
-  renderLeftIcon?: (isFocus: boolean) => ReactElement | null;
-  renderRightIcon?: (isFocus: boolean) => ReactElement | null;
+  renderLeftIcon?: ({
+    isFocused,
+  }: {
+    isFocused: boolean;
+  }) => ReactElement | null;
+  renderRightIcon?: ({
+    isFocused,
+  }: {
+    isFocused: boolean;
+  }) => ReactElement | null;
   renderItem?: (item: T, isSelected: boolean) => ReactElement;
 
   dropdownStyle?: StyleProp<ViewStyle>;
@@ -51,6 +62,8 @@ interface AppDropdownProps<T extends BaseDropdownItem>
   focusColor?: string;
   unfocusColor?: string;
 }
+
+const isRTL = I18nManager.isRTL;
 
 const AppDropdown = <T extends BaseDropdownItem>({
   title,
@@ -74,7 +87,7 @@ const AppDropdown = <T extends BaseDropdownItem>({
   unfocusColor,
   ...props
 }: AppDropdownProps<T>): ReactElement => {
-  const [isFocus, setIsFocus] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
   const { colors } = useTheme();
 
   const activeColor = focusColor || colors["--accent-color"];
@@ -86,12 +99,12 @@ const AppDropdown = <T extends BaseDropdownItem>({
       style={{
         padding: hs(12),
         backgroundColor: isSelected
-          ? colors["--accent-color"]
-          : colors["--bg-color"],
+          ? colors["--primary-50"]
+          : applyOpacity(colors["--border-color"], 0.5),
       }}
     >
       <AppText
-        variant="light"
+        variant="semiBold"
         className="!text-lg"
         style={{
           color: isSelected ? colors["--bg-color"] : inactiveColor,
@@ -103,33 +116,62 @@ const AppDropdown = <T extends BaseDropdownItem>({
   );
 
   return (
-    <View className="flex-1">
+    <>
       {(title || label) && (
-        <View className="flex-row justify-between items-center mb-1">
+        <View style={styles.labelRow}>
           <AppText style={{ color: error ? errorColor : inactiveColor }}>
             {title || label}
           </AppText>
           {error && (
-            <AppText className="text-sm" style={{ color: errorColor }}>
-              {error}
+            <AppText style={[styles.errorText, { color: errorColor }]}>
+              {" "}
+              {error}{" "}
             </AppText>
           )}
         </View>
       )}
       <Dropdown
+        inverted={isRTL}
+        data={data}
+        value={value}
+        searchPlaceholder={searchPlaceholder}
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
+        onChange={(item) => {
+          onChange(item);
+          setIsFocused(false);
+        }}
+        renderItem={(item, selected) =>
+          renderItem?.(item, selected ?? false) ??
+          defaultRenderItem(item, selected ?? false)
+        }
+        renderLeftIcon={(visible) =>
+          isRTL
+          ? renderRightIcon?.({ isFocused: visible ?? false }) ?? null
+          : renderLeftIcon?.({ isFocused: visible ?? false }) ?? null
+        }
+        renderRightIcon={(visible) =>
+          isRTL
+          ? renderLeftIcon?.({ isFocused: visible ?? false }) ?? null
+          : renderRightIcon?.({ isFocused: visible ?? false }) ?? null
+        }
+        search={!disableSearch}
+        maxHeight={300}
+        fontFamily={fontFamily.regular}
         style={[
           styles.dropdown,
           {
             borderColor: error
               ? errorColor
-              : isFocus
+              : isFocused
               ? activeColor
-              : "transparent",
-            backgroundColor: colors["--primary-400"],
+              : colors["--border-color"],
+            backgroundColor: applyOpacity(colors["--text-muted"], 0.07),
           },
           dropdownStyle,
         ]}
         containerStyle={[
+          styles.container,
           { backgroundColor: colors["--bg-color"] },
           containerStyle,
         ]}
@@ -140,55 +182,54 @@ const AppDropdown = <T extends BaseDropdownItem>({
         ]}
         selectedTextStyle={[
           styles.selectedTextStyle,
-          { color: inactiveColor },
+          { color: isFocused ? activeColor : inactiveColor },
           selectedTextStyle,
         ]}
         inputSearchStyle={[
           styles.inputSearchStyle,
-          { color: inactiveColor, backgroundColor: colors["--bg-color"] },
+          { color: inactiveColor, backgroundColor: colors["--card-color"] },
           inputSearchStyle,
         ]}
-        data={data}
-        maxHeight={300}
-        placeholder={!isFocus ? placeholder : "..."}
-        searchPlaceholder={searchPlaceholder}
-        value={value}
-        onFocus={() => setIsFocus(true)}
-        onBlur={() => setIsFocus(false)}
-        onChange={(item) => {
-          onChange(item);
-          setIsFocus(false);
-        }}
-        search={!disableSearch}
-        renderItem={(item, selected) =>
-          renderItem?.(item, selected ?? false) ??
-          defaultRenderItem(item, selected ?? false)
-        }
-        renderLeftIcon={(visible) => renderLeftIcon?.(isFocus) ?? null}
-        renderRightIcon={(visible) => renderRightIcon?.(isFocus) ?? null}
         {...props}
       />
-    </View>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
+  labelRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: vs(4),
+  },
   dropdown: {
     height: vs(48),
     borderWidth: hs(2),
     borderRadius: hs(8),
     paddingHorizontal: hs(12),
   },
+  container: {
+    borderWidth: 0,
+    borderBottomLeftRadius: hs(12),
+    borderBottomRightRadius: hs(12),
+    overflow: "hidden",
+  },
   placeholderStyle: {
-    fontSize: ms(14),
+    ...fontVariants['regular'],
   },
   selectedTextStyle: {
-    fontSize: ms(14),
+    ...fontVariants['regular'],
+    fontSize: ms(16)
   },
   inputSearchStyle: {
     height: vs(40),
-    fontSize: ms(14),
+    ...fontVariants['regular'],
     borderRadius: hs(8),
+  },
+  errorText: {
+    fontSize: ms(12),
+    marginStart: hs(8),
   },
 });
 

@@ -74,7 +74,6 @@ const Profile = () => {
       }}
       showsVerticalScrollIndicator={false}
     >
-      {/* Profile Header */}
       {isAuthenticated && (
         <ProfileHeader
           name={user?.name || "unavailable"}
@@ -83,7 +82,6 @@ const Profile = () => {
         />
       )}
 
-      {/* Theme Selector */}
       <View className="mx-4 mt-6 mb-4 p-4 bg-[--card-color] rounded-xl shadow-sm">
         <View className="flex-row justify-between items-center">
           <AppText>Preferred Theme:</AppText>
@@ -98,22 +96,26 @@ const Profile = () => {
               }
               value={theme}
               onChange={(item) => setTheme(item.value)}
-              containerStyle={[
-                styles.dropDownContainer,
-                { backgroundColor: 'colors["--bg-color"]' },
-              ]}
               fontFamily="Montserrat-Medium"
-              renderRightIcon={(isFocus) => (
+              renderRightIcon={({ isFocused }) => (
                 <AppIcon
-                  name={isFocus ? "alt-arrow-up" : "alt-arrow-down"}
+                  name={isFocused ? "alt-arrow-up" : "alt-arrow-down"}
                   size={25}
-                  color={colors["--text-primary"]}
+                  color={
+                    isFocused
+                      ? colors["--accent-color"]
+                      : colors["--text-primary"]
+                  }
                 />
               )}
-              renderLeftIcon={(isFocus) => (
+              renderLeftIcon={({ isFocused }) => (
                 <AppIcon
                   name="contrast"
-                  color={colors["--text-primary"]}
+                  color={
+                    isFocused
+                      ? colors["--accent-color"]
+                      : colors["--text-primary"]
+                  }
                   size={22}
                   style={{
                     marginEnd: hs(5),
@@ -128,10 +130,7 @@ const Profile = () => {
         </View>
       </View>
 
-      {/* Menu Items */}
       <ProfileMenuSection items={PROFILE_MENU_ITEMS} />
-
-      {/* Action Buttons */}
       <View className="items-end justify-between mx-4 my-6 gap-4">
         <AppButton
           title={!isAuthenticated ? "Login" : "Logout"}
@@ -151,11 +150,3 @@ const Profile = () => {
 };
 
 export default Profile;
-
-const styles = StyleSheet.create({
-  dropDownContainer: {
-    borderWidth: 0,
-    borderRadius: hs(10),
-    overflow: "hidden",
-  },
-});
