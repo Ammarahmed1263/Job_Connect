@@ -11,7 +11,7 @@ import { useJobById, useSaveJob, useUnsaveJob } from "@queries/jobQueries";
 import { useAppliedJobs, useSavedJobs } from "@queries/userQueries";
 import { useRecentJobsStore } from "@store/recentJobsStore";
 import { JobDetails as JobDetailsType } from "@type/jobTypes";
-import { formatSalary, getSeniorityLevel } from "@utils";
+import { formatSalary, getSeniorityLevel, shareJob } from "@utils";
 import { useLocalSearchParams } from "expo-router";
 import LottieView from "lottie-react-native";
 import { useEffect, useRef, useState } from "react";
@@ -75,6 +75,16 @@ const JobDetails = () => {
     applicationModalRef.current?.present();
   };
 
+  const handleShareJob = () => {
+    if (job) {
+      shareJob({
+        jobId: job.id,
+        jobTitle: job.title,
+        companyName: job.employer?.companyName
+      });
+    }
+  };
+
   if (isPending) {
     return (
       <View className="flex-1 items-center justify-center bg-[--bg-color]">
@@ -122,7 +132,9 @@ const JobDetails = () => {
               size={26}
             />
           </TouchableOpacity>
-          <AppIcon name="share" color={colors["--text-primary"]} size={28} />
+          <TouchableOpacity onPress={handleShareJob}>
+            <AppIcon name="share" color={colors["--text-primary"]} size={28} />
+          </TouchableOpacity>
         </View>
       </NavigationHeader>
 
