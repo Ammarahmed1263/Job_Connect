@@ -1,5 +1,5 @@
 import notificationService from "@api/services/notificationService";
-import { handleAppRedirection } from "@utils";
+import { handleNotificationRedirection } from "@utils";
 import * as Notifications from "expo-notifications";
 import { RelativePathString, useRouter } from "expo-router";
 import React, {
@@ -69,7 +69,7 @@ export const NotificationProvider: FC<NotificationProviderProps> = ({
 
         const data = response.notification.request.content.data;
         try {
-          const redirect = handleAppRedirection({
+          const redirect = handleNotificationRedirection({
             type: data.type,
             dataJson: JSON.stringify(data.data),
           });
