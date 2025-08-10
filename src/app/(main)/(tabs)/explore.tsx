@@ -9,6 +9,7 @@ import { AppText } from "@components/ui";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { useSafeArea } from "@hooks/useSafeArea";
 import useAuthStore from "@store/authStore";
+import { useRecentJobsStore } from "@store/recentJobsStore";
 import { useSearchStore } from "@store/searchStore";
 import { useRouter } from "expo-router";
 import { useRef } from "react";
@@ -17,7 +18,16 @@ import { Keyboard, TextInput, View } from "react-native";
 const Explore = () => {
   const router = useRouter();
   const { top, bottom } = useSafeArea();
-  const { barState, setBarState, clearSearchText } = useSearchStore();
+  const { 
+    barState, 
+    setBarState, 
+    clearSearchText, 
+    setSearchText, 
+    searchHistory,
+    clearSearchHistory,
+    deleteHistoryItem 
+  } = useSearchStore();
+  const recentJobs = useRecentJobsStore(state => state.recentJobs);
   const inputRef = useRef<TextInput>(null);
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const user = useAuthStore((state) => state.user);
@@ -60,7 +70,15 @@ const Explore = () => {
       case "idle":
         return <ExploreContent />;
       case "focused":
-        return <EmptySearch onSearchItemPress={blurSearchInput} />;
+        return <EmptySearch 
+          onSearchItemPress={blurSearchInput}
+          searchHistory={searchHistory}
+          recentJobs={recentJobs}
+          setSearchText={setSearchText}
+          setBarState={setBarState}
+          onClearHistory={clearSearchHistory}
+          onDeleteHistoryItem={deleteHistoryItem}
+        />;
       case "submitted":
         return <SearchResults />;
     }

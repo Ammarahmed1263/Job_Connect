@@ -1,12 +1,13 @@
 import JobCard from "@components/jobs/JobCard";
 import { AppText } from "@components/ui";
-import { useRecentJobsStore } from "@store/recentJobsStore";
-import { JobDetails } from "@type/jobTypes";
+import { JobDetails, jobSummary } from "@type/jobTypes";
 import { View } from "react-native";
 
-const RecentJobsSection = () => {
-  const { recentJobs } = useRecentJobsStore();
+interface RecentJobsSectionProps {
+  recentJobs: jobSummary[];
+}
 
+const RecentJobsSection = ({ recentJobs }: RecentJobsSectionProps) => {
   if (recentJobs.length === 0) return null;
 
   return (

@@ -1,6 +1,5 @@
 import { AppButton, AppIcon, AppText } from "@components/ui";
 import { useTheme } from "@contexts/ThemeContext";
-import { useSearchStore } from "@store/searchStore";
 import React, { FC } from "react";
 import { View } from "react-native";
 
@@ -8,15 +7,16 @@ interface SearchHistoryItemProps {
   item: string;
   index: number;
   onPress: (item: string) => void;
+  onDelete: (index: number) => void;
 }
 
 const SearchHistoryItem: FC<SearchHistoryItemProps> = ({
   item,
   index,
   onPress,
+  onDelete
 }) => {
   const { colors } = useTheme();
-  const deleteSearchItem = useSearchStore((state) => state.deleteHistoryItem);
 
   return (
     <AppButton
@@ -39,7 +39,7 @@ const SearchHistoryItem: FC<SearchHistoryItemProps> = ({
             {item}
           </AppText>
         </View>
-        <AppButton title="" onPress={() => deleteSearchItem(index)} flat>
+        <AppButton title="" onPress={() => onDelete(index)} flat>
           <AppIcon name="close" size={28} color={colors["--text-muted"]} />
         </AppButton>
       </View>

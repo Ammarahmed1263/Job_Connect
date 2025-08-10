@@ -1,10 +1,20 @@
 import { AppText, AppButton } from "@components/ui";
-import { useSearchStore } from "@store/searchStore";
 import { View } from "react-native";
 import SearchHistoryItem from "./SearchHistoryItem";
 
-const RecentSearchSection = ({ onItemPress }: { onItemPress: (q: string) => void }) => {
-  const { searchHistory, clearSearchHistory } = useSearchStore();
+interface RecentSearchSectionProps {
+  searchHistory: string[];
+  onItemPress: (q: string) => void;
+  onClearHistory?: () => void;
+  onDeleteItem: (index: number) => void;
+}
+
+const RecentSearchSection = ({ 
+  searchHistory, 
+  onItemPress,
+  onClearHistory,
+  onDeleteItem
+}: RecentSearchSectionProps) => {
 
   if (searchHistory.length === 0) return null;
 
@@ -14,7 +24,7 @@ const RecentSearchSection = ({ onItemPress }: { onItemPress: (q: string) => void
         <AppText variant="semiBold">Recent Search</AppText>
         <AppButton
           title="Clear"
-          onPress={clearSearchHistory}
+          onPress={onClearHistory}
           textClassName="!text-[--accent-color]"
           flat
         />
@@ -27,6 +37,7 @@ const RecentSearchSection = ({ onItemPress }: { onItemPress: (q: string) => void
             item={item}
             index={index}
             onPress={onItemPress}
+            onDelete={onDeleteItem}
           />
         ))}
       </View>
