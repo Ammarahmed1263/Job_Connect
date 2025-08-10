@@ -13,7 +13,7 @@ import { useProfileStore } from "@store/profileStore";
 import { Theme } from "@type/theme";
 import { useRouter } from "expo-router";
 import React, { useEffect, useMemo } from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
+import { ScrollView, View } from "react-native";
 
 const Profile = () => {
   const { setTheme, theme, colors } = useTheme();
@@ -21,27 +21,31 @@ const Profile = () => {
   const router = useRouter();
   const { logout, isAuthenticated, user } = useAuthStore();
   const testOnboarding = useOnboardingStore((state) => state.testOnboarding);
-  const { setProfile, totalFields, completedFields, profile } = useProfileStore(
+  const { setProfile, totalFields, completedFields } = useProfileStore(
     (state) => state
   );
-  const { data, isPending } = useSeekerProfile();
-  console.log(
-    "user profile: ",
-    "count: ",
-    totalFields,
-    completedFields,
-    profile
-  );
+  const { data, isFetching, isSuccess } = useSeekerProfile();
+  // console.log(
+  //   "user profile: ",
+  //   "count: ",
+  //   totalFields,
+  //   completedFields,
+  //   profile,
+  //   data
+  // );
   const profileProgress = useMemo(
     () => Math.round((completedFields / totalFields) * 100) || 0,
     [totalFields, completedFields]
   );
 
   useEffect(() => {
-    if (data?.data && !isPending) {
+    // console.log('Profile data condition: ', isSuccess && data?.data, 'isFetching:', isFetching);
+    if (isSuccess && data?.data) {
+      // console.log('Setting profile with data:', data.data);
       setProfile(data.data);
+      // console.log('Profile set complete');
     }
-  }, [data, setProfile, isPending]);
+  }, [data, setProfile, isSuccess, isFetching]);
 
   const handleLogout = async () => {
     await logout();
@@ -55,14 +59,6 @@ const Profile = () => {
     router.replace("/onboarding");
     testOnboarding(false);
   };
-
-  if (isPending) {
-    return (
-      <View className="flex-1 items-center justify-center">
-        <AppText>Loading...</AppText>
-      </View>
-    );
-  }
 
   return (
     <ScrollView

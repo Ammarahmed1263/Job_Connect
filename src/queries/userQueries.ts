@@ -30,7 +30,12 @@ export const useSeekerProfile = (enabled: boolean = true) => {
   return useQuery({
     queryKey: ["getSeekerProfile"],
     queryFn: () => userService.fetchSeekerProfile(),
-    enabled
+    enabled,
+    gcTime: 0,
+    staleTime: 0,
+    refetchOnMount: true,
+    refetchOnWindowFocus: true,
+    refetchOnReconnect: true,
   })
 };
 

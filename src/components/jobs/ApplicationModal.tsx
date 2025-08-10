@@ -15,7 +15,7 @@ import { useJobApplication } from "@hooks/useJobApplication";
 import { useSafeArea } from "@hooks/useSafeArea";
 import { useFetchResumes } from "@queries/resumeQueries";
 import React, { forwardRef, useCallback, useMemo } from "react";
-import { TouchableOpacity, View } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 import profileRules from "schemas/profile";
 
 interface ApplicationModalProps {
@@ -167,11 +167,7 @@ const ApplicationModal = forwardRef<BottomSheetModal, ApplicationModalProps>(
                 numberOfLines={6}
                 textAlignVertical="top"
                 containerClassName="mb-4"
-                style={{
-                  height: 120,
-                  textAlignVertical: "top",
-                  paddingTop: vs(4),
-                }}
+                style={styles.coverLetter}
                 placeholder="Introduce yourself and explain why you're a good fit for this position"
               />
             </View>
@@ -207,3 +203,12 @@ const ApplicationModal = forwardRef<BottomSheetModal, ApplicationModalProps>(
 );
 
 export default ApplicationModal;
+
+const styles = StyleSheet.create({
+  coverLetter: {
+    height: hs(120),
+    textAlignVertical: "top",
+    paddingTop: vs(8),
+    paddingStart: hs(4),
+  },
+});

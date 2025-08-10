@@ -31,7 +31,7 @@ const profileSectionsData: ProfileSection[] = [
   },
   {
     id: "6",
-    sectionName: "Certificates & License",
+    sectionName: "Certs. & License",
     iconName: "diploma",
     screen: "certificates",
     sectionValue: "certifications",
