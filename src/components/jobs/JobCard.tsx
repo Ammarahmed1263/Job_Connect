@@ -1,6 +1,4 @@
 import { useWithAuth } from "@hooks/useWithAuth";
-import { useJobSavedStatus } from "@hooks/useJobSavedStatus";
-import { useSaveJob, useUnsaveJob } from "@queries/jobQueries";
 import { jobSummary } from "@type/jobTypes";
 import { extractTags } from "@utils";
 import { useRouter } from "expo-router";
@@ -16,6 +14,7 @@ import JobFooter from "./JobFooter";
 import JobHeader from "./JobHeader";
 import JobMeta from "./JobMeta";
 import JobTags from "./JobTags";
+import useSavedJobs from "@hooks/useSavedJobs";
 
 interface JobCardProps extends PressableProps {
   item: jobSummary;
@@ -33,9 +32,7 @@ const JobCard = ({
 }: JobCardProps) => {
   const router = useRouter();
   const { requireAuth } = useWithAuth();
-  const { isSaved } = useJobSavedStatus(item.id);
-  const { mutate: unsaveJob } = useUnsaveJob();
-  const { mutate: saveJob } = useSaveJob();
+  const { isSaved, saveJob, unsaveJob} = useSavedJobs();
 
   const handleJobPress = () => {
     router.push({
@@ -48,7 +45,7 @@ const JobCard = ({
     if (requireAuth()) return;
 
     try {
-      isSaved ? unsaveJob(item.id) : saveJob(item);
+      isSaved(item.id) ? unsaveJob(item.id) : saveJob(item);
     } catch (error) {
       console.log("Error toggling job save:", error);
     }
@@ -62,7 +59,7 @@ const JobCard = ({
       <Pressable onPress={handleJobPress} {...props}>
         <JobHeader
           item={item}
-          isSaved={isSaved}
+          isSaved={isSaved(item.id)}
           onToggleSave={handleToggleSave}
           rightComponent={rightComponent}
         />

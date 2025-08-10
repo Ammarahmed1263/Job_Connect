@@ -6,11 +6,12 @@ import CompanyTab from "@components/jobs/detailsTabs/CompanyTab";
 import { AppButton, AppIcon, AppText, NavigationHeader } from "@components/ui";
 import { useTheme } from "@contexts/ThemeContext";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
+import useSavedJobs from "@hooks/useSavedJobs";
 import { useWithAuth } from "@hooks/useWithAuth";
 import { useJobById, useSaveJob, useUnsaveJob } from "@queries/jobQueries";
-import { useAppliedJobs, useSavedJobs } from "@queries/userQueries";
+import { useAppliedJobs, useFetchSavedJobs } from "@queries/userQueries";
 import { useRecentJobsStore } from "@store/recentJobsStore";
-import { JobDetails as JobDetailsType } from "@type/jobTypes";
+import { JobDetails as JobDetailsType, jobSummary } from "@type/jobTypes";
 import { formatSalary, getSeniorityLevel, shareJob } from "@utils";
 import { useLocalSearchParams } from "expo-router";
 import LottieView from "lottie-react-native";
@@ -24,17 +25,11 @@ const JobDetails = () => {
     "about"
   );
   const { data: job, isPending, isError } = useJobById(Number(id));
-  const { data: savedJobs } = useSavedJobs();
   const { data: appliedJobs } = useAppliedJobs();
-  const { mutate: unsaveJob } = useUnsaveJob();
-  const { mutate: saveJob } = useSaveJob();
   const addRecentJob = useRecentJobsStore((state) => state.addRecentJob);
   const { requireAuth } = useWithAuth();
   const applicationModalRef = useRef<BottomSheetModal>(null);
-
-  const isSaved =
-    job &&
-    savedJobs?.data?.some((savedJob: JobDetailsType) => savedJob.id === job.id);
+  const { isSaved, saveJob, unsaveJob} = useSavedJobs();
     
   const hasApplied = 
     job && 
@@ -64,7 +59,7 @@ const JobDetails = () => {
     if (requireAuth()) return;
 
     try {
-      isSaved ? unsaveJob(job.id) : saveJob(job!);
+      isSaved(job!.id) ? unsaveJob(job!.id) : saveJob(job!);
     } catch (error) {
       console.log("Error toggling job save:", error);
     }
@@ -127,7 +122,7 @@ const JobDetails = () => {
         <View className="flex-row gap-4">
           <TouchableOpacity onPress={handleToggleSave}>
             <AppIcon
-              name={isSaved ? "bookmark" : "bookmark-outline"}
+              name={isSaved(job.id) ? "bookmark" : "bookmark-outline"}
               color={colors["--text-primary"]}
               size={26}
             />

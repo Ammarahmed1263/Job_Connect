@@ -40,43 +40,8 @@ export const useSaveJob = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (job: jobSummary) => jobService.saveJob(job.id),
-    onMutate: async (job) => {
-      const jobSummary = {
-        id: job.id,
-        title: job.title,
-        location: job.location,
-        jobType: job.jobType,
-        postedDate: job.postedDate,
-        applicationsCount: job.applicationsCount,
-      };
-      console.log("save job: ", jobSummary);
-
-      await queryClient.cancelQueries({ queryKey: ["getSavedJobs"] });
-      const previousJobs = queryClient.getQueryData(["getSavedJobs"]);
-      queryClient.setQueryData(
-        ["getSavedJobs"],
-        ({ message, data }: { message: string; data: jobSummary[] }) => ({
-          message,
-          data: [
-            {
-              id: job.id,
-              title: job.title,
-              location: job.location,
-              jobType: job.jobType,
-              postedDate: job.postedDate,
-              applicationsCount: job.applicationsCount,
-            },
-            ...(data || []),
-          ],
-        })
-      );
-      return { previousJobs };
-    },
-    onError: (err, _, context) => {
-      console.log("save error: ", err);
-      if (context?.previousJobs) {
-        queryClient.setQueryData(["getSavedJobs"], context.previousJobs);
-      }
+    onError: (error) => {
+      console.error("Error saving job:", error);
     },
     onSettled: () => {
       console.log("save settled");
@@ -89,25 +54,8 @@ export const useUnsaveJob = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (id: number) => jobService.unsaveJob(id),
-    onMutate: async (jobId) => {
-      await queryClient.cancelQueries({ queryKey: ["getSavedJobs"] });
-      const previousJobs = queryClient.getQueryData(["getSavedJobs"]);
-      queryClient.setQueryData(
-        ["getSavedJobs"],
-        ({ message, data }: { message: string; data: jobSummary[] }) => ({
-          message,
-          data: data.filter((job) => job.id !== jobId),
-        })
-      );
-
-      console.log("unsave mutation: ", jobId, previousJobs);
-      return { previousJobs };
-    },
-    onError: (err, _, context) => {
-      console.error("unsave error: ", err);
-      if (context?.previousJobs) {
-        queryClient.setQueryData(["getSavedJobs"], context.previousJobs);
-      }
+    onError: (error) => {
+      console.error("Error unsaving job:", error);
     },
     onSettled: () => {
       console.log("unsave settled");

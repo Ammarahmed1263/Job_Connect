@@ -1,4 +1,5 @@
 import apiClient from "@api/apiClient";
+import { jobSummary } from "@type/jobTypes";
 import { UserProfile } from "@type/userTypes";
 import { endpoints } from "api/endpoints";
 import { AxiosError } from "axios";
@@ -6,7 +7,7 @@ import { AxiosError } from "axios";
 const userBase = endpoints.user;
 
 const userService = {
-  fetchSavedJobs: async () => {
+  fetchSavedJobs: async (): Promise<{data: jobSummary[], message: string}> => {
     try {
       const { data } = await apiClient.get(userBase.getSavedJobs);
       return data;
@@ -34,21 +35,30 @@ const userService = {
   fetchSeekerProfile: async () => {
     try {
       const { data } = await apiClient.get(userBase.getSeekerProfile);
-      console.log("get seeker Profile responded: ", JSON.stringify(data, null, 2));
+      console.log(
+        "get seeker Profile responded: ",
+        JSON.stringify(data, null, 2)
+      );
       return data;
     } catch (error) {
-      console.log('error fetching seeker profile: ', (error as AxiosError)?.response?.data)
+      console.log(
+        "error fetching seeker profile: ",
+        (error as AxiosError)?.response?.data
+      );
       throw error;
     }
   },
-  updateSeekerProfile: async (profile: Partial<Omit<UserProfile, 'id'>>) => {
+  updateSeekerProfile: async (profile: Partial<Omit<UserProfile, "id">>) => {
     try {
-      const { data } = await apiClient.put(userBase.updateSeekerProfile, profile);
+      const { data } = await apiClient.put(
+        userBase.updateSeekerProfile,
+        profile
+      );
       console.log("updated seeker profile: ", JSON.stringify(data, null, 2));
       return data;
     } catch (error) {
-      const axiosError = error as AxiosError
-      console.log('error updating seeker profile', axiosError?.response?.data);
+      const axiosError = error as AxiosError;
+      console.log("error updating seeker profile", axiosError?.response?.data);
       throw error;
     }
   },

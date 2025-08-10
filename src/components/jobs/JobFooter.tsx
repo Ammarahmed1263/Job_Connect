@@ -39,7 +39,7 @@ const JobFooter: FC<JobFooterProps> = ({
           className="ml-2 color-[--text-muted] !text-sm"
         >
           {applicationsCount
-            ? `${applicationsCount} Application ${
+            ? `${applicationsCount} Application${
                 applicationsCount > 1 ? "s" : ""
               }`
             : "No Applications yet"}

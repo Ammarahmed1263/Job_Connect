@@ -25,7 +25,6 @@ export interface jobSummary {
 }
 
 export interface JobDetails extends jobSummary {
-  applicationsCount: number;
   shortListed: boolean;
   description: string;
   tags: string[];
