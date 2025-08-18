@@ -1,4 +1,4 @@
-import { Certifications, CompanyWorkedAt, Resume, Skill, WorkedAs } from "./userTypes";
+import { Certification, CompanyWorkedAt, Resume, Skill, WorkedAs } from "./userTypes";
 
 export interface ProfileFormData {
   contactInfo: {
@@ -33,7 +33,7 @@ export interface ProfileFormData {
     university?: string;
     collegeName?: string;
   };
-  certifications?: Certifications;
+  certifications?: Certification;
   skills?: {
     skillInput: string,
     skills: Skill[];

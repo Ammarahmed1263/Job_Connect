@@ -11,6 +11,7 @@ interface ProfileSectionLayoutProps {
   onSave?: () => void;
   saveButtonTitle?: string;
   contentContainerClassName?: string;
+  onBackPress?: () => void;
 }
 
 const ProfileSectionLayout = ({
@@ -20,6 +21,7 @@ const ProfileSectionLayout = ({
   onSave,
   saveButtonTitle = "Save",
   contentContainerClassName = "gap-4 px-4 pt-4",
+  onBackPress,
 }: ProfileSectionLayoutProps) => {
   const { bottom } = useSafeArea();
 
@@ -30,7 +32,7 @@ const ProfileSectionLayout = ({
   return (
     <TouchableWithoutFeedback onPress={dismissKeyboard}>
       <View className="flex-1">
-        <NavigationHeader title={title} />
+        <NavigationHeader title={title} onBackPress={onBackPress} />
 
         <ScrollView
           contentContainerClassName={contentContainerClassName}
@@ -55,7 +57,7 @@ const ProfileSectionLayout = ({
               title={saveButtonTitle}
               onPress={onSave}
               className="py-2"
-              wrapperClassName="!rounded-full mx-2"
+              wrapperClassName="mx-2"
             />
           </View>
         )}

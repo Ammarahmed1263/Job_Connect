@@ -13,7 +13,7 @@ export interface Resume {
   resumeName: string;
 }
 
-export interface Certifications {
+export interface Certification {
   certificationName: string;
   issueDate: string;
   issuingOrganization: string;
@@ -56,7 +56,7 @@ export interface UserProfile {
   collegeName?: string;
   university?: string;
   phoneNumber?: string;
-  certifications?: Certifications[];
+  certifications?: Certification[];
   companyWorkedAt?: CompanyWorkedAt[];
   skills?: Skill[];
   workedAs?: WorkedAs[];

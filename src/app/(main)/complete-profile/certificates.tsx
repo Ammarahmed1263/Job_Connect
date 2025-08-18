@@ -1,96 +1,77 @@
 import {
-  AppIcon,
-  ControlledLabelInput,
-} from "@components/ui";
-import { ProfileSectionLayout } from "@components/complete-profile";
-import profileRules from "schemas/profile";
+  CertificateForm,
+  CertificateList,
+  ProfileSectionLayout,
+} from "@components/complete-profile";
 import { useTheme } from "@contexts/ThemeContext";
+import useCertificateManagement from "@hooks/useCertificateManagement";
 import useProfileSectionForm from "@hooks/useProfileSectionForm";
-import { useUpdateSeekerProfile } from "@queries/userQueries";
-import { CertificationsForm } from "@type/profileFormTypes";
-import { useRouter } from "expo-router";
-import React from "react";
+import { useFocusEffect, useNavigation } from "expo-router";
+import React, { useCallback, useEffect } from "react";
 
 const Certificates = () => {
-  const { control, handleSubmit, clearErrors } = useProfileSectionForm('certifications');
-  const { mutateAsync } = useUpdateSeekerProfile();
-  const router = useRouter();
+  const {
+    control,
+    handleSubmit,
+    clearErrors,
+    setValue,
+    reset,
+    formState: { isDirty },
+  } = useProfileSectionForm("certifications", {
+    certificationName: "",
+  });
+
+  const router = useNavigation();
   const { colors } = useTheme();
 
-  const updateUserCerts = async (data: CertificationsForm) => {
-    console.log("data: ", data);
-    // await mutateAsync({
-    //   ...data,
-    // });
-    router.back();
-  };
+  const {
+    isAddingNew,
+    editingCert,
+    hasUnsavedChanges,
+    setHasUnsavedChanges,
+    certificates,
+    isPending,
+    handleAddNew,
+    handleEdit,
+    handleDelete,
+    updateUserCerts,
+    handleCancel,
+    resetFormState,
+    showDiscardAlert,
+  } = useCertificateManagement({
+    setValue,
+    reset,
+  });
+
+  useEffect(() => {
+    setHasUnsavedChanges(isDirty);
+  }, [isDirty]);
 
   return (
     <ProfileSectionLayout
       title="Certificates"
-      onSave={handleSubmit(updateUserCerts)}
-      contentContainerClassName="gap-4 px-4 py-4"
+      onSave={isAddingNew ? handleSubmit(updateUserCerts) : undefined}
+      saveButtonTitle={editingCert ? "Update" : "Save"}
+      showSaveButton={isAddingNew}
+      contentContainerClassName="gap-4 px-4 py-4 flex-1"
+      onBackPress={isAddingNew ? handleCancel : undefined}
     >
-        <ControlledLabelInput
-          title="Certification Name"
-          control={control}
-          clearErrors={clearErrors}
-          name="certificationName"
-          rules={profileRules.certificationName}
-          placeholder="e.g. AWS Certified Solutions Architect"
-          leftComponent={() => (
-            <AppIcon
-              name="diploma"
-              size={24}
-              color={colors["--text-primary"]}
-            />
-          )}
+      {!isAddingNew ? (
+        <CertificateList
+          certificates={certificates}
+          handleEdit={handleEdit}
+          handleDelete={handleDelete}
+          handleAddNew={handleAddNew}
         />
-        <ControlledLabelInput
-          title="Issue Date"
+      ) : (
+        <CertificateForm
           control={control}
           clearErrors={clearErrors}
-          name="issueDate"
-          rules={profileRules.issueDate}
-          placeholder="DD/MM/YYYY"
-          leftComponent={() => (
-            <AppIcon
-              name="calendar"
-              size={24}
-              color={colors["--text-primary"]}
-            />
-          )}
-          />
-        <ControlledLabelInput
-          title="Issuing Organization"
-          control={control}
-          clearErrors={clearErrors}
-          name="issuingOrganization"
-          rules={profileRules.issuingOrganization}
-          placeholder="e.g. Amazon Web Services"
-          leftComponent={() => (
-            <AppIcon
-            name="city"
-            size={24}
-            color={colors["--text-primary"]}
-            />
-          )}
-          />
-        <ControlledLabelInput
-          title="Expiry Date (Optional)"
-          control={control}
-          clearErrors={clearErrors}
-          name="expiryDate"
-          rules={profileRules.expiryDate}
-          placeholder="DD/MM/YYYY"
-          leftComponent={() => (
-            <AppIcon
-              name="calendar"
-              size={24}
-              color={colors["--text-primary"]}
-            />
-          )}
-          />
+          colors={colors}
+          isPending={isPending}
+          handleCancel={handleCancel}
+        />
+      )}
     </ProfileSectionLayout>
   );
 };

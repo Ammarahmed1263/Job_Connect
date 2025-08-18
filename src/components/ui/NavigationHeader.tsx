@@ -11,7 +11,8 @@ interface NavigationHeaderProps {
   children?: ReactNode;
   title?: string;
   showBackButton?: boolean;
-  style?: StyleProp<ViewStyle>
+  style?: StyleProp<ViewStyle>;
+  onBackPress?: () => void;
 }
 
 const NavigationHeader: FC<NavigationHeaderProps> = ({
@@ -19,6 +20,7 @@ const NavigationHeader: FC<NavigationHeaderProps> = ({
   children,
   showBackButton = true,
   style,
+  onBackPress,
 }) => {
   const { top } = useSafeArea();
   const { colors } = useTheme();
@@ -36,7 +38,7 @@ const NavigationHeader: FC<NavigationHeaderProps> = ({
         {showBackButton && router.canGoBack() && (
           <AppButton
             title=""
-            onPress={() => router.back()}
+            onPress={() => onBackPress ? onBackPress() : router.back()}
             flat
             wrapperClassName="w-12 h-full border-2 items-center justify-center border-[--border-color]"
             className="flex-1"
