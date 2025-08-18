@@ -6,8 +6,9 @@ import {
 import { useTheme } from "@contexts/ThemeContext";
 import useCertificateManagement from "@hooks/useCertificateManagement";
 import useProfileSectionForm from "@hooks/useProfileSectionForm";
-import { useFocusEffect, useNavigation } from "expo-router";
+import { useNavigation } from "expo-router";
 import React, { useCallback, useEffect } from "react";
+import { useFocusEffect } from "@react-navigation/native";
 
 const Certificates = () => {
   const {
@@ -20,9 +21,6 @@ const Certificates = () => {
   } = useProfileSectionForm("certifications", {
     certificationName: "",
   });
-
-  const router = useNavigation();
-  const { colors } = useTheme();
 
   const {
     isAddingNew,
@@ -42,6 +40,25 @@ const Certificates = () => {
     setValue,
     reset,
   });
+
+  const navigation = useNavigation();
+  const { colors } = useTheme();
+
+  useFocusEffect(
+    useCallback(() => {
+      const unsubscribe = navigation.addListener("beforeRemove", (e) => {
+        if (isAddingNew && hasUnsavedChanges) {
+          e.preventDefault();
+          showDiscardAlert(resetFormState);
+        } else if (isAddingNew) {
+          e.preventDefault();
+          resetFormState();
+        }
+      });
+
+      return unsubscribe;
+    }, [navigation, isAddingNew, hasUnsavedChanges])
+  );
 
   useEffect(() => {
     setHasUnsavedChanges(isDirty);
