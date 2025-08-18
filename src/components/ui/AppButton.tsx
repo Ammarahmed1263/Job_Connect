@@ -16,7 +16,7 @@ import {
 } from "react-native";
 import AppText from "./AppText";
 
-interface Props extends PressableProps {
+export interface Props extends PressableProps {
   title: string;
   flat?: boolean;
   disableRipple?: boolean;

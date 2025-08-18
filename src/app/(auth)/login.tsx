@@ -1,12 +1,12 @@
 import {
   AppButton,
   AppIcon,
-  AppLoading,
   AppLogo,
   AppText,
+  ControlledCheckBox,
   ControlledLabelInput,
+  SubmitButton,
 } from "@components/ui";
-import { ControlledCheckBox } from "@components/ui";
 import { hs, vs } from "@constants/metrics";
 import { useTheme } from "@contexts/ThemeContext";
 import Icon from "@expo/vector-icons/Ionicons";
@@ -26,15 +26,16 @@ const Login = () => {
   const router = useRouter();
   const { colors } = useTheme();
   const passwordRef = useRef<TextInput | null>(null);
-  const { control, handleSubmit, clearErrors, setValue } = useForm<LoginFormData>({
-    mode: "onBlur",
-    reValidateMode: "onChange",
-    defaultValues: {
-      email: "",
-      password: "",
-      rememberMe: false
-    },
-  });
+  const { control, handleSubmit, clearErrors, setValue } =
+    useForm<LoginFormData>({
+      mode: "onBlur",
+      reValidateMode: "onChange",
+      defaultValues: {
+        email: "",
+        password: "",
+        rememberMe: false,
+      },
+    });
   const { top, bottom } = useSafeArea();
   const { login, isLoading, error } = useAuthStore();
   const params = useSearchParams();
@@ -121,6 +122,8 @@ const Login = () => {
               rules={authRules.password}
               autoComplete="password"
               returnKeyType="done"
+              submitBehavior="blurAndSubmit"
+              onSubmitEditing={handleSubmit(onSubmit)}
               rightComponent={({ passwordVisible, focused }) => (
                 <AppIcon
                   name={passwordVisible ? "eye-outline" : "eye-closed"}
@@ -169,24 +172,14 @@ const Login = () => {
               {error}
             </AppText>
           )}
-          <AppButton
+          <SubmitButton
             title="Login"
             wrapperClassName="mt-8 mb-4"
             onPress={handleSubmit(onSubmit, (e) => {
               console.log("Form has errors - aborting submission", e);
             })}
-            disabled={isLoading}
-          >
-            {isLoading && (
-              <View className="items-center justify-center">
-                <AppText className="opacity-0">Login</AppText>
-                <AppLoading
-                  source={require("@assets/lottie/spinner.json")}
-                  containerClassName="absolute"
-                />
-              </View>
-            )}
-          </AppButton>
+            isLoading={isLoading}
+          />
         </View>
         <View className="h-[1px] bg-[--text-muted] my-6 mx-4" />
         <View className="flex-row items-center justify-center mb-8">

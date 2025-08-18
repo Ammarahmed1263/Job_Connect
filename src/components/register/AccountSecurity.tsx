@@ -4,6 +4,7 @@ import {
   AppLoading,
   AppText,
   ControlledLabelInput,
+  SubmitButton,
 } from "@components/ui";
 import { useTheme } from "@contexts/ThemeContext";
 import Icon from "@expo/vector-icons/Ionicons";
@@ -32,7 +33,6 @@ const AccountSecurity: FC<Props> = ({ setStep, onSubmit }) => {
     useFormContext<RegisterFormData>();
   const { isLoading, error } = useAuthStore();
   const confirmPasswordRef = useRef<TextInput>(null);
-  console.log("account info rendered");
 
   const handlePrev = () => {
     setStep(3);
@@ -84,6 +84,8 @@ const AccountSecurity: FC<Props> = ({ setStep, onSubmit }) => {
         placeholder="password"
         autoComplete="password"
         returnKeyType="done"
+        submitBehavior="blurAndSubmit"
+        onSubmitEditing={onSubmit}
         leftComponent={({ focused }) => (
           <Icon
             name="lock-closed-outline"
@@ -113,19 +115,13 @@ const AccountSecurity: FC<Props> = ({ setStep, onSubmit }) => {
           {error}
         </AppText>
       )}
-      <View className="flex-row justify-between m-4">
+      <View className="flex-row justify-between mt-4">
         <AppButton title="back" onPress={handlePrev} disabled={isLoading} />
-        <AppButton title="Register" onPress={onSubmit} disabled={isLoading}>
-          {isLoading && (
-            <View className="items-center justify-center">
-              <AppText className="opacity-0">Register</AppText>
-              <AppLoading
-                source={require("@assets/lottie/spinner.json")}
-                containerClassName="absolute"
-              />
-            </View>
-          )}
-        </AppButton>
+        <SubmitButton
+            title="Register"
+            onPress={onSubmit}
+            isLoading={isLoading}
+          />
       </View>
     </View>
   );

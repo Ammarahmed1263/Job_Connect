@@ -98,7 +98,7 @@ const ProfessionalInfo: FC<Props> = ({ setStep }) => {
         )}
       />
 
-      <View className="flex-row justify-between m-4">
+      <View className="flex-row justify-between mt-4">
         <AppButton title="back" onPress={handlePrev} />
         <AppButton title="next" onPress={handleNext} />
       </View>

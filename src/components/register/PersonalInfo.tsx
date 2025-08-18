@@ -73,7 +73,7 @@ const PersonalInfo: FC<Props> = ({ setStep }) => {
         )}
       />
 
-      <AppButton title="next" onPress={handleNext} wrapperClassName="m-4" />
+      <AppButton title="next" onPress={handleNext} wrapperClassName="mt-4" />
     </View>
   );
 };
