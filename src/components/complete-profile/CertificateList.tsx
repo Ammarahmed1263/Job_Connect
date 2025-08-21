@@ -18,7 +18,7 @@ const CertificateList = ({
   handleAddNew,
 }: CertificateListProps) => (
   <View className="flex-1 justify-between">
-    <View>
+    <View className="grow">
       {certificates.length > 0 ? (
         <View className="mb-4">
           {certificates.map((cert, index) => (
@@ -32,8 +32,8 @@ const CertificateList = ({
           ))}
         </View>
       ) : (
-        <View className="items-center justify-center py-8">
-          <AppText className="text-[--text-muted] text-center mb-4">
+        <View className="items-center justify-center py-8 grow">
+          <AppText className="text-[--text-muted] text-center mb-4 mx-1">
             You haven't added any certificates yet.
           </AppText>
         </View>

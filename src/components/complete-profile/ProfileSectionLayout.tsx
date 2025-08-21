@@ -1,6 +1,7 @@
 import { AppButton, NavigationHeader } from "@components/ui";
 import { vs } from "@constants/metrics";
 import { useSafeArea } from "@hooks/useSafeArea";
+import clsx from "clsx";
 import React, { ReactNode } from "react";
 import { Keyboard, ScrollView, StyleSheet, TouchableWithoutFeedback, View } from "react-native";
 
@@ -12,6 +13,7 @@ interface ProfileSectionLayoutProps {
   saveButtonTitle?: string;
   contentContainerClassName?: string;
   onBackPress?: () => void;
+  disableSaveButton?: boolean;
 }
 
 const ProfileSectionLayout = ({
@@ -22,6 +24,7 @@ const ProfileSectionLayout = ({
   saveButtonTitle = "Save",
   contentContainerClassName = "gap-4 px-4 pt-4",
   onBackPress,
+  disableSaveButton
 }: ProfileSectionLayoutProps) => {
   const { bottom } = useSafeArea();
 
@@ -57,7 +60,9 @@ const ProfileSectionLayout = ({
               title={saveButtonTitle}
               onPress={onSave}
               className="py-2"
-              wrapperClassName="mx-2"
+              wrapperClassName={clsx("mx-2", disableSaveButton && 'bg-[--text-muted]')}
+              disabled={disableSaveButton}
+              disableShadow={disableSaveButton}
             />
           </View>
         )}

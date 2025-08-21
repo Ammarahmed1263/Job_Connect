@@ -68,10 +68,13 @@ const Certificates = () => {
     <ProfileSectionLayout
       title="Certificates"
       onSave={isAddingNew ? handleSubmit(updateUserCerts) : undefined}
-      saveButtonTitle={editingCert ? "Update" : "Save"}
+      saveButtonTitle={
+        isPending ? "Saving changes..." : editingCert ? "Update" : "Save"
+      }
       showSaveButton={isAddingNew}
       contentContainerClassName="gap-4 px-4 py-4 flex-1"
       onBackPress={isAddingNew ? handleCancel : undefined}
+      disableSaveButton={isPending}
     >
       {!isAddingNew ? (
         <CertificateList

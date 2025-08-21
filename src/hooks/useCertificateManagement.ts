@@ -7,6 +7,7 @@ import {
     UseCertificateManagementProps,
     UseCertificateManagementReturn,
 } from "../types/certificateTypes";
+import { useProfileStore } from "@store/profileStore";
 
 const useCertificateManagement = ({
   setValue,
@@ -17,9 +18,9 @@ const useCertificateManagement = ({
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
 
   const { mutateAsync, isPending } = useUpdateSeekerProfile();
-  const { data: profileData } = useSeekerProfile();
+  const profile = useProfileStore(state => state.profile);
 
-  const certificates = profileData?.data?.certifications || [];
+  const certificates = profile.certifications || [];
 
   const resetFormState = useCallback(() => {
     setIsAddingNew(false);
