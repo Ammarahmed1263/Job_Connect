@@ -7,3 +7,5 @@ export { default as CertificateForm } from './CertificateForm';
 export { default as CertificateList } from './CertificateList';
 export { default as ExperienceItem } from './ExperienceItem';
 export type { ProfileSection } from '@type/profileSectionTypes';
+export { default as ExperienceDetails } from './ExperienceDetails';
+export { default as JobsDetails } from './JobsDetails';
