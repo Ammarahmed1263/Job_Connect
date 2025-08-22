@@ -13,7 +13,7 @@ import profileRules from "schemas/profile";
 const AboutMe = () => {
   const { control, handleSubmit, formState, clearErrors } =
     useProfileSectionForm("about");
-  const { mutateAsync } = useUpdateSeekerProfile();
+  const { mutateAsync, isPending } = useUpdateSeekerProfile();
   const router = useRouter();
   const { colors } = useTheme();
 
@@ -32,6 +32,7 @@ const AboutMe = () => {
       title="About Me"
       onSave={handleSubmit(updateUserAbout)}
       contentContainerClassName="gap-4 px-2 pt-4"
+      isLoading={isPending}
     >
       <ControlledLabelInput
         title="Bio"

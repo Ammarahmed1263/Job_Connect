@@ -1,8 +1,15 @@
-import { AppButton, AppIcon, ControlledLabelInput } from "@components/ui";
-import { JobItem } from "@type/jobTypes";
 import React from "react";
 import { View } from "react-native";
+import {
+  AppButton,
+  AppIcon,
+  AppText,
+  ControlledLabelInput,
+  SubmitButton,
+} from "@components/ui";
 import ExperienceItem from "./ExperienceItem";
+import { JobItem } from "@type/jobTypes";
+import { useTheme } from "@contexts/ThemeContext";
 
 type JobsDetailsProps = {
   isEditingJobs: boolean;
@@ -18,7 +25,7 @@ type JobsDetailsProps = {
   handleDelete: (item: JobItem) => Promise<void>;
   control: any;
   clearErrors: () => void;
-  colors: Record<string, string>;
+  isPending: boolean;
 };
 
 const JobsDetails = ({
@@ -32,14 +39,20 @@ const JobsDetails = ({
   handleDelete,
   control,
   clearErrors,
-  colors,
+  isPending,
 }: JobsDetailsProps) => {
+  const { colors } = useTheme();
+
   return (
     <>
+      <AppText variant="medium" className="text-lg mb-2 mt-4">
+        Jobs Details
+      </AppText>
       {!isEditingJobs ? (
         <>
           {experienceData &&
-          ((experienceData.companyWorkedAt && experienceData.companyWorkedAt.length > 0) ||
+          ((experienceData.companyWorkedAt &&
+            experienceData.companyWorkedAt.length > 0) ||
             (experienceData.workedAs && experienceData.workedAs.length > 0)) ? (
             experienceData.companyWorkedAt.map((job, index) => {
               return (
@@ -56,13 +69,13 @@ const JobsDetails = ({
               );
             })
           ) : (
-            <View className="items-center justify-center py-8">
-              <AppIcon
-                name="case"
-                size={48}
-                color={colors["--text-muted"]}
-                style={{ marginBottom: 12 }}
-              />
+            <View className="items-center justify-center gap-4">
+              <AppText
+                variant="medium"
+                className="text-base text-center mb-4 text-[--text-muted]"
+              >
+                No jobs added yet.
+              </AppText>
               <AppButton
                 title="Add Jobs"
                 onPress={handleAddNewJob}
@@ -72,15 +85,17 @@ const JobsDetails = ({
           )}
 
           {experienceData &&
-          ((experienceData.companyWorkedAt && experienceData.companyWorkedAt.length > 0) ||
-            (experienceData.workedAs && experienceData.workedAs.length > 0)) && (
-            <AppButton
-              title="Edit Jobs"
-              onPress={handleAddNewJob}
-              wrapperClassName="mt-4"
-              className="py-3"
-            />
-          )}
+            ((experienceData.companyWorkedAt &&
+              experienceData.companyWorkedAt.length > 0) ||
+              (experienceData.workedAs &&
+                experienceData.workedAs.length > 0)) && (
+              <AppButton
+                title="Edit Jobs"
+                onPress={handleAddNewJob}
+                wrapperClassName="mt-4"
+                className="py-3"
+              />
+            )}
         </>
       ) : (
         <>
@@ -94,7 +109,9 @@ const JobsDetails = ({
               <AppIcon
                 name="city"
                 size={24}
-                color={focused ? colors["--accent-color"] : colors["--text-primary"]}
+                color={
+                  focused ? colors["--accent-color"] : colors["--text-primary"]
+                }
               />
             )}
           />
@@ -108,22 +125,27 @@ const JobsDetails = ({
               <AppIcon
                 name="case-outline"
                 size={24}
-                color={focused ? colors["--accent-color"] : colors["--text-primary"]}
+                color={
+                  focused ? colors["--accent-color"] : colors["--text-primary"]
+                }
               />
             )}
           />
 
           <View className="flex-row gap-4 mt-2">
             <AppButton
-              title={editingExp ? "Update" : "Save"}
-              onPress={submitJobs}
-              className="py-2 px-4"
-            />
-            <AppButton
               title="Cancel"
               onPress={cancelEditJobs}
               flat
               className="py-2 px-4"
+            />
+            <SubmitButton
+              title={editingExp ? "Update" : "Save"}
+              onPress={submitJobs}
+              className="py-2 px-4"
+              disabled={isPending}
+              disableShadow={isPending}
+              isLoading={isPending}
             />
           </View>
         </>

@@ -5,6 +5,7 @@ import {
   AppIcon,
   AppText,
   ControlledLabelInput,
+  SubmitButton,
 } from "@components/ui";
 import { useTheme } from "@contexts/ThemeContext";
 import profileRules from "schemas/profile";
@@ -12,12 +13,13 @@ import { ExperienceForm } from "@type/profileFormTypes";
 import { Control, UseFormClearErrors } from "react-hook-form";
 
 interface ExperienceDetailsProps {
-  control: Control<ExperienceForm>
-  isEditing: boolean
-  clearErrors: UseFormClearErrors<ExperienceForm>
-  handleCancel: () => void
-  handleSave: () => void
-  handleEdit: () => void
+  control: Control<ExperienceForm>;
+  isEditing: boolean;
+  clearErrors: UseFormClearErrors<ExperienceForm>;
+  handleCancel: () => void;
+  handleSave: () => void;
+  handleEdit: () => void;
+  isPending: boolean;
 }
 
 const ExperienceDetails: FC<ExperienceDetailsProps> = ({
@@ -27,6 +29,7 @@ const ExperienceDetails: FC<ExperienceDetailsProps> = ({
   handleCancel,
   handleSave,
   handleEdit,
+  isPending,
 }) => {
   const { colors } = useTheme();
 
@@ -74,7 +77,7 @@ const ExperienceDetails: FC<ExperienceDetailsProps> = ({
           />
         )}
       />
-      <View className="flex-row gap-4 mt-2">
+      <View className="flex-row gap-4 mt-2 justify-end">
         {!isEditing ? (
           <AppButton
             title="Edit Experience"
@@ -85,15 +88,18 @@ const ExperienceDetails: FC<ExperienceDetailsProps> = ({
         ) : (
           <>
             <AppButton
-              title="Save"
-              onPress={handleSave}
-              className="py-2 px-4"
-            />
-            <AppButton
               title="Cancel"
               onPress={handleCancel}
               flat
               className="py-2 px-4"
+            />
+            <SubmitButton
+              title="Save"
+              onPress={handleSave}
+              className="py-2 px-4"
+              disabled={isPending}
+              disableShadow={isPending}
+              isLoading={isPending}
             />
           </>
         )}

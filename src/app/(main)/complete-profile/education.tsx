@@ -11,12 +11,11 @@ import profileRules from "schemas/profile";
 const Education = () => {
   const { control, handleSubmit, clearErrors } =
     useProfileSectionForm("education");
-  const { mutateAsync } = useUpdateSeekerProfile();
+  const { mutateAsync, isPending } = useUpdateSeekerProfile();
   const { colors } = useTheme();
   const router = useRouter();
 
   const updateUserEducation = async (data: EducationForm) => {
-    console.log("data: ", data);
     await mutateAsync({
       ...data,
     });
@@ -28,6 +27,7 @@ const Education = () => {
       title="Education"
       onSave={handleSubmit(updateUserEducation)}
       contentContainerClassName="gap-4 px-4 py-4"
+      isLoading={isPending}
     >
       <ControlledLabelInput
         title="Education"

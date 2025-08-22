@@ -15,11 +15,10 @@ import { StyleSheet } from "react-native";
 import profileRules from "schemas/profile";
 
 const ContactInfo = () => {
-  const { control, handleSubmit, formState, clearErrors } =
+  const { control, handleSubmit, clearErrors } =
     useProfileSectionForm("contactInfo");
   const { colors } = useTheme();
-  const { mutateAsync } = useUpdateSeekerProfile();
-  console.log("form state: ", JSON.stringify(formState.defaultValues, null, 2));
+  const { mutateAsync, isPending } = useUpdateSeekerProfile();
   const router = useRouter();
 
   const updateUserContact = async (data: ContactInfoForm) => {
@@ -35,6 +34,7 @@ const ContactInfo = () => {
       title="Contact"
       onSave={handleSubmit(updateUserContact)}
       contentContainerClassName="gap-4 px-4 py-4"
+      isLoading={isPending}
     >
         <ControlledLabelInput
           title="First Name (Read-only)"

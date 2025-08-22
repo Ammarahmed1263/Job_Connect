@@ -73,6 +73,7 @@ const Profile = () => {
           name={user?.name || "unavailable"}
           progress={profileProgress}
           onPress={() => router.push("/complete-profile")}
+          subtitle={profileProgress == 100? "View Profile Details" : "Complete Profile"}
         />
       )}
 

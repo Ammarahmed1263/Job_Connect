@@ -12,6 +12,7 @@ const Experience = () => {
     isEditingJobs,
     experienceData,
     editingExp,
+    isPending,
     handleEditExperience,
     submitExperience,
     cancelEditExperience,
@@ -20,13 +21,13 @@ const Experience = () => {
     submitJobs,
     cancelEditJobs,
     handleDelete,
-    colors,
   } = useExperienceLogic();
 
   return (
     <ProfileSectionLayout
       title="Experience"
       contentContainerClassName="gap-4 px-4 py-4"
+      isLoading={isPending}
     >
       <ExperienceDetails
         control={control}
@@ -35,11 +36,8 @@ const Experience = () => {
         handleSave={submitExperience}
         handleCancel={cancelEditExperience}
         isEditing={isEditingExperience}
+        isPending={isPending}
       />
-
-      <AppText variant="medium" className="text-lg mb-2">
-        Jobs Details
-      </AppText>
 
       <JobsDetails
         isEditingJobs={isEditingJobs}
@@ -52,7 +50,7 @@ const Experience = () => {
         handleDelete={handleDelete}
         control={control}
         clearErrors={clearErrors}
-        colors={colors}
+        isPending={isPending}
       />
     </ProfileSectionLayout>
   );

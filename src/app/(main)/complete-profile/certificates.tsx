@@ -48,7 +48,7 @@ const Certificates = () => {
     useCallback(() => {
       const unsubscribe = navigation.addListener("beforeRemove", (e) => {
         if (isAddingNew && hasUnsavedChanges) {
-          e.preventDefault();
+        e.preventDefault();
           showDiscardAlert(resetFormState);
         } else if (isAddingNew) {
           e.preventDefault();
@@ -74,7 +74,7 @@ const Certificates = () => {
       showSaveButton={isAddingNew}
       contentContainerClassName="gap-4 px-4 py-4 flex-1"
       onBackPress={isAddingNew ? handleCancel : undefined}
-      disableSaveButton={isPending}
+      isLoading={isPending}
     >
       {!isAddingNew ? (
         <CertificateList

@@ -13,6 +13,7 @@ const useExperienceLogic = () => {
   const profileData = useProfileStore((state) => state.profile);
   const { control, handleSubmit, clearErrors, setValue, reset, formState } =
   useProfileSectionForm("experience");
+    console.log("experience state: ", JSON.stringify(formState.defaultValues, null, 2));
 
   const { mutateAsync, isPending } = useUpdateSeekerProfile();
   const { colors } = useTheme();
