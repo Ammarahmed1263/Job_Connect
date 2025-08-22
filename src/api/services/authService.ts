@@ -57,6 +57,17 @@ const authService = {
     }
   },
 
+  forgotPassword: async (email: string) => {
+    try {
+      await apiClient.post(endpoints.accounts.forgotPassword, {
+        email
+      });
+    } catch (error) {
+      console.log("Error logging out: ", error);
+      throw error;
+    }
+  },
+
   logout: async (accessToken: string, refreshToken: string) => {
     try {
       await apiClient.post(endpoints.accounts.logout, {

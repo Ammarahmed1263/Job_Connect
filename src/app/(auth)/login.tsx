@@ -155,13 +155,13 @@ const Login = () => {
               <AppText variant="light">Remember Me</AppText>
             </View>
 
-            <AppButton
+            {/* <AppButton
               textVariant="light"
               title="Forgot Password?"
               textClassName="!text-[--text-secondary]"
-              // onPress={() => router.push("/forgot-password")}
+              onPress={() => router.push("/forgot-password")}
               flat
-            />
+            /> */}
           </View>
 
           {error && (
