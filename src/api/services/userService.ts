@@ -32,7 +32,7 @@ const userService = {
       throw error;
     }
   },
-  fetchSeekerProfile: async () => {
+  fetchSeekerProfile: async (): Promise<{data: UserProfile, message: string}> => {
     try {
       const { data } = await apiClient.get(userBase.getSeekerProfile);
       console.log(
@@ -54,7 +54,6 @@ const userService = {
         userBase.updateSeekerProfile,
         profile
       );
-      console.log("updated seeker profile: ", JSON.stringify(data, null, 2));
       return data;
     } catch (error) {
       const axiosError = error as AxiosError;

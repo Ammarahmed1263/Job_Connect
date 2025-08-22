@@ -12,7 +12,6 @@ interface SkillsListProps {
 }
 
 const SkillsList: FC<SkillsListProps> = ({ skills, onEdit, onRemove }) => {
-  const { colors } = useTheme();
 
   return (
     <View className="flex-row flex-wrap gap-2">
