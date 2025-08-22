@@ -1,3 +1,5 @@
+import { CompanyWorkedAt, WorkedAs } from "./userTypes";
+
 export interface Employer {
   id: string;
   name: string;
@@ -48,3 +50,9 @@ export interface JobApplicationParams {
   CoverLetter?: string;
   resumeId: number;
 };
+
+export interface JobItem {
+  id: number;
+  company?: CompanyWorkedAt;
+  workedAs?: WorkedAs;
+}

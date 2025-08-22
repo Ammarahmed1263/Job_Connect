@@ -16,8 +16,8 @@ export interface ProfileFormData {
   experience: {
     yearsOfExperience?: string;
     currentOrDesiredJob?: string;
-    companyWorkedAt?: CompanyWorkedAt[];
-    workedAs?: WorkedAs[];
+    companyWorkedAt?: string;
+    workedAs?: string;
   };
   about: {
     bio?: string;
