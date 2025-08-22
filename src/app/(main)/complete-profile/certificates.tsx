@@ -88,7 +88,6 @@ const Certificates = () => {
           control={control}
           clearErrors={clearErrors}
           colors={colors}
-          isPending={isPending}
           handleCancel={handleCancel}
         />
       )}

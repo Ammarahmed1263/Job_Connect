@@ -1,14 +1,13 @@
-import { AppButton, AppIcon, AppText, ControlledLabelInput } from "@components/ui";
+import { AppButton, AppIcon, ControlledLabelInput } from "@components/ui";
+import { CertificationsForm } from "@type/profileFormTypes";
 import React from "react";
 import { Control, UseFormClearErrors } from "react-hook-form";
 import profileRules from "schemas/profile";
-import { CertificationsForm } from "@type/profileFormTypes";
 
 type CertificateFormProps = {
   control: Control<CertificationsForm>;
   clearErrors: UseFormClearErrors<CertificationsForm>;
   colors: Record<string, string>;
-  isPending: boolean;
   handleCancel: () => void;
 };
 
@@ -16,7 +15,6 @@ const CertificateForm = ({
   control,
   clearErrors,
   colors,
-  isPending,
   handleCancel,
 }: CertificateFormProps) => (
   <>
@@ -44,12 +42,6 @@ const CertificateForm = ({
       textClassName="!text-[--accent-color]"
       flat
     />
-
-    {isPending && (
-      <AppText className="text-center mt-4 text-[--text-muted]">
-        Saving changes...
-      </AppText>
-    )}
   </>
 );
 
