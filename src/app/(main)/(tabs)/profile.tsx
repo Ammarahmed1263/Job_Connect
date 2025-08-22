@@ -21,31 +21,29 @@ const Profile = () => {
   const router = useRouter();
   const { logout, isAuthenticated, user } = useAuthStore();
   const testOnboarding = useOnboardingStore((state) => state.testOnboarding);
-  const { setProfile, totalFields, completedFields } = useProfileStore(
+  const { setProfile, totalFields, completedFields, profile } = useProfileStore(
     (state) => state
   );
-  const { data, isFetching, isSuccess } = useSeekerProfile();
-  // console.log(
-  //   "user profile: ",
-  //   "count: ",
-  //   totalFields,
-  //   completedFields,
-  //   profile,
-  //   data
-  // );
+  const { data, isSuccess } = useSeekerProfile();
+  console.log(
+    "user profile: ",
+    // "count: ",
+    // totalFields,
+    // completedFields,
+    profile.companyWorkedAt,
+    profile.workedAs,
+    // data
+  );
   const profileProgress = useMemo(
     () => Math.round((completedFields / totalFields) * 100) || 0,
     [totalFields, completedFields]
   );
 
   useEffect(() => {
-    // console.log('Profile data condition: ', isSuccess && data?.data, 'isFetching:', isFetching);
     if (isSuccess && data?.data) {
-      // console.log('Setting profile with data:', data.data);
       setProfile(data.data);
-      // console.log('Profile set complete');
     }
-  }, [data, setProfile, isSuccess, isFetching]);
+  }, [data, isSuccess, setProfile]);
 
   const handleLogout = async () => {
     await logout();

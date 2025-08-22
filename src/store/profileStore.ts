@@ -36,8 +36,7 @@ const intialState: ProfileStore = {
 export const useProfileStore = create<ProfileStore>((set, get) => ({
   ...intialState,
   setProfile: (profile) =>
-    set((state) => ({
-      ...state,
+    set(() => ({
       profile,
       totalFields: Object.keys(profile).length,
       completedFields: countNonEmptyFields(profile),
@@ -53,7 +52,7 @@ export const useProfileStore = create<ProfileStore>((set, get) => ({
   updateCompletionProgress: () => {
     const profile = get().profile;
     const completedCount = countNonEmptyFields(profile);
-    set((state) => ({ ...state, completedFields: completedCount }));
+    set(() => ({ completedFields: completedCount }));
   },
   getSectionProgress: (section: ProfileSectionKey) => {
     const { profile } = get();
@@ -104,5 +103,9 @@ export const useProfileStore = create<ProfileStore>((set, get) => ({
       isComplete: completedCount === sectionFields.length,
     };
   },
-  clearProfile: () => set(intialState),
+  clearProfile: () => set(() => ({
+    profile: {} as Omit<UserProfile, "id">,
+    totalFields: 0,
+    completedFields: 0,
+  })),
 }));
