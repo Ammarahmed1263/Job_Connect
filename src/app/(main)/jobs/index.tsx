@@ -1,4 +1,5 @@
 import JobCard from "@components/jobs/JobCard";
+import JobCardSkeleton from "@components/jobs/JobCardSkeleton";
 import { AppLoading, AppText, NavigationHeader } from "@components/ui";
 import { useSearchJobs } from "@queries/homeQueries";
 import type { JobCategory } from "@type/jobTypes";
@@ -32,14 +33,6 @@ const JobListing = () => {
     }
   };
 
-  if (isPending) {
-    return (
-      <View className="flex-1 items-center justify-center">
-        <AppLoading size={100} />
-        <AppText className="mt-2">Loading jobs...</AppText>
-      </View>
-    );
-  }
 
   if (isError) {
     return (
@@ -50,7 +43,7 @@ const JobListing = () => {
   }
 
   return (
-    <View className="flex-1 pt-14">
+    <View className="flex-1">
       <NavigationHeader title={getTitle()} />
       <AppText className="pt-2 px-4">
         {totalCount} Result{totalCount !== 1 && "s"} Found
@@ -72,6 +65,21 @@ const JobListing = () => {
               <AppText className="text-center !text-[--text-muted]">
                 No more jobs
               </AppText>
+            </View>
+          )
+        }
+        ListEmptyComponent={
+          !isPending ? (
+            <View className="flex-1 items-center justify-center">
+              <AppText>No jobs found</AppText>
+            </View>
+          ) : (
+            <View className="gap-4">
+              <JobCardSkeleton />
+              <JobCardSkeleton />
+              <JobCardSkeleton />
+              <JobCardSkeleton />
+              <JobCardSkeleton />
             </View>
           )
         }

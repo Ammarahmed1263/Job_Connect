@@ -1,5 +1,6 @@
 import JobCard from "@components/jobs/JobCard";
-import { AppLoading, AppText, NavigationHeader } from "@components/ui";
+import JobCardSkeleton from "@components/jobs/JobCardSkeleton";
+import { AppText, NavigationHeader } from "@components/ui";
 import { vs } from "@constants/metrics";
 import { TAB_HEIGHT } from "@constants/tabBar";
 import { useTheme } from "@contexts/ThemeContext";
@@ -20,8 +21,6 @@ const Applied = () => {
         <AppText>You are not authenticated</AppText>
       </View>
     );
-
-  if (isPending) return <AppLoading size={120} containerStyle={{ flex: 1 }} />;
 
   return (
     <View className="flex-1">
@@ -54,11 +53,21 @@ const Applied = () => {
             />
           );
         }}
-        ListEmptyComponent={() => (
-          <View className="flex-1 justify-center items-center">
-            <AppText className="text-center">No Applied Jobs Yet</AppText>
-          </View>
-        )}
+        ListEmptyComponent={() =>
+          !isPending ? (
+            <View className="flex-1 justify-center items-center">
+              <AppText className="text-center">No Applied Jobs Yet</AppText>
+            </View>
+          ) : (
+            <View className="gap-4">
+              <JobCardSkeleton />
+              <JobCardSkeleton />
+              <JobCardSkeleton />
+              <JobCardSkeleton />
+              <JobCardSkeleton />
+            </View>
+          )
+        }
         showsVerticalScrollIndicator={false}
         contentContainerClassName="pt-2 pb-4 gap-4 px-4 grow"
         contentContainerStyle={{

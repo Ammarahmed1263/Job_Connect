@@ -10,7 +10,7 @@ const AboutTab = ({ job }: AboutTabProps) => {
   return (
     <View className="p-4">
       <AppText variant="medium" className="text-lg mb-2">About this Job</AppText>
-      <ReadMoreText text={job?.description ?? ""} limit={10} />
+      <ReadMoreText text={job?.description ?? ""} limit={100} />
 
 
       <AppText variant="medium" className="text-lg mb-2">Job Description</AppText>

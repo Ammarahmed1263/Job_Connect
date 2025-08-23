@@ -1,4 +1,5 @@
 import JobCard from "@components/jobs/JobCard";
+import JobCardSkeleton from "@components/jobs/JobCardSkeleton";
 import { AppLoading, AppText } from "@components/ui";
 import { vs } from "@constants/metrics";
 import { TAB_HEIGHT } from "@constants/tabBar";
@@ -38,17 +39,7 @@ const SearchResults = () => {
     isFetchingNextPage,
     isLoading,
     isError,
-    error,
   } = useSearchJobs(cleanedQueryFilters);
-
-  if (isLoading) {
-    return (
-      <View className="flex-1 items-center justify-center">
-        <AppLoading size={100} />
-        <AppText className="mt-2">Loading jobs...</AppText>
-      </View>
-    );
-  }
 
   if (isError) {
     return (
@@ -63,7 +54,7 @@ const SearchResults = () => {
   const jobs = data?.pages.flatMap((page) => page.data) || [];
   const totalCount = data?.pages[0]?.totalCount || 0;
 
-  if (jobs.length === 0) {
+  if (jobs.length === 0 && !isLoading) {
     return (
       <View className="flex-1 items-center justify-center mx-4">
         <AppText className="text-center">
@@ -98,6 +89,21 @@ const SearchResults = () => {
               <AppText className="text-center !text-[--text-muted]">
                 No more jobs
               </AppText>
+            </View>
+          )
+        }
+        ListEmptyComponent={
+          !isLoading ? (
+            <View className="flex-1 items-center justify-center">
+              <AppText>No jobs found</AppText>
+            </View>
+          ) : (
+            <View className="gap-4">
+              <JobCardSkeleton />
+              <JobCardSkeleton />
+              <JobCardSkeleton />
+              <JobCardSkeleton />
+              <JobCardSkeleton />
             </View>
           )
         }

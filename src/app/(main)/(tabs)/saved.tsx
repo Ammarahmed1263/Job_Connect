@@ -1,4 +1,5 @@
 import JobCard from "@components/jobs/JobCard";
+import JobCardSkeleton from "@components/jobs/JobCardSkeleton";
 import { AppText, NavigationHeader } from "@components/ui";
 import { vs } from "@constants/metrics";
 import { TAB_HEIGHT } from "@constants/tabBar";
@@ -10,7 +11,7 @@ import { FlatList, View } from "react-native";
 
 const Saved = () => {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
-  const { setSavedJobs, savedJobs } = useSavedJobs();
+  const { setSavedJobs } = useSavedJobs();
   const { data, isPending, isSuccess } = useFetchSavedJobs(isAuthenticated);
 
   useEffect(() => {
@@ -27,13 +28,6 @@ const Saved = () => {
     );
   }
 
-  if (savedJobs.length === 0 && isPending) {
-    return (
-      <View className="flex-1 items-center justify-center">
-        <AppText>loading...</AppText>
-      </View>
-    );
-  }
 
   if (!isAuthenticated) {
     return (
@@ -50,11 +44,21 @@ const Saved = () => {
         data={data?.data}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => <JobCard item={item} />}
-        ListEmptyComponent={() => (
-          <View className="flex-1 justify-center items-center">
-            <AppText className="text-center">No jobs saved</AppText>
-          </View>
-        )}
+        ListEmptyComponent={() =>
+          !isPending ? (
+            <View className="flex-1 justify-center items-center">
+              <AppText className="text-center">No jobs saved</AppText>
+            </View>
+          ) : (
+            <View className="gap-4">
+              <JobCardSkeleton />
+              <JobCardSkeleton />
+              <JobCardSkeleton />
+              <JobCardSkeleton />
+              <JobCardSkeleton />
+            </View>
+          )
+        }
         showsVerticalScrollIndicator={false}
         contentContainerClassName="pt-2 pb-4 gap-4 px-4 grow"
         contentContainerStyle={{
