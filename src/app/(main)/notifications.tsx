@@ -2,6 +2,7 @@ import notificationService from "@api/services/notificationService";
 import {
   NotificationItem,
   NotificationSection,
+  NotificationSkeleton,
 } from "@components/notifications";
 import { AppIcon, AppText, NavigationHeader } from "@components/ui";
 import AppLoading from "@components/ui/AppLoading";
@@ -78,7 +79,7 @@ const Notifications = () => {
   ];
 
   if(loading) {
-    return <AppLoading source={require("@assets/lottie/loading.json")} size={200}/>
+    return <NotificationSkeleton sectionCount={3} itemsPerSection={3} />
   }
 
   return (
