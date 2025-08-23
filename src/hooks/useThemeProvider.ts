@@ -8,11 +8,10 @@ const useThemeProvider = () => {
   const { setColorScheme } = useNWColorScheme();
   const [preferredTheme, setPreferredTheme] = useState<Theme>("system");
   const actualTheme = preferredTheme === "system" ? deviceTheme : preferredTheme;
-  // console.log('context values change: ', deviceTheme, preferredTheme, actualTheme);
 
   useEffect(() => {
-    if (deviceTheme && preferredTheme) {
-      setPreferredTheme(deviceTheme ?? 'dark');
+    if (deviceTheme) {
+      setPreferredTheme(deviceTheme);
     }
   }, [deviceTheme]);
 

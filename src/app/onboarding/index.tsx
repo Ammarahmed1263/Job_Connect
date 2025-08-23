@@ -3,7 +3,6 @@ import { AppButton, AppIcon, Pagination } from "@components/ui";
 import { hs, vs, width } from "@constants/metrics";
 import { ONBOARDING_SLIDES } from "@constants/onboardingSlides";
 import { useTheme } from "@contexts/ThemeContext";
-import { useSafeArea } from "@hooks/useSafeArea";
 import { useOnboardingStore } from "@store/onboardingStore";
 import clsx from "clsx";
 import { useRouter } from "expo-router";
@@ -22,7 +21,6 @@ const OnboardingScreen = () => {
     useOnboardingStore();
   const scrollProgress = useSharedValue(0);
   const router = useRouter();
-  const { top } = useSafeArea();
   const { colors } = useTheme();
 
   const scrollHandler = useAnimatedScrollHandler({
@@ -58,8 +56,8 @@ const OnboardingScreen = () => {
   };
 
   return (
-    <View className="flex-1 color-[--bg-color]">
-      <StatusBar />
+    <View className="flex-1 bg-[--bg-color]">
+      <StatusBar backgroundColor={colors["--bg-color"]}/>
       <View
         className="flex-1 justify-center"
       >
