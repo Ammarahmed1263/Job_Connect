@@ -1,6 +1,5 @@
 import JobSection from "@components/jobs/JobSection";
 import { AppText } from "@components/ui";
-import AppLoading from "@components/ui/AppLoading";
 import { TAB_HEIGHT } from "@constants/tabBar";
 import { useSearchJobs } from "@queries/homeQueries";
 import { useRecentJobsStore } from "@store/recentJobsStore";
@@ -27,7 +26,6 @@ const ExploreContent = () => {
     isPending: isFullTimePending,
     isError: isFullTimeError,
   } = useSearchJobs({ category: "fullTime" });
-  // const { data: remoteJobs, isPending: isRemotePending, isError:  isRemoteError} = useSearchJobs();
   const recentJobs = useRecentJobsStore((state) => state.recentJobs);
   const { data: recommendedJobs, isLoading: isRecommendedLoading } =
     useRecommendedJobs();
@@ -39,23 +37,6 @@ const ExploreContent = () => {
     });
   };
 
-  const isPending =
-    isAllPending ||
-    isRemotePending ||
-    isFullTimePending ||
-    isRecommendedLoading;
-
-  if (isPending) {
-    return (
-      <View className="flex-1 items-center justify-center">
-        <AppLoading size={100} />
-        <AppText variant="medium" className="mt-2">
-          Loading jobs...
-        </AppText>
-      </View>
-    );
-  }
-
   if (isAllError && isRemoteError && isFullTimeError) {
     return (
       <View className="flex-1 items-center justify-center">
@@ -65,56 +46,49 @@ const ExploreContent = () => {
   }
 
   return (
-    <ScrollView
+  <ScrollView
       className="flex-1"
       contentContainerStyle={{ flexGrow: 1, paddingBottom: TAB_HEIGHT }}
       showsVerticalScrollIndicator={false}
     >
-      {recentJobs.length > 0 && (
         <JobSection
           title="Recent Jobs"
           subtitle="Find your next opportunity"
           data={recentJobs}
           onSeeAll={() => handleSeeAll("recent")}
         />
-      )}
 
-      {recommendedJobs?.length > 0 && (
         <JobSection
           title="Recommended Jobs"
           subtitle="Based on your preferences"
-          data={recommendedJobs}
+          data={recommendedJobs || []}
           useRecommendCard
+          isLoading={isRecommendedLoading}
         />
-      )}
 
-      {remoteJobs?.pages[0]?.data && remoteJobs.pages[0].data.length > 0 && (
         <JobSection
           title="Remote Jobs"
           subtitle="Work from anywhere"
-          data={remoteJobs?.pages[0]?.data}
+          data={remoteJobs?.pages[0]?.data || []}
           onSeeAll={() => handleSeeAll("remote")}
+          isLoading={isRemotePending}
         />
-      )}
 
-      {allJobs?.pages[0]?.data && allJobs.pages[0].data.length > 0 && (
         <JobSection
           title="Trending Jobs"
           subtitle="Find market direction"
-          data={allJobs?.pages[0]?.data}
+          data={allJobs?.pages[0]?.data || []}
           onSeeAll={() => handleSeeAll("trending")}
+          isLoading={isAllPending}
         />
-      )}
 
-      {fullTimeJobs?.pages[0]?.data &&
-        fullTimeJobs.pages[0].data.length > 0 && (
-          <JobSection
-            title="Full-time Jobs"
-            subtitle="Stable opportunities"
-            data={fullTimeJobs?.pages[0]?.data}
-            onSeeAll={() => handleSeeAll("fullTime")}
-          />
-        )}
+        <JobSection
+          title="Full-time Jobs"
+          subtitle="Stable opportunities"
+          data={fullTimeJobs?.pages[0]?.data || []}
+          onSeeAll={() => handleSeeAll("fullTime")}
+          isLoading={isFullTimePending}
+        />
     </ScrollView>
   );
 };

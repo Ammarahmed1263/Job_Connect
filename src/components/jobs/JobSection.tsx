@@ -14,16 +14,19 @@ interface JobSectionProps {
   data: jobSummary[];
   onSeeAll?: () => void;
   useRecommendCard?: boolean;
+  isLoading?: boolean;
 }
+
+import JobSectionSkeleton from "@components/explore/JobSectionSkeleton";
 
 const JobSection = ({
   title,
   subtitle,
   data,
   onSeeAll,
+  isLoading,
   useRecommendCard = false,
 }: JobSectionProps) => {
-
   const jobDetails = useRecommendCard
     ? useQueries({
         queries: data.slice(0, 6).map((job) => ({
@@ -34,12 +37,11 @@ const JobSection = ({
     : [];
 
   const isLoadingDetails =
-    useRecommendCard && jobDetails.some((q) => q.isLoading);
+    (useRecommendCard && jobDetails.some((q) => q.isLoading)) || isLoading;
 
-  if (isLoadingDetails)
-    return (
-      <AppText className="text-center">Loading recommended jobs...</AppText>
-    );
+  if (isLoadingDetails) return <JobSectionSkeleton />;
+
+  if (data.length == 0 && !isLoadingDetails) return null;
 
   return (
     <View className="py-4">

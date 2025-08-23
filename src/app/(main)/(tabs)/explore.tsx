@@ -30,8 +30,6 @@ const Explore = () => {
   const recentJobs = useRecentJobsStore(state => state.recentJobs);
   const inputRef = useRef<TextInput>(null);
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
-  const user = useAuthStore((state) => state.user);
-  console.log('user id here: ', user?.id)
   const filterSheetRef = useRef<BottomSheetModal>(null);
 
   const openFilters = () => {

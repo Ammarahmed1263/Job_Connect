@@ -53,11 +53,6 @@ const Profile = () => {
     router.push("/login");
   };
 
-  const handleOnboarding = () => {
-    router.replace("/onboarding");
-    testOnboarding(false);
-  };
-
   return (
     <ScrollView
       className="flex-1 bg-[--bg-color]"
@@ -131,12 +126,6 @@ const Profile = () => {
           title={!isAuthenticated ? "Login" : "Logout"}
           onPress={!isAuthenticated ? handleLogin : handleLogout}
           textClassName="!text-[--accent-color]"
-          flat
-        />
-        <AppButton title="Onboarding" onPress={handleOnboarding} flat />
-        <AppButton
-          title="register"
-          onPress={() => router.push("/register")}
           flat
         />
       </View>
