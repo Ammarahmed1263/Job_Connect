@@ -31,19 +31,18 @@ const SkillItem: FC<SkillItemProps> = ({
       entering={FadeIn.duration(300)}
       exiting={FadeOut.duration(200)}
       layout={LinearTransition.springify()}
-      className="rounded-full border-2 border-[--accent-color] px-3 py-2 flex-row items-center justify-between gap-2"
+      className="rounded-full border-2 border-[--accent-color] p-2 flex-row items-center justify-between gap-1"
     >
       <AppText className="!text-[--text-primary]" numberOfLines={1}>
         {skill.skillName}
       </AppText>
 
-      <View className="flex-row self-end">
+      <View className="flex-row self-end gap-1 py-1">
         <Pressable
           onPress={async () => {
             await impactAsync(ImpactFeedbackStyle.Light);
             onEdit(index, skill.skillName);
           }}
-          className="p-1"
         >
           <AppIcon name="pen-round" size={22} color={colors["--text-primary"]} />
         </Pressable>
@@ -53,7 +52,6 @@ const SkillItem: FC<SkillItemProps> = ({
             await impactAsync(ImpactFeedbackStyle.Medium);
             onRemove(index);
           }}
-          className="p-1"
         >
           <AppIcon name="trash-bin" size={22} color={colors["--error-color"]} />
         </Pressable>

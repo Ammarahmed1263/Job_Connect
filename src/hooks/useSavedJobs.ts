@@ -6,12 +6,12 @@ import { jobSummary } from "@type/jobTypes";
 import { useEffect } from "react";
 
 const useSavedJobs = () => {
-  const { isAuthenticated } = useAuthStore();
-  const { data, isPending } = useFetchSavedJobs(isAuthenticated);
   const { savedJobs, addSavedJob, removeSavedJob, isSavedJob, setSavedJobs } =
-    useSavedJobsStore();
+  useSavedJobsStore();
   const { mutateAsync: saveMutation } = useSaveJob();
   const { mutateAsync: unsaveMutation } = useUnsaveJob();
+  const isAuthenticated = useAuthStore(state => state.isAuthenticated);
+  const { data, isPending } = useFetchSavedJobs(isAuthenticated);
 
   useEffect(() => {
     if (data?.data && isAuthenticated && savedJobs.length === 0) {

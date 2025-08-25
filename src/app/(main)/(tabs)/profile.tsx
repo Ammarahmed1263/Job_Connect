@@ -18,15 +18,15 @@ const Profile = () => {
   const { setTheme, theme, colors } = useTheme();
   const { top } = useSafeArea();
   const router = useRouter();
+  const profileStore = useProfileStore();
+  const { setProfile, totalFields, completedFields } = profileStore;
   const { logout, isAuthenticated, user } = useAuthStore();
-  const { setProfile, totalFields, completedFields } = useProfileStore(
-    (state) => state
-  );
   const { data, isSuccess } = useSeekerProfile(isAuthenticated);
   const profileProgress = useMemo(
     () => Math.round((completedFields / totalFields) * 100) || 0,
     [totalFields, completedFields]
   );
+  
 
   useEffect(() => {
     if (isSuccess && data?.data) {

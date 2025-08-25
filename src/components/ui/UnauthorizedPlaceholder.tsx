@@ -2,7 +2,7 @@ import AppButton from "./AppButton";
 import AppText from "./AppText";
 import AppIcon from "./AppIcon";
 import { useTheme } from "@contexts/ThemeContext";
-import { useRouter } from "expo-router";
+import { usePathname, useRouter } from "expo-router";
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import { IconName } from "./AppIcon";
@@ -24,9 +24,13 @@ const UnauthorizedPlaceholder = ({
 }: UnauthorizedPlaceholderProps) => {
   const router = useRouter();
   const { colors } = useTheme();
+  const pathname = usePathname();
 
   const handleLogin = () => {
-    router.push("/login");
+    router.push({
+      pathname: "/login",
+      params: { redirectTo: pathname },
+    });
   };
 
   return (

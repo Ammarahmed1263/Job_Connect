@@ -1,8 +1,7 @@
 import { ExperienceDetails, ProfileSectionLayout } from "@components/complete-profile";
 import JobsDetails from "@components/complete-profile/JobsDetails";
-import { AppText } from "@components/ui";
+import useExperienceLogic from "@hooks/useExperienceLogic";
 import React from "react";
-import useExperienceLogic from "./useExperienceLogic";
 
 const Experience = () => {
   const {

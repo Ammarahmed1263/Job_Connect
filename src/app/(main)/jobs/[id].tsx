@@ -26,12 +26,12 @@ const JobDetails = () => {
     "about"
   );
   const { data: job, isPending, isError } = useJobById(Number(id));
-  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
-  const { data: appliedJobs } = useAppliedJobs(isAuthenticated);
   const addRecentJob = useRecentJobsStore((state) => state.addRecentJob);
   const { requireAuth } = useWithAuth();
   const applicationModalRef = useRef<BottomSheetModal>(null);
   const { isSaved, saveJob, unsaveJob } = useSavedJobs();
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const { data: appliedJobs } = useAppliedJobs(isAuthenticated);
 
   const hasApplied =
     isAuthenticated &&

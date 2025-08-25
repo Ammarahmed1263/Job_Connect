@@ -26,7 +26,6 @@ const jobService = {
   fetchJobById: async (id: number): Promise<JobDetails> => {
     try {
       const { data } = await apiClient.get(jobsBase.getJobById(id));
-      console.log("fetch jobs responded: ", data);
       return data.data;
     } catch (error) {
       throw error;

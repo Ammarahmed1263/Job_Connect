@@ -35,10 +35,10 @@ const userService = {
   fetchSeekerProfile: async (): Promise<{data: UserProfile, message: string}> => {
     try {
       const { data } = await apiClient.get(userBase.getSeekerProfile);
-      console.log(
-        "get seeker Profile responded: ",
-        JSON.stringify(data, null, 2)
-      );
+      // console.log(
+      //   "get seeker Profile responded: ",
+      //   JSON.stringify(data, null, 2)
+      // );
       return data;
     } catch (error) {
       console.log(

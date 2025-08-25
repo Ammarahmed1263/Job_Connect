@@ -14,7 +14,7 @@ export const useSearchStore = create<SearchStore>()(
         const history = get().searchHistory;
         const exists = history.find((h) => h === search);
         if (exists) return;
-        set((state) => ({ searchHistory: [search, ...state.searchHistory] }))
+        set((state) => ({ searchHistory: [search, ...state.searchHistory] }));
       },
       deleteHistoryItem: (index) =>
         set((state) => ({
