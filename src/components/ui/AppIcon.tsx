@@ -51,6 +51,7 @@ import {
   user_circle,
   pen_round,
   lock,
+  lock_open,
   check
 } from "@assets/icons";
 import React, { FC } from "react";
@@ -110,6 +111,7 @@ const icons = {
   "user-circle": user_circle,
   "pen-round": pen_round,
   lock: lock,
+  "lock-open": lock_open,
   check: check
 } as const;
 

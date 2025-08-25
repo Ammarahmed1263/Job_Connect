@@ -1,4 +1,9 @@
-import { AppButton, AppText, ControlledLabelInput } from "@components/ui";
+import {
+  AppButton,
+  AppIcon,
+  AppText,
+  ControlledLabelInput,
+} from "@components/ui";
 import { useTheme } from "@contexts/ThemeContext";
 import Icon from "@expo/vector-icons/Ionicons";
 import { RegisterFormData } from "@type/authTypes";
@@ -50,8 +55,8 @@ const ContactInfo: FC<Props> = ({ setStep }) => {
         autoFocus={true}
         onSubmitEditing={() => focusRef(phoneRef)}
         leftComponent={({ focused }) => (
-          <Icon
-            name="mail-outline"
+          <AppIcon
+            name="letter"
             size={22}
             color={
               focused ? colors["--accent-color"] : colors["--text-primary"]
@@ -73,8 +78,8 @@ const ContactInfo: FC<Props> = ({ setStep }) => {
         autoComplete="tel"
         onSubmitEditing={() => focusRef(addressRef)}
         leftComponent={({ focused }) => (
-          <Icon
-            name="call-outline"
+          <AppIcon
+            name="phone"
             size={22}
             color={
               focused ? colors["--accent-color"] : colors["--text-primary"]
@@ -93,9 +98,11 @@ const ContactInfo: FC<Props> = ({ setStep }) => {
         title="Address"
         placeholder="Cairo, Egypt"
         autoComplete="street-address"
+        submitBehavior="submit"
+        onSubmitEditing={handleNext}
         leftComponent={({ focused }) => (
-          <Icon
-            name="home-outline"
+          <AppIcon
+            name="home-person"
             size={22}
             color={
               focused ? colors["--accent-color"] : colors["--text-primary"]

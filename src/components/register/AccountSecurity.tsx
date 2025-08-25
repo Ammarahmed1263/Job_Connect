@@ -54,8 +54,8 @@ const AccountSecurity: FC<Props> = ({ setStep, onSubmit }) => {
         submitBehavior="submit"
         onSubmitEditing={() => focusRef(confirmPasswordRef)}
         leftComponent={({ focused }) => (
-          <Icon
-            name="lock-open-outline"
+          <AppIcon
+            name="lock-open"
             size={22}
             color={
               focused ? colors["--accent-color"] : colors["--text-primary"]
@@ -87,8 +87,8 @@ const AccountSecurity: FC<Props> = ({ setStep, onSubmit }) => {
         submitBehavior="blurAndSubmit"
         onSubmitEditing={onSubmit}
         leftComponent={({ focused }) => (
-          <Icon
-            name="lock-closed-outline"
+          <AppIcon
+            name="lock"
             size={22}
             color={
               focused ? colors["--accent-color"] : colors["--text-primary"]
@@ -118,10 +118,10 @@ const AccountSecurity: FC<Props> = ({ setStep, onSubmit }) => {
       <View className="flex-row justify-between mt-4">
         <AppButton title="back" onPress={handlePrev} disabled={isLoading} />
         <SubmitButton
-            title="Register"
-            onPress={onSubmit}
-            isLoading={isLoading}
-          />
+          title="Register"
+          onPress={onSubmit}
+          isLoading={isLoading}
+        />
       </View>
     </View>
   );

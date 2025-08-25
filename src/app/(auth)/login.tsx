@@ -9,7 +9,7 @@ import {
 } from "@components/ui";
 import { hs, vs } from "@constants/metrics";
 import { useTheme } from "@contexts/ThemeContext";
-import Icon from "@expo/vector-icons/Ionicons";
+import Icon from "@expo/vector-icons/Feather";
 import { useSafeArea } from "@hooks/useSafeArea";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import useAuthStore from "@store/authStore";
@@ -19,7 +19,13 @@ import { useRouter } from "expo-router";
 import { useSearchParams } from "expo-router/build/hooks";
 import { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
-import { Keyboard, ScrollView, TextInput, View } from "react-native";
+import {
+  Keyboard,
+  ScrollView,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import authRules from "schemas/auth";
 
 const Login = () => {
@@ -73,6 +79,22 @@ const Login = () => {
       keyboardShouldPersistTaps="handled"
       showsVerticalScrollIndicator={false}
     >
+      {params.get("redirectTo") && (
+        <TouchableOpacity
+          onPress={() => router.back()}
+          className="absolute self-end me-4 z-10"
+          style={{ top: top + 10}}
+          hitSlop={20}
+        >
+          <AppIcon
+            name="close"
+            className="absolute self-end me-4 z-10"
+            style={{}}
+            size={32}
+            color={colors["--text-primary"]}
+          />
+        </TouchableOpacity>
+      )}
       <View className="flex-1 mx-4 justify-center">
         <View className="flex-1 flex-grow-0 justify-center">
           <AppLogo
@@ -100,9 +122,9 @@ const Login = () => {
               submitBehavior="submit"
               onSubmitEditing={() => focusRef(passwordRef)}
               leftComponent={({ focused }) => (
-                <Icon
-                  name="mail-outline"
-                  size={24}
+                <AppIcon
+                  name={"letter"}
+                  size={22}
                   color={
                     focused
                       ? colors["--accent-color"]
@@ -136,8 +158,8 @@ const Login = () => {
                 />
               )}
               leftComponent={({ focused }) => (
-                <Icon
-                  name="lock-closed-outline"
+                <AppIcon
+                  name={"lock"}
                   size={22}
                   color={
                     focused

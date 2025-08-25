@@ -1,6 +1,5 @@
 import { SearchBar } from "@components/search";
 import { AppButton, AppIcon, AppText } from "@components/ui";
-import { hs } from "@constants/metrics";
 import { useTheme } from "@contexts/ThemeContext";
 import { useFilterStore } from "@store/filterStore";
 import { useSearchStore } from "@store/searchStore";

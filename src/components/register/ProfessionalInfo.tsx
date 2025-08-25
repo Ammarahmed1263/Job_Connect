@@ -1,4 +1,4 @@
-import { AppButton, AppText, ControlledLabelInput } from "@components/ui";
+import { AppButton, AppIcon, AppText, ControlledLabelInput } from "@components/ui";
 import { useTheme } from "@contexts/ThemeContext";
 import Icon from "@expo/vector-icons/Ionicons";
 import { RegisterFormData } from "@type/authTypes";
@@ -48,8 +48,8 @@ const ProfessionalInfo: FC<Props> = ({ setStep }) => {
         submitBehavior="submit"
         onSubmitEditing={() => focusRef(experienceRef)}
         leftComponent={({ focused }) => (
-          <Icon
-            name="briefcase-outline"
+          <AppIcon
+            name="case-outline"
             size={22}
             color={
               focused ? colors["--accent-color"] : colors["--text-primary"]
@@ -69,8 +69,8 @@ const ProfessionalInfo: FC<Props> = ({ setStep }) => {
         submitBehavior="submit"
         onSubmitEditing={() => focusRef(degreeRef)}
         leftComponent={({ focused }) => (
-          <Icon
-            name="calendar-number-outline"
+          <AppIcon
+            name="calendar"
             size={22}
             color={
               focused ? colors["--accent-color"] : colors["--text-primary"]
@@ -87,9 +87,11 @@ const ProfessionalInfo: FC<Props> = ({ setStep }) => {
         name="professional.degree"
         title="Degree"
         placeholder="Computer Science"
+        submitBehavior="submit"
+        onSubmitEditing={handleNext}
         leftComponent={({ focused }) => (
-          <Icon
-            name="business-outline"
+          <AppIcon
+            name="diploma"
             size={22}
             color={
               focused ? colors["--accent-color"] : colors["--text-primary"]

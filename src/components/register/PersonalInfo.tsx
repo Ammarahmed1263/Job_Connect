@@ -42,7 +42,7 @@ const PersonalInfo: FC<Props> = ({ setStep }) => {
         autoComplete="given-name"
         autoFocus={true}
         onSubmitEditing={() => focusRef(lastNameRef)}
-        leftComponent={({focused}) => (
+        leftComponent={({ focused }) => (
           <AppIcon
             name="person-outline"
             size={22}
@@ -62,7 +62,9 @@ const PersonalInfo: FC<Props> = ({ setStep }) => {
         title="Last Name"
         placeholder="Doe"
         autoComplete="family-name"
-        leftComponent={({focused}) => (
+        onSubmitEditing={handleNext}
+        returnKeyType="next"
+        leftComponent={({ focused }) => (
           <AppIcon
             name="person-outline"
             size={22}

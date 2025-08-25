@@ -12,3 +12,4 @@ export {default as AppLoading} from './AppLoading';
 export {default as ReadMoreText} from './ReadMoreText';
 export {default as ControlledCheckBox} from './ControlledCheckBox';
 export {default as SubmitButton} from './SubmitButton';
+export {default as UnauthorizedPlaceholder} from './UnauthorizedPlaceholder'
