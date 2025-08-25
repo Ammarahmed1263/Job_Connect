@@ -10,16 +10,12 @@ const useRecommendedJobs = (jobsCount?: number) => {
   const [error, setError] = useState<unknown | null>(null);
   const userId = useAuthStore((state) => state.user?.id);
 
-  if (!userId) {
-    return {
-      data: [],
-      isLoading: false,
-      error: null,
-    };
-  }
-
   const fetchRecommendedJobs = useCallback(
-    async (userId: string, jobsCount: number) => {
+    async (userId: string | undefined, jobsCount: number) => {
+      if (!userId) {
+        setIsLoading(false);
+        return;
+      }
       try {
         const { data } = await axios.post(endpoints.machine.getRecomendedJobs, {
           seeker_id: userId,
@@ -41,13 +37,18 @@ const useRecommendedJobs = (jobsCount?: number) => {
   );
 
   useEffect(() => {
+    setIsLoading(true);
     (async () => {
       await fetchRecommendedJobs(userId, jobsCount ?? 6);
     })();
-  }, []);
+  }, [userId, fetchRecommendedJobs, jobsCount]);
+  
+
+  const finalData = userId ? jobs : [];
+  
 
   return {
-    data: jobs,
+    data: finalData,
     isLoading,
     error,
   };
