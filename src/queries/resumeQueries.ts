@@ -4,13 +4,14 @@ import { Resume } from "@type/userTypes";
 import * as DocumentPicker from "expo-document-picker";
 import { AxiosError } from "axios";
 
-export const useFetchResumes = () =>
+export const useFetchResumes = (enabled: boolean = true) =>
   useQuery<Resume[]>({
     queryKey: ["resumes"],
     queryFn: async () => {
       const response = await resumeService.fetchResumes();
       return response.data;
     },
+    enabled,
   });
 
 export const useUploadResume = () => {

@@ -2,12 +2,14 @@ import ResumeItem from "@components/complete-profile/ResumeItem";
 import { AppIcon, AppText, NavigationHeader } from "@components/ui";
 import { useTheme } from "@contexts/ThemeContext";
 import { useFetchResumes, useUploadResume } from "@queries/resumeQueries";
+import useAuthStore from "@store/authStore";
 import { handlePickDocument } from "@utils";
 import React from "react";
 import { FlatList, TouchableOpacity, View } from "react-native";
 
 const UploadResume = () => {
-  const { data: resumes = [], isPending } = useFetchResumes();
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const { data: resumes = [], isPending } = useFetchResumes(isAuthenticated);
   const { mutateAsync } = useUploadResume();
   const { colors } = useTheme();
 

@@ -3,6 +3,7 @@ import React from "react";
 import { Platform } from "react-native";
 
 const CompleteProfileLayout = () => {
+
   return (
     <Stack
       screenOptions={{

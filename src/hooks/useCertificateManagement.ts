@@ -1,13 +1,13 @@
-import { useSeekerProfile, useUpdateSeekerProfile } from "@queries/userQueries";
+import { useUpdateSeekerProfile } from "@queries/userQueries";
+import { useProfileStore } from "@store/profileStore";
 import { CertificationsForm } from "@type/profileFormTypes";
 import { Certification } from "@type/userTypes";
 import { useCallback, useState } from "react";
 import { Alert } from "react-native";
 import {
-    UseCertificateManagementProps,
-    UseCertificateManagementReturn,
+  UseCertificateManagementProps,
+  UseCertificateManagementReturn,
 } from "../types/certificateTypes";
-import { useProfileStore } from "@store/profileStore";
 
 const useCertificateManagement = ({
   setValue,

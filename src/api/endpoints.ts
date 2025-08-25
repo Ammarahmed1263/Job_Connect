@@ -39,7 +39,7 @@ export const endpoints = {
   jobs: {
     getAllJobs: (page: number, size: number) =>
       `JobSeeker/GetAllJobsPaginated?pageNumber=${page}&pageSize=${size}`,
-    getJobById: (jobId: number) => `JobSeeker/GetJobById/${jobId}`,
+    getJobById: (jobId: number) => `Home/GetJobById/${jobId}`,
     saveJob: "JobSeeker/SaveJob",
     unsaveJob: "JobSeeker/UnsaveJob",
     applyForJobByResumeId: ({jobId, resumeId}: Omit<JobApplicationParams, "CoverLetter">) =>

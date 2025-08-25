@@ -10,6 +10,7 @@ import useSavedJobs from "@hooks/useSavedJobs";
 import { useWithAuth } from "@hooks/useWithAuth";
 import { useJobById } from "@queries/jobQueries";
 import { useAppliedJobs } from "@queries/userQueries";
+import useAuthStore from "@store/authStore";
 import { useRecentJobsStore } from "@store/recentJobsStore";
 import { JobDetails as JobDetailsType } from "@type/jobTypes";
 import { formatSalary, getSeniorityLevel, shareJob } from "@utils";
@@ -25,15 +26,19 @@ const JobDetails = () => {
     "about"
   );
   const { data: job, isPending, isError } = useJobById(Number(id));
-  const { data: appliedJobs } = useAppliedJobs();
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const { data: appliedJobs } = useAppliedJobs(isAuthenticated);
   const addRecentJob = useRecentJobsStore((state) => state.addRecentJob);
   const { requireAuth } = useWithAuth();
   const applicationModalRef = useRef<BottomSheetModal>(null);
-  const { isSaved, saveJob, unsaveJob} = useSavedJobs();
-    
-  const hasApplied = 
-    job && 
-    appliedJobs?.data?.some((appliedJob: JobDetailsType) => appliedJob.id === job.id);
+  const { isSaved, saveJob, unsaveJob } = useSavedJobs();
+
+  const hasApplied =
+    isAuthenticated &&
+    job &&
+    appliedJobs?.data?.some(
+      (appliedJob: JobDetailsType) => appliedJob.id === job.id
+    );
 
   useEffect(() => {
     if (job) {
@@ -56,17 +61,19 @@ const JobDetails = () => {
   }, [job]);
 
   const handleToggleSave = async () => {
-    if (requireAuth()) return;
+    if (!job) return;
+    if (requireAuth(`/jobs/${job.id}`)) return;
 
     try {
-      isSaved(job!.id) ? unsaveJob(job!.id) : saveJob(job!);
+      isSaved(job.id) ? unsaveJob(job.id) : saveJob(job);
     } catch (error) {
       console.log("Error toggling job save:", error);
     }
   };
 
   const handleApply = () => {
-    if (requireAuth()) return;
+    if (!job) return;
+    if (requireAuth(`/jobs/${job.id}`)) return;
     applicationModalRef.current?.present();
   };
 
@@ -75,7 +82,7 @@ const JobDetails = () => {
       shareJob({
         jobId: job.id,
         jobTitle: job.title,
-        companyName: job.employer?.companyName
+        companyName: job.employer?.companyName,
       });
     }
   };
@@ -110,8 +117,10 @@ const JobDetails = () => {
 
   if (isError) {
     return (
-      <View className="flex-1 items-center justify-center">
-        <AppText>Oops..error occured please try again</AppText>
+      <View className="flex-1 items-center justify-center mx-4">
+        <AppText className="text-center">
+          Oops..error occured please try again later
+        </AppText>
       </View>
     );
   }
@@ -225,16 +234,18 @@ const JobDetails = () => {
         <AppButton
           title={hasApplied ? "Applied" : "Apply for Job"}
           variant="primary"
-          className={`${hasApplied ? "bg-[--text-muted]" : "bg-[--accent-color]"}`}
+          className={`${
+            hasApplied ? "bg-[--text-muted]" : "bg-[--accent-color]"
+          }`}
           onPress={handleApply}
           disabled={hasApplied}
           disableShadow={hasApplied}
         />
       </View>
-      
-      <ApplicationModal 
-        ref={applicationModalRef} 
-        jobId={Number(id)} 
+
+      <ApplicationModal
+        ref={applicationModalRef}
+        jobId={Number(id)}
         jobTitle={job?.title || ""}
       />
     </View>
@@ -242,4 +253,3 @@ const JobDetails = () => {
 };
 
 export default JobDetails;
-

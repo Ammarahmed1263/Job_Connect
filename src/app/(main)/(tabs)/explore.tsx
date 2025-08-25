@@ -56,13 +56,13 @@ const Explore = () => {
   };
 
   const renderScreenContent = () => {
-    if (!isAuthenticated) {
-      return (
-        <View className="flex-1 items-center justify-center">
-          <AppText>You are not authenticated</AppText>
-        </View>
-      );
-    }
+    // if (!isAuthenticated) {
+    //   return (
+    //     <View className="flex-1 items-center justify-center">
+    //       <AppText>You are not authenticated</AppText>
+    //     </View>
+    //   );
+    // }
 
     switch (barState) {
       case "idle":

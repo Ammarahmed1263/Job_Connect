@@ -1,6 +1,6 @@
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { useApplyForJobById } from "@queries/jobQueries";
-import { useFetchResumes, useUploadResume } from "@queries/resumeQueries";
+import { useUploadResume } from "@queries/resumeQueries";
 import { useQueryClient } from "@tanstack/react-query";
 import { JobApplicationParams } from "@type/jobTypes";
 import { Resume } from "@type/userTypes";

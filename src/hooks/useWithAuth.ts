@@ -1,4 +1,4 @@
-import { useRouter, usePathname } from "expo-router";
+import { useRouter, usePathname, Href } from "expo-router";
 import useAuthStore from "@store/authStore";
 
 export const useWithAuth = () => {
@@ -6,11 +6,11 @@ export const useWithAuth = () => {
   const router = useRouter();
   const pathname = usePathname();
 
-  const requireAuth = () => {
+  const requireAuth = (redirect?: string) => {
     if (!isAuthenticated) {
       router.push({
         pathname: "/login",
-        params: { redirectTo: pathname },
+        params: { redirectTo: redirect ?? pathname },
       });
       return true;
     }

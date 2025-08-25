@@ -14,6 +14,7 @@ import {
 import { useJobApplication } from "@hooks/useJobApplication";
 import { useSafeArea } from "@hooks/useSafeArea";
 import { useFetchResumes } from "@queries/resumeQueries";
+import useAuthStore from "@store/authStore";
 import React, { forwardRef, useCallback, useMemo } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import profileRules from "schemas/profile";
@@ -27,7 +28,8 @@ const ApplicationModal = forwardRef<BottomSheetModal, ApplicationModalProps>(
   ({ jobId, jobTitle }, ref) => {
     const { bottom } = useSafeArea();
     const { colors } = useTheme();
-    const { data: resumes, isLoading: isResumesLoading } = useFetchResumes();
+    const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+    const { data: resumes, isLoading: isResumesLoading } = useFetchResumes(isAuthenticated);
     const {
       isUploading,
       isApplying,

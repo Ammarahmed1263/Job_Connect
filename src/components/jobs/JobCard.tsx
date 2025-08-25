@@ -32,7 +32,7 @@ const JobCard = ({
 }: JobCardProps) => {
   const router = useRouter();
   const { requireAuth } = useWithAuth();
-  const { isSaved, saveJob, unsaveJob} = useSavedJobs();
+  const { isSaved, saveJob, unsaveJob } = useSavedJobs();
 
   const handleJobPress = () => {
     router.push({
@@ -42,7 +42,7 @@ const JobCard = ({
   };
 
   const handleToggleSave = async () => {
-    if (requireAuth()) return;
+    if (requireAuth(`/jobs/${item.id}`)) return;
 
     try {
       isSaved(item.id) ? unsaveJob(item.id) : saveJob(item);

@@ -8,7 +8,6 @@ import { useTheme } from "@contexts/ThemeContext";
 import { useSafeArea } from "@hooks/useSafeArea";
 import { useSeekerProfile } from "@queries/userQueries";
 import useAuthStore from "@store/authStore";
-import { useOnboardingStore } from "@store/onboardingStore";
 import { useProfileStore } from "@store/profileStore";
 import { Theme } from "@type/theme";
 import { useRouter } from "expo-router";
@@ -20,20 +19,10 @@ const Profile = () => {
   const { top } = useSafeArea();
   const router = useRouter();
   const { logout, isAuthenticated, user } = useAuthStore();
-  const testOnboarding = useOnboardingStore((state) => state.testOnboarding);
-  const { setProfile, totalFields, completedFields, profile } = useProfileStore(
+  const { setProfile, totalFields, completedFields } = useProfileStore(
     (state) => state
   );
-  const { data, isSuccess } = useSeekerProfile();
-  console.log(
-    "user profile: ",
-    // "count: ",
-    // totalFields,
-    // completedFields,
-    profile.companyWorkedAt,
-    profile.workedAs,
-    // data
-  );
+  const { data, isSuccess } = useSeekerProfile(isAuthenticated);
   const profileProgress = useMemo(
     () => Math.round((completedFields / totalFields) * 100) || 0,
     [totalFields, completedFields]
