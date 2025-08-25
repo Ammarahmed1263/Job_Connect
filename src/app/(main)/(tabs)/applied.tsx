@@ -1,6 +1,6 @@
 import JobCard from "@components/jobs/JobCard";
 import JobCardSkeleton from "@components/jobs/JobCardSkeleton";
-import { AppText, NavigationHeader } from "@components/ui";
+import { AppText, NavigationHeader, UnauthorizedPlaceholder } from "@components/ui";
 import { vs } from "@constants/metrics";
 import { TAB_HEIGHT } from "@constants/tabBar";
 import { useTheme } from "@contexts/ThemeContext";
@@ -15,12 +15,15 @@ const Applied = () => {
   const { data, isPending } = useAppliedJobs(isAuthenticated);
   const { colors } = useTheme();
 
-  if (!isAuthenticated)
+  if (!isAuthenticated) {
     return (
-      <View className="flex-1 items-center justify-center">
-        <AppText>You are not authenticated</AppText>
-      </View>
+      <UnauthorizedPlaceholder 
+        title="Applied Jobs" 
+        message="Login to track your job applications and see their status in real-time."
+        icon="case-outline"
+      />
     );
+  }
 
   return (
     <View className="flex-1">
