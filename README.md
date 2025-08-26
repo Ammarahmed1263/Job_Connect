@@ -47,8 +47,8 @@ Job Connect is a feature-rich mobile application built using React Native and Ex
 ## ✨ Features
 
 - **Lightweight State Management**: Efficient global state handling with Zustand.
+- **Optimistic Updates**: Implemented instant UI feedback for actions like saving jobs, so changes are reflected immediately while the request is being processed in the background.
 - **Advanced Form Handling**: Streamlined form management with React Hook Form and built-in validation.
-- **Post-Authentication Redirect**: Seamless user experience with intelligent redirects after login.
 - **Guest Mode Access**: Allow users to browse jobs without creating an account.
 - **Offline Support**: Continue using the app without an internet connection thanks to React Query's persistence capabilities.
 - **Secure Authentication**: Protect user data with secure token storage using Expo SecureStore.
@@ -60,6 +60,7 @@ Job Connect is a feature-rich mobile application built using React Native and Ex
 - **Job Filtering & Search**: Comprehensive filtering options and search functionality to find relevant jobs.
 - **Job Recommendations**: Personalized job suggestions based on user activity and profile.
 - **Skeleton Loading States**: Smooth user experience with skeleton loaders during data fetching.
+- **Post-Authentication Redirect**: Seamless user experience with intelligent redirects after login.
 - **Unique Icons & Branding**: Custom and distinctive icons for actions and navigation.
 - **Responsive Design**: Optimized for various screen sizes and orientations.
 - **Dark Mode Support**: Comfortable viewing experience in any lighting condition.
