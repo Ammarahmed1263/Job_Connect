@@ -5,10 +5,8 @@ import {
   SearchResults,
 } from "@components/explore";
 import { FiltersSheet } from "@components/filters/FiltersSheet";
-import { AppText } from "@components/ui";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { useSafeArea } from "@hooks/useSafeArea";
-import useAuthStore from "@store/authStore";
 import { useRecentJobsStore } from "@store/recentJobsStore";
 import { useSearchStore } from "@store/searchStore";
 import { useRouter } from "expo-router";
@@ -29,7 +27,6 @@ const Explore = () => {
   } = useSearchStore();
   const recentJobs = useRecentJobsStore(state => state.recentJobs);
   const inputRef = useRef<TextInput>(null);
-  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const filterSheetRef = useRef<BottomSheetModal>(null);
 
   const openFilters = () => {
@@ -56,13 +53,6 @@ const Explore = () => {
   };
 
   const renderScreenContent = () => {
-    // if (!isAuthenticated) {
-    //   return (
-    //     <View className="flex-1 items-center justify-center">
-    //       <AppText>You are not authenticated</AppText>
-    //     </View>
-    //   );
-    // }
 
     switch (barState) {
       case "idle":

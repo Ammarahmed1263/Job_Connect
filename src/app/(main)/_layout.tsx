@@ -4,19 +4,6 @@ import React from "react";
 import { View } from "react-native";
 
 const MainLayout = () => {
-  // const [shouldRedirect, setShouldRedirect] = useState(false);
-
-  
-  // useEffect(() => {
-  //   if (!isAuthenticated && !isLoading) {
-  //     console.warn("YOU HAVE BEEN LOGGED OUT");
-  //     setShouldRedirect(true);
-  //   }
-  // }, [isAuthenticated, isLoading]);
-
-  // if (shouldRedirect) {
-  //   return <Redirect href="/login" />;
-  // }
 
   return (
     <View className="flex-1 color-[--bg-color]">
